@@ -590,9 +590,118 @@
             }
         }
 
-        // Export functionality (placeholder for now)
+        // Export functionality - Excel downloads
         function exportData(type) {
-            alert(`Export ${type} functionality coming in the next step! 📊`);
+            if (type === 'shambhavi') {
+                exportToExcel(shambhaviSessions, 'Shambhavi_Mahamudra_Sessions', 'shambhavi');
+            } else if (type === 'isha') {
+                exportToExcel(ishaSessions, 'Isha_Kriya_Sessions', 'isha');
+            } else if (type === 'all') {
+                exportCombinedData();
+            }
+        }
+
+        function exportToExcel(data, filename, practiceType) {
+            if (data.length === 0) {
+                alert(`No ${practiceType === 'shambhavi' ? 'Shambhavi Mahamudra' : 'Isha Kriya'} sessions to export yet. Start practicing and your data will appear here! 🧘‍♂️`);
+                return;
+            }
+
+            let csv = '';
+            let headers = [];
+            
+            if (practiceType === 'shambhavi') {
+                headers = ['Date', 'Time', 'Session Type', 'Practice Version', 'Notes/Visions/Insights'];
+                csv = headers.join(',') + '\n';
+                
+                data.forEach(session => {
+                    const date = new Date(session.datetime).toLocaleDateString();
+                    const time = new Date(session.datetime).toLocaleTimeString();
+                    const sessionType = session.sessionType === 'morning' ? 'Morning Practice 🌅' : 'Evening Practice 🌙';
+                    const version = session.version === 'full' ? 'Full Practice (40 min)' : 'Core Practice (21 min)';
+                    const notes = `"${(session.notes || '').replace(/"/g, '""')}"`;
+                    
+                    csv += `${date},${time},${sessionType},${version},${notes}\n`;
+                });
+            } else {
+                headers = ['Date', 'Time', 'Duration', 'Notes/Visions/Insights'];
+                csv = headers.join(',') + '\n';
+                
+                data.forEach(session => {
+                    const date = new Date(session.datetime).toLocaleDateString();
+                    const time = new Date(session.datetime).toLocaleTimeString();
+                    const duration = session.duration || 'Not specified';
+                    const notes = `"${(session.notes || '').replace(/"/g, '""')}"`;
+                    
+                    csv += `${date},${time},${duration},${notes}\n`;
+                });
+            }
+
+            // Create and download the file
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `${filename}_${getCurrentDateString()}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        function exportCombinedData() {
+            if (shambhaviSessions.length === 0 && ishaSessions.length === 0) {
+                alert('No practice sessions to export yet. Start your sadhana and your data will appear here! 🕉️');
+                return;
+            }
+
+            let csv = 'Practice Type,Date,Time,Session Details,Duration/Version,Notes/Visions/Insights\n';
+            
+            // Add Shambhavi sessions
+            shambhaviSessions.forEach(session => {
+                const date = new Date(session.datetime).toLocaleDateString();
+                const time = new Date(session.datetime).toLocaleTimeString();
+                const sessionType = session.sessionType === 'morning' ? 'Morning Practice 🌅' : 'Evening Practice 🌙';
+                const version = session.version === 'full' ? 'Full Practice (40 min)' : 'Core Practice (21 min)';
+                const notes = `"${(session.notes || '').replace(/"/g, '""')}"`;
+                
+                csv += `Shambhavi Mahamudra,${date},${time},${sessionType},${version},${notes}\n`;
+            });
+            
+            // Add Isha Kriya sessions
+            ishaSessions.forEach(session => {
+                const date = new Date(session.datetime).toLocaleDateString();
+                const time = new Date(session.datetime).toLocaleTimeString();
+                const duration = session.duration || 'Not specified';
+                const notes = `"${(session.notes || '').replace(/"/g, '""')}"`;
+                
+                csv += `Isha Kriya,${date},${time},Daily Practice 🧘,${duration},${notes}\n`;
+            });
+
+            // Create and download the combined file
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `Yoga_Sadhana_Complete_Data_${getCurrentDateString()}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        function getCurrentDateString() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
     </script>
 </body>
