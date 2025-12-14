@@ -630,7 +630,7 @@
                 data.forEach(session => {
                     const date = new Date(session.datetime).toLocaleDateString();
                     const time = new Date(session.datetime).toLocaleTimeString();
-                    const duration = session.duration || 'Not specified';
+                    const duration = `"${session.duration || 'Not specified'}"`;
                     const notes = `"${(session.notes || '').replace(/"/g, '""')}"`;
                     
                     csv += `${date},${time},${duration},${notes}\n`;
@@ -675,7 +675,7 @@
             ishaSessions.forEach(session => {
                 const date = new Date(session.datetime).toLocaleDateString();
                 const time = new Date(session.datetime).toLocaleTimeString();
-                const duration = session.duration || 'Not specified';
+                const duration = `"${session.duration || 'Not specified'}"`;
                 const notes = `"${(session.notes || '').replace(/"/g, '""')}"`;
                 
                 csv += `Isha Kriya,${date},${time},Daily Practice,${duration},${notes}\n`;
