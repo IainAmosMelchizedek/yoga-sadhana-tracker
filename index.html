@@ -319,6 +319,7 @@
                             </p>
                             <div class="export-buttons">
                                 <button class="btn secondary" onclick="showImportForm()">📥 Import Current Progress</button>
+                                <button class="btn secondary" onclick="fixMissingIshaSessions()">🔧 Fix Missing Isha Sessions</button>
                             </div>
                             
                             <div id="import-form" style="display: none; background: rgba(75, 0, 130, 0.1); padding: 20px; border-radius: 10px; margin-top: 20px;">
@@ -971,6 +972,61 @@
 
             // Scroll to see the updated mandala
             document.querySelector('.mandala-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Fix Missing Isha Sessions Function
+        function fixMissingIshaSessions() {
+            // Get the earliest Shambhavi session to determine the practice period
+            if (shambhaviSessions.length === 0) {
+                alert('No Shambhavi sessions found. Please import your practice history first.');
+                return;
+            }
+
+            // Sort Shambhavi sessions by date to find the range
+            const sortedShambhavi = shambhaviSessions.sort((a, b) => new Date(a.date) - new Date(b.date));
+            const startDate = new Date(sortedShambhavi[0].date);
+            
+            // Get unique dates from Shambhavi sessions (should be 28 days)
+            const shambhaviDates = [...new Set(shambhaviSessions.map(s => s.date))].sort();
+            const ishaDates = [...new Set(ishaSessions.map(s => s.date))];
+            
+            let addedSessions = 0;
+            
+            // Add missing Isha sessions for each Shambhavi practice day
+            shambhaviDates.forEach(dateString => {
+                if (!ishaDates.includes(dateString)) {
+                    const ishaSession = {
+                        id: Date.now() + Math.random(),
+                        timestamp: new Date().toISOString(),
+                        datetime: `${dateString}T14:00`,
+                        duration: '15 minutes',
+                        notes: 'Historical practice session - added to complete practice history',
+                        date: dateString
+                    };
+                    ishaSessions.push(ishaSession);
+                    addedSessions++;
+                }
+            });
+
+            if (addedSessions > 0) {
+                saveData();
+                updateStreaks();
+                updateTotals();
+                updateMandala();
+                
+                alert(`✨ Fixed! Added ${addedSessions} missing Isha Kriya sessions to complete your practice history.`);
+                
+                // Update the success message
+                document.getElementById('import-section').innerHTML = `
+                    <div style="text-align: center; padding: 20px; background: rgba(34, 139, 34, 0.2); border-radius: 10px; border: 1px solid #DAA520;">
+                        <h4 style="color: #DAA520; margin-bottom: 10px;">✨ Practice History Complete!</h4>
+                        <p style="color: #F5F5DC;">Your authentic 28-day journey: ${shambhaviSessions.length} Shambhavi + ${ishaSessions.length} Isha Kriya sessions.</p>
+                        <p style="color: #F5F5DC; font-size: 0.9em; font-style: italic;">Your mandala now perfectly reflects your complete spiritual practice.</p>
+                    </div>
+                `;
+            } else {
+                alert('No missing Isha sessions found. Your practice history appears complete!');
+            }
         }
     </script>
 </body>
