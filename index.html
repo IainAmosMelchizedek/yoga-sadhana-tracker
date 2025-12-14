@@ -292,13 +292,12 @@
                 <div class="practice-card">
                     <h2 class="practice-title">Welcome to Your Sacred Journey</h2>
                     <div class="mandala-container">
-                        <div class="mandala-placeholder">
-                            <div class="mandala-text">
-                                <div>Infinite Spiral</div>
-                                <div>Mandala</div>
-                                <div style="font-size: 0.8em; margin-top: 10px;">(Coming Soon)</div>
-                            </div>
-                        </div>
+                        <svg id="spiral-mandala" width="300" height="300" viewBox="0 0 300 300">
+                            <!-- Center Om symbol -->
+                            <circle cx="150" cy="150" r="8" fill="#DAA520" stroke="#FF6600" stroke-width="2"/>
+                            <text x="150" y="155" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="bold">🕉️</text>
+                        </svg>
+                        <div class="mandala-achievements" style="text-align: center; margin-top: 20px; min-height: 60px;"></div>
                     </div>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
@@ -313,6 +312,49 @@
                     </div>
 
                     <div class="export-section">
+                        <h3 style="color: #DAA520; text-align: center; margin-bottom: 20px;">Import Current Practice Status</h3>
+                        <div id="import-section" style="margin-bottom: 25px;">
+                            <p style="color: #F5F5DC; text-align: center; margin-bottom: 15px; font-style: italic;">
+                                Already been practicing consistently? Record your authentic practice history to reflect your true spiritual journey.
+                            </p>
+                            <div class="export-buttons">
+                                <button class="btn secondary" onclick="showImportForm()">📥 Import Current Progress</button>
+                            </div>
+                            
+                            <div id="import-form" style="display: none; background: rgba(75, 0, 130, 0.1); padding: 20px; border-radius: 10px; margin-top: 20px;">
+                                <div class="form-group">
+                                    <label>Practice Start Date:</label>
+                                    <input type="date" id="import-start-date">
+                                </div>
+                                <div class="form-group">
+                                    <label>Current Day in Cycle:</label>
+                                    <select id="import-current-day">
+                                        <option value="">Select current day...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Practices You've Been Doing:</label>
+                                    <div style="margin-top: 10px;">
+                                        <label style="display: flex; align-items: center; margin-bottom: 10px; font-weight: normal;">
+                                            <input type="checkbox" id="import-shambhavi" style="margin-right: 10px;">
+                                            Shambhavi Mahamudra (2x daily - morning & evening)
+                                        </label>
+                                        <label style="display: flex; align-items: center; font-weight: normal;">
+                                            <input type="checkbox" id="import-isha" style="margin-right: 10px;">
+                                            Isha Kriya (daily practice)
+                                        </label>
+                                    </div>
+                                    <p style="font-size: 0.85em; color: #F5F5DC; font-style: italic; margin-top: 10px;">
+                                        Note: Session times will be estimated based on traditional practice schedules. Your authentic practice history deserves to be properly reflected.
+                                    </p>
+                                </div>
+                                <div class="export-buttons" style="margin-top: 20px;">
+                                    <button class="btn" onclick="importProgress()">✨ Import Progress</button>
+                                    <button class="btn secondary" onclick="cancelImport()">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <h3 style="color: #DAA520; text-align: center; margin-bottom: 20px;">Export Practice Data</h3>
                         <div class="export-buttons">
                             <button class="btn" onclick="exportData('shambhavi')">Export Shambhavi Data</button>
@@ -413,6 +455,8 @@
             loadData();
             updateStreaks();
             updateTotals();
+            updateMandala();
+            setupImportForm();
             
             // Set up navigation
             const navButtons = document.querySelectorAll('.nav-btn');
@@ -502,6 +546,7 @@
             saveData();
             updateStreaks();
             updateTotals();
+            updateMandala();
             
             // Show success message (we'll enhance this later)
             alert('✨ Session recorded successfully! Your practice has been saved.');
@@ -698,6 +743,234 @@
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const day = String(now.getDate()).padStart(2, '0');
             return `${year}-${month}-${day}`;
+        }
+
+        // Mandala Visualization System
+        function updateMandala() {
+            const svg = document.getElementById('spiral-mandala');
+            if (!svg) return;
+            
+            // Clear previous paths (keep center Om)
+            const paths = svg.querySelectorAll('path, circle:not(:first-child), text:not(:first-child)');
+            paths.forEach(path => path.remove());
+            
+            const totalSessions = shambhaviSessions.length + ishaSessions.length;
+            const totalDays = getTotalPracticeDays();
+            
+            // Draw milestone rings
+            drawMilestoneRings(svg, totalDays);
+            
+            // Draw practice dots
+            drawPracticeDots(svg, totalSessions);
+            
+            // Add milestone labels
+            addMilestoneLabels(svg, totalDays);
+        }
+
+        function getTotalPracticeDays() {
+            const allSessions = [...shambhaviSessions, ...ishaSessions];
+            const uniqueDates = [...new Set(allSessions.map(session => session.date))];
+            return uniqueDates.length;
+        }
+
+        function drawMilestoneRings(svg, totalDays) {
+            const center = 150;
+            const milestones = [
+                { days: 40, radius: 60, color: '#FF6600', label: '40 Day Cycle' },
+                { days: 108, radius: 90, color: '#E34234', label: '108 Day Milestone' },
+                { days: 365, radius: 120, color: '#4B0082', label: 'Year Journey' },
+                { days: 1080, radius: 140, color: '#DAA520', label: 'Sacred 1080' }
+            ];
+
+            milestones.forEach(milestone => {
+                const opacity = totalDays >= milestone.days ? 1.0 : 0.3;
+                const strokeWidth = totalDays >= milestone.days ? 3 : 1;
+                
+                // Create ring
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', center);
+                circle.setAttribute('cy', center);
+                circle.setAttribute('r', milestone.radius);
+                circle.setAttribute('fill', 'none');
+                circle.setAttribute('stroke', milestone.color);
+                circle.setAttribute('stroke-width', strokeWidth);
+                circle.setAttribute('opacity', opacity);
+                circle.setAttribute('stroke-dasharray', totalDays >= milestone.days ? 'none' : '5,5');
+                svg.appendChild(circle);
+            });
+        }
+
+        function drawPracticeDots(svg, totalSessions) {
+            const center = 150;
+            const maxRadius = 130;
+            
+            // Create spiral of practice dots
+            for (let i = 0; i < totalSessions; i++) {
+                const angle = i * 0.5; // Spiral angle
+                const radius = 20 + (i * 2); // Spiral outward
+                
+                if (radius > maxRadius) break; // Don't go beyond outer ring
+                
+                const x = center + Math.cos(angle) * radius;
+                const y = center + Math.sin(angle) * radius;
+                
+                // Determine dot color based on session type
+                const sessionIndex = i;
+                let color = '#DAA520'; // Default gold
+                
+                if (sessionIndex < shambhaviSessions.length) {
+                    color = '#FF6600'; // Saffron for Shambhavi
+                } else {
+                    color = '#4B0082'; // Indigo for Isha Kriya
+                }
+                
+                const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                dot.setAttribute('cx', x);
+                dot.setAttribute('cy', y);
+                dot.setAttribute('r', 3);
+                dot.setAttribute('fill', color);
+                dot.setAttribute('stroke', '#FFFFFF');
+                dot.setAttribute('stroke-width', 0.5);
+                dot.setAttribute('opacity', 0.8);
+                svg.appendChild(dot);
+            }
+        }
+
+        function addMilestoneLabels(svg, totalDays) {
+            const milestoneAchievements = [];
+            
+            if (totalDays >= 40) milestoneAchievements.push('40-Day Cycle Complete ✨');
+            if (totalDays >= 108) milestoneAchievements.push('108-Day Sacred Milestone 🕉️');
+            if (totalDays >= 365) milestoneAchievements.push('One Year Journey 🌟');
+            if (totalDays >= 1080) milestoneAchievements.push('Sacred 1080 Achievement 🏔️');
+            
+            // Add achievement text below mandala
+            const achievementDiv = document.querySelector('.mandala-achievements');
+            if (achievementDiv) {
+                achievementDiv.innerHTML = milestoneAchievements.length > 0 
+                    ? '<h4 style="color: #DAA520; margin-bottom: 10px;">Sacred Milestones Achieved:</h4>' + 
+                      milestoneAchievements.map(achievement => `<div style="color: #F5F5DC; margin: 5px 0;">${achievement}</div>`).join('')
+                    : '<div style="color: #F5F5DC; font-style: italic;">Continue your practice to unlock sacred milestones...</div>';
+            }
+        }
+
+        // Import Progress Functionality
+        function setupImportForm() {
+            const select = document.getElementById('import-current-day');
+            if (select) {
+                // Populate day options (1-50 to allow flexibility)
+                for (let i = 1; i <= 50; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = `Day ${i}`;
+                    select.appendChild(option);
+                }
+            }
+        }
+
+        function showImportForm() {
+            const form = document.getElementById('import-form');
+            const importSection = document.getElementById('import-section');
+            
+            // Set default start date (current day minus selected days)
+            const today = new Date();
+            const defaultDate = new Date(today.getTime() - (28 * 24 * 60 * 60 * 1000)); // Default to 28 days ago
+            document.getElementById('import-start-date').value = defaultDate.toISOString().split('T')[0];
+            document.getElementById('import-current-day').value = '28'; // Default to day 28
+            
+            // Pre-select Shambhavi as it's your current practice
+            document.getElementById('import-shambhavi').checked = true;
+            
+            form.style.display = 'block';
+            form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function cancelImport() {
+            document.getElementById('import-form').style.display = 'none';
+        }
+
+        function importProgress() {
+            const startDate = document.getElementById('import-start-date').value;
+            const currentDay = parseInt(document.getElementById('import-current-day').value);
+            const includeShambhavi = document.getElementById('import-shambhavi').checked;
+            const includeIsha = document.getElementById('import-isha').checked;
+
+            if (!startDate || !currentDay || (!includeShambhavi && !includeIsha)) {
+                alert('Please fill in all fields and select at least one practice type.');
+                return;
+            }
+
+            // Generate historical sessions
+            const start = new Date(startDate);
+            let sessionsAdded = 0;
+
+            for (let day = 0; day < currentDay; day++) {
+                const sessionDate = new Date(start);
+                sessionDate.setDate(start.getDate() + day);
+                
+                const dateString = sessionDate.toISOString().split('T')[0];
+                const baseTimestamp = sessionDate.getTime();
+
+                if (includeShambhavi) {
+                    // Morning session
+                    const morningSession = {
+                        id: baseTimestamp + Math.random(),
+                        timestamp: new Date(baseTimestamp).toISOString(),
+                        sessionType: 'morning',
+                        datetime: `${dateString}T07:30`,
+                        version: 'core',
+                        notes: 'Historical practice session - estimated time based on traditional schedule',
+                        date: dateString
+                    };
+                    shambhaviSessions.push(morningSession);
+                    sessionsAdded++;
+
+                    // Evening session
+                    const eveningSession = {
+                        id: baseTimestamp + Math.random() + 1,
+                        timestamp: new Date(baseTimestamp).toISOString(),
+                        sessionType: 'evening',
+                        datetime: `${dateString}T18:30`,
+                        version: 'core',
+                        notes: 'Imported from previous practice cycle',
+                        date: dateString
+                    };
+                    shambhaviSessions.push(eveningSession);
+                    sessionsAdded++;
+                }
+
+                if (includeIsha) {
+                    const ishaSession = {
+                        id: baseTimestamp + Math.random() + 2,
+                        timestamp: new Date(baseTimestamp).toISOString(),
+                        datetime: `${dateString}T14:00`,
+                        duration: '15 minutes',
+                        notes: 'Imported from previous practice cycle',
+                        date: dateString
+                    };
+                    ishaSessions.push(ishaSession);
+                    sessionsAdded++;
+                }
+            }
+
+            // Save and update displays
+            saveData();
+            updateStreaks();
+            updateTotals();
+            updateMandala();
+
+            // Hide import form
+            document.getElementById('import-form').style.display = 'none';
+            document.getElementById('import-section').innerHTML = `
+                <div style="text-align: center; padding: 20px; background: rgba(34, 139, 34, 0.2); border-radius: 10px; border: 1px solid #DAA520;">
+                    <h4 style="color: #DAA520; margin-bottom: 10px;">✨ Progress Successfully Imported!</h4>
+                    <p style="color: #F5F5DC;">Added ${sessionsAdded} sessions from your ${currentDay}-day practice journey.</p>
+                    <p style="color: #F5F5DC; font-size: 0.9em; font-style: italic;">Your mandala now reflects your complete spiritual practice history.</p>
+                </div>
+            `;
+
+            // Scroll to see the updated mandala
+            document.querySelector('.mandala-container').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
