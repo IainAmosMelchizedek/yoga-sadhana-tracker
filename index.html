@@ -342,6 +342,83 @@
       display: none;
     }
 
+    /* Enhanced Cosmic Circle Styles */
+    .cosmic-dashboard {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin: 0 auto 30px;
+    }
+
+    .cosmic-rings {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .energy-particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      opacity: 0;
+      animation: floatParticle 6s infinite;
+    }
+
+    @keyframes floatParticle {
+      0% { opacity: 0; transform: translateY(20px) scale(0); }
+      10% { opacity: 1; transform: translateY(15px) scale(1); }
+      90% { opacity: 1; transform: translateY(-15px) scale(1); }
+      100% { opacity: 0; transform: translateY(-20px) scale(0); }
+    }
+
+    .progress-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 10;
+    }
+
+    .om-symbol {
+      font-size: 2.5em;
+      color: var(--ink);
+      text-shadow: 0 0 20px rgba(0,247,255,.6), 0 0 40px rgba(255,43,214,.4);
+      margin-bottom: 10px;
+      animation: omPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes omPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .cycle-info {
+      font-size: 0.9em;
+      color: var(--ink-dim);
+      margin-top: 5px;
+    }
+
+    @keyframes rotateRing {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
     @media (max-width: 768px){
       .nav-tabs{
         flex-direction: column;
@@ -356,6 +433,11 @@
       .practice-buttons{
         flex-direction: column;
         align-items: center;
+      }
+
+      .cosmic-dashboard {
+        width: 320px;
+        height: 320px;
       }
     }
   </style>
@@ -385,22 +467,73 @@
           <div class="mandala-container">
             <div class="progress-dashboard" style="display: flex; flex-direction: column; align-items: center; gap: 30px;">
               
-              <!-- Simplified Progress Ring -->
-              <div class="cycle-ring-container" style="position: relative; width: 250px; height: 250px;">
-                <svg id="progress-rings" width="250" height="250" viewBox="0 0 250 250">
-                  <!-- Background ring -->
-                  <circle cx="125" cy="125" r="100" fill="none" stroke="rgba(0,247,255,0.15)" stroke-width="8"/>
-                  
-                  <!-- Progress arc (will be drawn by JavaScript) -->
-                  <g id="progress-arcs"></g>
-                  
-                  <!-- Clean center -->
-                  <circle cx="125" cy="125" r="60" fill="url(#centerGradient)" stroke="rgba(0,247,255,.55)" stroke-width="3"/>
-                  <text x="125" y="130" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="bold">OM</text>
+              <!-- Enhanced Cosmic Visualization -->
+              <div class="cosmic-dashboard">
+                <svg class="cosmic-rings" viewBox="0 0 400 400">
+                  <!-- Animated gradient definitions -->
+                  <defs>
+                    <radialGradient id="cosmicCenter" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" style="stop-color:#7a2cff;stop-opacity:0.8" />
+                      <stop offset="50%" style="stop-color:#ff2bd6;stop-opacity:0.6" />
+                      <stop offset="100%" style="stop-color:#00f7ff;stop-opacity:0.4" />
+                    </radialGradient>
+                    
+                    <linearGradient id="shambhaviGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#ff2bd6" />
+                      <stop offset="100%" style="stop-color:#7a2cff" />
+                    </linearGradient>
+                    
+                    <linearGradient id="ishaGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#b6ff00" />
+                      <stop offset="100%" style="stop-color:#00f7ff" />
+                    </linearGradient>
+
+                    <filter id="energyGlow">
+                      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                      <feMerge> 
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/> 
+                      </feMerge>
+                    </filter>
+                  </defs>
+
+                  <!-- Background cosmic rings -->
+                  <g opacity="0.3">
+                    <circle cx="200" cy="200" r="160" fill="none" stroke="url(#cosmicCenter)" stroke-width="2"/>
+                    <circle cx="200" cy="200" r="120" fill="none" stroke="rgba(0,247,255,0.3)" stroke-width="1"/>
+                    <circle cx="200" cy="200" r="80" fill="none" stroke="rgba(255,43,214,0.3)" stroke-width="1"/>
+                  </g>
+
+                  <!-- Dynamic progress rings -->
+                  <g id="progress-rings-container">
+                    <!-- Shambhavi progress ring -->
+                    <circle id="shambhavi-bg" cx="200" cy="200" r="140" fill="none" stroke="rgba(255,43,214,0.15)" stroke-width="8"/>
+                    <circle id="shambhavi-progress" cx="200" cy="200" r="140" fill="none" stroke="url(#shambhaviGlow)" 
+                            stroke-width="8" stroke-linecap="round" filter="url(#energyGlow)"
+                            stroke-dasharray="0 879.64" transform="rotate(-90 200 200)"/>
+                    
+                    <!-- Isha progress ring -->
+                    <circle id="isha-bg" cx="200" cy="200" r="100" fill="none" stroke="rgba(182,255,0,0.15)" stroke-width="8"/>
+                    <circle id="isha-progress" cx="200" cy="200" r="100" fill="none" stroke="url(#ishaGlow)" 
+                            stroke-width="8" stroke-linecap="round" filter="url(#energyGlow)"
+                            stroke-dasharray="0 628.32" transform="rotate(-90 200 200)"/>
+                  </g>
+
+                  <!-- Central sacred symbol -->
+                  <circle cx="200" cy="200" r="50" fill="url(#cosmicCenter)" stroke="rgba(0,247,255,0.8)" stroke-width="3" filter="url(#energyGlow)"/>
                 </svg>
+
+                <!-- Floating energy particles -->
+                <div class="energy-particles" id="energy-particles"></div>
+
+                <!-- Progress text overlay -->
+                <div class="progress-text">
+                  <div class="om-symbol">ॐ</div>
+                  <div class="cycle-info" id="cycle-display">Day 1 of Cycle 1</div>
+                </div>
               </div>
 
-              <!-- Essential Stats Only -->
+              <!-- Essential Stats with correct data -->
               <div class="essential-stats" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; width: 100%; max-width: 700px;">
                 
                 <!-- Current Cycle of Year -->
@@ -428,7 +561,7 @@
                 </div>
               </div>
 
-              <!-- Practice Breakdown (Simplified) -->
+              <!-- Practice Breakdown (Fixed) -->
               <div class="practice-breakdown" style="display: flex; gap: 40px; justify-content: center; align-items: center; background: rgba(10,2,24,.6); padding: 20px; border-radius: 15px; border: 1px solid rgba(0,247,255,.25);">
                 <div class="practice-detail">
                   <span style="color: rgba(247,243,255,.8); font-size: 0.9em; margin-right: 10px;">Shambhavi:</span>
@@ -441,9 +574,9 @@
                 </div>
               </div>
 
-              <!-- Simple Progress Message -->
+              <!-- Enhanced Progress Message -->
               <div class="progress-message" style="text-align: center; max-width: 500px; padding: 15px; background: rgba(0,247,255,.05); border-radius: 10px; border: 1px solid rgba(0,247,255,.15);">
-                <div id="status-message" style="color: rgba(247,243,255,.85); font-size: 1em; line-height: 1.4;"></div>
+                <div id="status-message" style="color: rgba(247,243,255,.85); font-size: 1em; line-height: 1.4;">Begin your sacred practice to see your spiritual journey unfold</div>
               </div>
 
             </div>
@@ -569,9 +702,8 @@
     // Initialize the application
     document.addEventListener('DOMContentLoaded', function() {
       loadData();
-      updateStreaks();
-      updateTotals();
-      updateMandala();
+      updateAllDisplays();
+      initializeCosmicVisualization();
 
       // Set up navigation
       const navButtons = document.querySelectorAll('.nav-btn');
@@ -659,9 +791,8 @@
       }
 
       saveData();
-      updateStreaks();
-      updateTotals();
-      updateMandala();
+      updateAllDisplays();
+      updateCosmicVisualization();
 
       alert('Session recorded successfully! Your practice has been saved.');
     }
@@ -676,6 +807,14 @@
       document.getElementById('isha-kriya-notes').value = '';
     }
 
+    // FIXED: Update all displays with correct session counts
+    function updateAllDisplays() {
+      updateStreaks();
+      updateTotals();
+      updateDashboardStats();
+      updateProgressMessage();
+    }
+
     // Update streak displays
     function updateStreaks() {
       document.getElementById('shambhavi-streak').textContent = calculateStreak(shambhaviSessions);
@@ -684,8 +823,54 @@
 
     // Update total counts
     function updateTotals() {
-      document.getElementById('shambhavi-total').textContent = shambhaviSessions.length;
-      document.getElementById('isha-total').textContent = ishaSessions.length;
+      const shambhaviTotal = shambhaviSessions.length;
+      const ishaTotal = ishaSessions.length;
+      
+      document.getElementById('shambhavi-total').textContent = shambhaviTotal;
+      document.getElementById('isha-total').textContent = ishaTotal;
+      
+      // FIXED: Update dashboard counts to match these totals
+      document.getElementById('shambhavi-count').textContent = shambhaviTotal;
+      document.getElementById('isha-count').textContent = ishaTotal;
+    }
+
+    // FIXED: Update dashboard statistics
+    function updateDashboardStats() {
+      const totalDays = getTotalPracticeDays();
+      const totalSessions = shambhaviSessions.length + ishaSessions.length;
+      const currentCycle = Math.floor(totalDays / 40) + 1;
+      const currentCycleDays = totalDays % 40 || (totalDays > 0 ? 40 : 0);
+      const daysRemaining = totalDays > 0 ? (40 - (totalDays % 40)) % 40 || 40 : 40;
+      const cyclePercentage = totalDays > 0 ? Math.floor((currentCycleDays / 40) * 100) : 0;
+
+      // Update all dashboard elements
+      document.getElementById('year-cycle-info').textContent = `${currentCycle} of 9`;
+      document.getElementById('total-sessions').textContent = totalSessions;
+      document.getElementById('days-remaining').textContent = daysRemaining;
+      document.getElementById('cycle-percentage').textContent = `${cyclePercentage}%`;
+      document.getElementById('cycle-display').textContent = `Day ${currentCycleDays || 1} of Cycle ${currentCycle}`;
+    }
+
+    // Update progress message
+    function updateProgressMessage() {
+      const totalDays = getTotalPracticeDays();
+      const totalSessions = shambhaviSessions.length + ishaSessions.length;
+      
+      let message = "";
+      if (totalSessions === 0) {
+        message = "Begin your sacred practice to see your spiritual journey unfold";
+      } else if (totalDays < 7) {
+        message = `Beautiful beginning! ${totalSessions} sessions completed in your first week of practice`;
+      } else if (totalDays < 21) {
+        message = `Building momentum! ${totalSessions} sessions across ${totalDays} days of dedicated practice`;
+      } else if (totalDays < 40) {
+        message = `Strong foundation! ${totalSessions} sessions as you approach your first 40-day milestone`;
+      } else {
+        const cycles = Math.floor(totalDays / 40);
+        message = `Sacred journey deepening! ${totalSessions} sessions across ${cycles} completed cycle${cycles > 1 ? 's' : ''}`;
+      }
+      
+      document.getElementById('status-message').textContent = message;
     }
 
     // Calculate consecutive day streak
@@ -720,6 +905,13 @@
       return streak;
     }
 
+    // FIXED: Calculate total practice days correctly
+    function getTotalPracticeDays() {
+      const allSessions = [...shambhaviSessions, ...ishaSessions];
+      const uniqueDates = [...new Set(allSessions.map(session => session.date))];
+      return uniqueDates.filter(date => date).length; // Filter out any undefined dates
+    }
+
     // Data persistence
     function saveData() {
       localStorage.setItem('yogaSadhana_shambhavi', JSON.stringify(shambhaviSessions));
@@ -736,6 +928,69 @@
 
       if (savedIsha) {
         ishaSessions = JSON.parse(savedIsha);
+      }
+    }
+
+    // Enhanced Cosmic Visualization
+    function initializeCosmicVisualization() {
+      createEnergyParticles();
+      updateCosmicVisualization();
+    }
+
+    function createEnergyParticles() {
+      const particleContainer = document.getElementById('energy-particles');
+      const particleCount = 15;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Random positioning around the circle
+        const angle = (i / particleCount) * 360;
+        const radius = 100 + Math.random() * 80;
+        const x = 200 + Math.cos(angle * Math.PI / 180) * radius;
+        const y = 200 + Math.sin(angle * Math.PI / 180) * radius;
+        
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+        particle.style.backgroundColor = i % 3 === 0 ? '#ff2bd6' : (i % 3 === 1 ? '#00f7ff' : '#b6ff00');
+        particle.style.animationDelay = Math.random() * 6 + 's';
+        particle.style.boxShadow = `0 0 10px ${particle.style.backgroundColor}`;
+        
+        particleContainer.appendChild(particle);
+      }
+    }
+
+    function updateCosmicVisualization() {
+      const totalDays = getTotalPracticeDays();
+      const shambhaviProgress = shambhaviSessions.length;
+      const ishaProgress = ishaSessions.length;
+      
+      // Calculate progress percentages for visual rings
+      const maxSessionsFor40Days = 80; // 40 days * 2 sessions per day for Shambhavi
+      const maxIshaFor40Days = 40; // 40 days * 1 session per day for Isha
+      
+      const shambhaviPercentage = Math.min((shambhaviProgress / maxSessionsFor40Days) * 100, 100);
+      const ishaPercentage = Math.min((ishaProgress / maxIshaFor40Days) * 100, 100);
+      
+      // Update Shambhavi progress ring
+      const shambhaviCircle = document.getElementById('shambhavi-progress');
+      const shambhaviCircumference = 2 * Math.PI * 140;
+      const shambhaviDashArray = `${(shambhaviPercentage / 100) * shambhaviCircumference} ${shambhaviCircumference}`;
+      shambhaviCircle.setAttribute('stroke-dasharray', shambhaviDashArray);
+      
+      // Update Isha progress ring
+      const ishaCircle = document.getElementById('isha-progress');
+      const ishaCircumference = 2 * Math.PI * 100;
+      const ishaDashArray = `${(ishaPercentage / 100) * ishaCircumference} ${ishaCircumference}`;
+      ishaCircle.setAttribute('stroke-dasharray', ishaDashArray);
+      
+      // Add pulsing effect for active practice
+      if (shambhaviProgress > 0) {
+        shambhaviCircle.style.animation = 'rotateRing 20s linear infinite';
+      }
+      if (ishaProgress > 0) {
+        ishaCircle.style.animation = 'rotateRing 15s linear infinite reverse';
       }
     }
 
@@ -849,259 +1104,7 @@
       return `${year}-${month}-${day}`;
     }
 
-    // Lotus Mandala Visualization System
-    function updateMandala() {
-      generateLotusMandala();
-      updateCycleInfo();
-      updateAchievements();
-    }
-
-    function getTotalPracticeDays() {
-      const allSessions = [...shambhaviSessions, ...ishaSessions];
-      const uniqueDates = [...new Set(allSessions.map(session => session.date))];
-      return uniqueDates.length;
-    }
-
-    function generateLotusMandala() {
-      const totalDays = getTotalPracticeDays();
-      const currentCycleDays = totalDays % 40;
-
-      document.getElementById('inner-petals').innerHTML = '';
-      document.getElementById('middle-petals').innerHTML = '';
-      document.getElementById('outer-petals').innerHTML = '';
-
-      generateInnerLotus(currentCycleDays);
-      generateMiddleLotus(totalDays);
-      generateOuterLotus(totalDays);
-    }
-
-    function generateInnerLotus(currentCycleDays) {
-      const innerRadius = 50;
-      const petalCount = 8;
-      const daysPerPetal = 5;
-
-      for (let i = 0; i < petalCount; i++) {
-        const angle = (i * 360 / petalCount) - 90;
-        const petalDays = Math.min(daysPerPetal, Math.max(0, currentCycleDays - (i * daysPerPetal)));
-        const completionRatio = petalDays / daysPerPetal;
-
-        const petal = createLotusPetal({
-          angle,
-          radius: innerRadius,
-          size: 'large',
-          completion: completionRatio,
-          type: 'inner',
-          index: i,
-          isActive: currentCycleDays > (i * daysPerPetal)
-        });
-
-        document.getElementById('inner-petals').appendChild(petal);
-      }
-    }
-
-    function generateMiddleLotus(totalDays) {
-      const middleRadius = 85;
-      const petalCount = 16;
-      const daysPerPetal = Math.ceil(108 / petalCount);
-
-      for (let i = 0; i < petalCount; i++) {
-        const angle = (i * 360 / petalCount) - 90 + 11.25;
-        const petalDays = Math.min(daysPerPetal, Math.max(0, totalDays - (i * daysPerPetal)));
-        const completionRatio = petalDays / daysPerPetal;
-
-        const petal = createLotusPetal({
-          angle,
-          radius: middleRadius,
-          size: 'medium',
-          completion: completionRatio,
-          type: 'middle',
-          index: i,
-          isActive: totalDays > (i * daysPerPetal)
-        });
-
-        document.getElementById('middle-petals').appendChild(petal);
-      }
-    }
-
-    function generateOuterLotus(totalDays) {
-      const outerRadius = 120;
-      const petalCount = 32;
-      const daysPerPetal = Math.ceil(365 / petalCount);
-
-      for (let i = 0; i < petalCount; i++) {
-        const angle = (i * 360 / petalCount) - 90 + 5.625;
-        const petalDays = Math.min(daysPerPetal, Math.max(0, totalDays - (i * daysPerPetal)));
-        const completionRatio = petalDays / daysPerPetal;
-
-        const petal = createLotusPetal({
-          angle,
-          radius: outerRadius,
-          size: 'small',
-          completion: completionRatio,
-          type: 'outer',
-          index: i,
-          isActive: totalDays > (i * daysPerPetal)
-        });
-
-        document.getElementById('outer-petals').appendChild(petal);
-      }
-    }
-
-    function createLotusPetal({ angle, radius, size, completion, type, index, isActive }) {
-      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      g.setAttribute('transform', `rotate(${angle})`);
-
-      const sizes = {
-        large: { height: 35, rx: 8 },
-        medium: { height: 28, rx: 6 },
-        small: { height: 20, rx: 4 }
-      };
-
-      const petalSize = sizes[size];
-
-      const daysPerPetal = type === 'inner' ? 5 : (type === 'middle' ? 7 : 11);
-      const startDay = index * daysPerPetal + 1;
-      const endDay = Math.min(startDay + daysPerPetal - 1, type === 'inner' ? 40 : (type === 'middle' ? 108 : 365));
-
-      const petalPracticeData = getPetalPracticeData(startDay, endDay, type);
-
-      const basePetal = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
-      basePetal.setAttribute('cx', 0);
-      basePetal.setAttribute('cy', -radius);
-      basePetal.setAttribute('rx', petalSize.rx);
-      basePetal.setAttribute('ry', petalSize.height);
-      basePetal.setAttribute('fill', 'rgba(122, 44, 255, 0.12)');
-      basePetal.setAttribute('stroke', 'rgba(0, 247, 255, 0.35)');
-      basePetal.setAttribute('stroke-width', '1');
-
-      g.appendChild(basePetal);
-
-      if (isActive && completion > 0) {
-        // Shambhavi side
-        if (petalPracticeData.shambhaviRatio > 0) {
-          const shambhaviPetal = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
-          shambhaviPetal.setAttribute('cx', -petalSize.rx * 0.25);
-          shambhaviPetal.setAttribute('cy', -radius);
-          shambhaviPetal.setAttribute('rx', petalSize.rx * 0.6 * petalPracticeData.shambhaviRatio);
-          shambhaviPetal.setAttribute('ry', petalSize.height * petalPracticeData.shambhaviRatio);
-
-          if (petalPracticeData.shambhaviRatio >= 0.8) {
-            shambhaviPetal.setAttribute('fill', 'url(#shambhaviGradient)');
-            shambhaviPetal.setAttribute('filter', 'url(#glow)');
-          } else {
-            shambhaviPetal.setAttribute('fill', `rgba(255, 43, 214, ${0.35 + petalPracticeData.shambhaviRatio * 0.5})`);
-          }
-
-          shambhaviPetal.setAttribute('stroke', '#FF2BD6');
-          shambhaviPetal.setAttribute('stroke-width', petalPracticeData.shambhaviRatio >= 0.8 ? '2' : '1');
-          g.appendChild(shambhaviPetal);
-        }
-
-        // Isha Kriya side
-        if (petalPracticeData.ishaRatio > 0) {
-          const ishaPetal = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
-          ishaPetal.setAttribute('cx', petalSize.rx * 0.25);
-          ishaPetal.setAttribute('cy', -radius);
-          ishaPetal.setAttribute('rx', petalSize.rx * 0.6 * petalPracticeData.ishaRatio);
-          ishaPetal.setAttribute('ry', petalSize.height * petalPracticeData.ishaRatio);
-
-          if (petalPracticeData.ishaRatio >= 0.8) {
-            ishaPetal.setAttribute('fill', 'url(#ishaGradient)');
-            ishaPetal.setAttribute('filter', 'url(#glow)');
-          } else {
-            ishaPetal.setAttribute('fill', `rgba(182, 255, 0, ${0.30 + petalPracticeData.ishaRatio * 0.55})`);
-          }
-
-          ishaPetal.setAttribute('stroke', '#B6FF00');
-          ishaPetal.setAttribute('stroke-width', petalPracticeData.ishaRatio >= 0.8 ? '2' : '1');
-          g.appendChild(ishaPetal);
-        }
-      }
-
-      return g;
-    }
-
-    function getPetalPracticeData(startDay, endDay, type) {
-      const totalDays = getTotalPracticeDays();
-      const currentCycleDays = type === 'inner' ? (totalDays % 40) : totalDays;
-
-      const relevantDays = Math.max(0, Math.min(endDay, currentCycleDays) - startDay + 1);
-      const maxDays = endDay - startDay + 1;
-
-      if (relevantDays <= 0) {
-        return { shambhaviRatio: 0, ishaRatio: 0 };
-      }
-
-      const allDates = [...new Set([...shambhaviSessions, ...ishaSessions].map(s => s.date))].sort();
-      const relevantDates = allDates.slice(startDay - 1, startDay - 1 + relevantDays);
-
-      let shambhaviSessionCount = 0;
-      let ishaSessionCount = 0;
-
-      // Count actual sessions (not just days)
-      relevantDates.forEach(date => {
-        const shambhaviCount = shambhaviSessions.filter(s => s.date === date).length;
-        const ishaCount = ishaSessions.filter(s => s.date === date).length;
-
-        shambhaviSessionCount += shambhaviCount;
-        ishaSessionCount += ishaCount;
-      });
-
-      // Calculate ratios based on expected sessions per day
-      // Shambhavi: 2 sessions per day, Isha: 1 session per day
-      const expectedShambhaviSessions = relevantDays * 2;
-      const expectedIshaSessions = relevantDays * 1;
-
-      return {
-        shambhaviRatio: expectedShambhaviSessions > 0 ? Math.min(1, shambhaviSessionCount / expectedShambhaviSessions) : 0,
-        ishaRatio: expectedIshaSessions > 0 ? Math.min(1, ishaSessionCount / expectedIshaSessions) : 0
-      };
-    }
-
-    function updateCycleInfo() {
-      const totalDays = getTotalPracticeDays();
-      const currentCycleDays = totalDays % 40;
-      const completedCycles = Math.floor(totalDays / 40);
-      const daysRemaining = 40 - currentCycleDays;
-
-      const cycleProgress = document.getElementById('cycle-progress');
-      const daysRemainingEl = document.getElementById('days-remaining');
-
-      if (cycleProgress && daysRemainingEl) {
-        if (currentCycleDays === 0 && totalDays > 0) {
-          cycleProgress.innerHTML = `Cycle ${completedCycles} Complete! Starting new cycle...`;
-          daysRemainingEl.innerHTML = '40 days ahead in this new journey';
-        } else if (totalDays === 0) {
-          cycleProgress.innerHTML = 'Begin your sacred practice journey';
-          daysRemainingEl.innerHTML = '40 days to first milestone';
-        } else {
-          cycleProgress.innerHTML = `Day ${currentCycleDays} of 40-day cycle ${completedCycles + 1}`;
-          daysRemainingEl.innerHTML = `${daysRemaining} days until cycle completion`;
-        }
-      }
-    }
-
-    function updateAchievements() {
-      const totalDays = getTotalPracticeDays();
-      const milestoneAchievements = [];
-
-      if (totalDays >= 40) milestoneAchievements.push('40-Day Lotus Cycle Complete');
-      if (totalDays >= 80) milestoneAchievements.push('Second Lotus Cycle Complete');
-      if (totalDays >= 108) milestoneAchievements.push('Sacred 108-Day Milestone Achieved');
-      if (totalDays >= 180) milestoneAchievements.push('Half-Year Spiritual Journey');
-      if (totalDays >= 270) milestoneAchievements.push('Three Quarters Complete');
-      if (totalDays >= 365) milestoneAchievements.push('Full Year Sacred Journey');
-
-      const achievementDiv = document.querySelector('.mandala-achievements');
-      if (achievementDiv) {
-        achievementDiv.innerHTML = milestoneAchievements.length > 0
-          ? '<h4 style="color: rgba(182,255,0,.92); margin-bottom: 10px; text-shadow: 0 0 10px rgba(182,255,0,.18);">Sacred Milestones Achieved:</h4>' +
-            milestoneAchievements.map(a => `<div style="color: rgba(247,243,255,.88); margin: 5px 0;">${a}</div>`).join('')
-          : '<div style="color: rgba(247,243,255,.78); font-style: italic;">Continue your practice to bloom the sacred lotus...</div>';
-      }
-    }
-
-    // Voice Recognition System
+    // Voice Recognition System (unchanged)
     let currentRecognition = null;
     let isRecording = false;
 
