@@ -383,75 +383,69 @@
           <h2 class="practice-title">Welcome to Your Sacred Journey</h2>
 
           <div class="mandala-container">
-            <svg id="lotus-mandala" width="350" height="350" viewBox="0 0 350 350">
-              <!-- Background circle for depth -->
-              <circle cx="175" cy="175" r="165" fill="rgba(0, 247, 255, 0.06)" stroke="rgba(255, 43, 214, 0.22)" stroke-width="1"/>
+            <div class="progress-dashboard" style="display: flex; flex-direction: column; align-items: center; gap: 30px;">
+              
+              <!-- Simplified Progress Ring -->
+              <div class="cycle-ring-container" style="position: relative; width: 250px; height: 250px;">
+                <svg id="progress-rings" width="250" height="250" viewBox="0 0 250 250">
+                  <!-- Background ring -->
+                  <circle cx="125" cy="125" r="100" fill="none" stroke="rgba(0,247,255,0.15)" stroke-width="8"/>
+                  
+                  <!-- Progress arc (will be drawn by JavaScript) -->
+                  <g id="progress-arcs"></g>
+                  
+                  <!-- Clean center -->
+                  <circle cx="125" cy="125" r="60" fill="url(#centerGradient)" stroke="rgba(0,247,255,.55)" stroke-width="3"/>
+                  <text x="125" y="130" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="bold">OM</text>
+                </svg>
+              </div>
 
-              <!-- Outer petals ring (Year cycle - 32 petals) -->
-              <g id="outer-petals" transform="translate(175,175)"></g>
+              <!-- Essential Stats Only -->
+              <div class="essential-stats" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; width: 100%; max-width: 700px;">
+                
+                <!-- Current Cycle of Year -->
+                <div class="stat-card" style="background: linear-gradient(135deg, rgba(0,247,255,.15) 0%, rgba(0,247,255,.08) 100%); border: 2px solid rgba(0,247,255,.4); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 8px 25px rgba(0,247,255,.15);">
+                  <div class="stat-number" id="year-cycle-info" style="font-size: 1.4em; font-weight: bold; color: var(--neon-cyan); margin-bottom: 8px; text-shadow: 0 0 15px rgba(0,247,255,.5);">1 of 9</div>
+                  <div class="stat-label" style="font-size: 0.85em; color: rgba(247,243,255,.9); text-transform: uppercase; letter-spacing: 1px;">Cycle</div>
+                </div>
 
-              <!-- Middle petals ring (108-day milestone - 16 petals) -->
-              <g id="middle-petals" transform="translate(175,175)"></g>
+                <!-- Total Combined Sessions -->
+                <div class="stat-card" style="background: linear-gradient(135deg, rgba(255,43,214,.15) 0%, rgba(255,43,214,.08) 100%); border: 2px solid rgba(255,43,214,.4); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 8px 25px rgba(255,43,214,.15);">
+                  <div class="stat-number" id="total-sessions" style="font-size: 1.4em; font-weight: bold; color: var(--neon-pink); margin-bottom: 8px; text-shadow: 0 0 15px rgba(255,43,214,.5);">0</div>
+                  <div class="stat-label" style="font-size: 0.85em; color: rgba(247,243,255,.9); text-transform: uppercase; letter-spacing: 1px;">Total Sessions</div>
+                </div>
 
-              <!-- Inner petals ring (40-day cycle - 8 petals) -->
-              <g id="inner-petals" transform="translate(175,175)"></g>
+                <!-- Days Remaining -->
+                <div class="stat-card" style="background: linear-gradient(135deg, rgba(182,255,0,.15) 0%, rgba(182,255,0,.08) 100%); border: 2px solid rgba(182,255,0,.4); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 8px 25px rgba(182,255,0,.15);">
+                  <div class="stat-number" id="days-remaining" style="font-size: 1.4em; font-weight: bold; color: var(--neon-lime); margin-bottom: 8px; text-shadow: 0 0 15px rgba(182,255,0,.5);">40</div>
+                  <div class="stat-label" style="font-size: 0.85em; color: rgba(247,243,255,.9); text-transform: uppercase; letter-spacing: 1px;">Days Left</div>
+                </div>
 
-              <!-- Sacred center -->
-              <circle cx="175" cy="175" r="25" fill="url(#centerGradient)" stroke="rgba(0,247,255,.55)" stroke-width="2"/>
-              <text x="175" y="180" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="bold">OM</text>
-
-              <!-- Gradient definitions -->
-              <defs>
-                <radialGradient id="centerGradient" cx="50%" cy="50%" r="60%">
-                  <stop offset="0%" style="stop-color:#00F7FF;stop-opacity:1" />
-                  <stop offset="55%" style="stop-color:#FF2BD6;stop-opacity:1" />
-                  <stop offset="100%" style="stop-color:#7A2CFF;stop-opacity:1" />
-                </radialGradient>
-
-                <linearGradient id="shambhaviGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color:#00F7FF;stop-opacity:0.95" />
-                  <stop offset="100%" style="stop-color:#7A2CFF;stop-opacity:0.95" />
-                </linearGradient>
-
-                <linearGradient id="ishaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color:#B6FF00;stop-opacity:0.95" />
-                  <stop offset="100%" style="stop-color:#00F7FF;stop-opacity:0.95" />
-                </linearGradient>
-
-                <filter id="glow">
-                  <feGaussianBlur stdDeviation="2.6" result="coloredBlur"/>
-                  <feMerge>
-                    <feMergeNode in="coloredBlur"/>
-                    <feMergeNode in="SourceGraphic"/>
-                  </feMerge>
-                </filter>
-              </defs>
-            </svg>
-
-            <!-- Cycle Information Display -->
-            <div class="cycle-info" style="margin-top: 20px; text-align: center;">
-              <!-- Color Legend -->
-              <div class="color-legend" style="background: rgba(0, 247, 255, 0.08); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(0,247,255,.25);">
-                <h4 style="color: rgba(247,243,255,.9); margin-bottom: 10px; text-shadow: 0 0 10px rgba(0,247,255,.22);">Practice Color Guide</h4>
-                <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
-                  <div style="display: flex; align-items: center;">
-                    <div style="width: 20px; height: 20px; background: linear-gradient(45deg, #00F7FF, #7A2CFF); border-radius: 50%; margin-right: 8px; border: 1px solid rgba(0,247,255,.35); box-shadow: 0 0 10px rgba(0,247,255,.25);"></div>
-                    <span style="color: rgba(247,243,255,.9);">Shambhavi Mahamudra</span>
-                  </div>
-                  <div style="display: flex; align-items: center;">
-                    <div style="width: 20px; height: 20px; background: linear-gradient(45deg, #B6FF00, #00F7FF); border-radius: 50%; margin-right: 8px; border: 1px solid rgba(0,247,255,.35); box-shadow: 0 0 10px rgba(182,255,0,.18);"></div>
-                    <span style="color: rgba(247,243,255,.9);">Isha Kriya</span>
-                  </div>
+                <!-- Progress Percentage -->
+                <div class="stat-card" style="background: linear-gradient(135deg, rgba(122,44,255,.15) 0%, rgba(122,44,255,.08) 100%); border: 2px solid rgba(122,44,255,.4); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 8px 25px rgba(122,44,255,.15);">
+                  <div class="stat-number" id="cycle-percentage" style="font-size: 1.4em; font-weight: bold; color: var(--neon-violet); margin-bottom: 8px; text-shadow: 0 0 15px rgba(122,44,255,.5);">0%</div>
+                  <div class="stat-label" style="font-size: 0.85em; color: rgba(247,243,255,.9); text-transform: uppercase; letter-spacing: 1px;">Complete</div>
                 </div>
               </div>
-              
-              <div class="current-cycle" style="background: rgba(122,44,255,.12); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255,43,214,.25);">
-                <h4 style="color: rgba(247,243,255,.92); margin-bottom: 10px; text-shadow: 0 0 10px rgba(255,43,214,.22);">Current 40-Day Cycle</h4>
-                <div id="cycle-progress" style="color: rgba(247,243,255,.92); font-size: 1.1em;"></div>
-                <div id="days-remaining" style="color: rgba(247,243,255,.82); font-size: 0.9em; margin-top: 5px;"></div>
+
+              <!-- Practice Breakdown (Simplified) -->
+              <div class="practice-breakdown" style="display: flex; gap: 40px; justify-content: center; align-items: center; background: rgba(10,2,24,.6); padding: 20px; border-radius: 15px; border: 1px solid rgba(0,247,255,.25);">
+                <div class="practice-detail">
+                  <span style="color: rgba(247,243,255,.8); font-size: 0.9em; margin-right: 10px;">Shambhavi:</span>
+                  <span id="shambhavi-count" style="font-size: 1.2em; font-weight: bold; color: var(--neon-pink);">0</span>
+                </div>
+                <div style="color: rgba(247,243,255,.3);">|</div>
+                <div class="practice-detail">
+                  <span style="color: rgba(247,243,255,.8); font-size: 0.9em; margin-right: 10px;">Isha Kriya:</span>
+                  <span id="isha-count" style="font-size: 1.2em; font-weight: bold; color: var(--neon-lime);">0</span>
+                </div>
               </div>
-              
-              <div class="mandala-achievements" style="min-height: 60px;"></div>
+
+              <!-- Simple Progress Message -->
+              <div class="progress-message" style="text-align: center; max-width: 500px; padding: 15px; background: rgba(0,247,255,.05); border-radius: 10px; border: 1px solid rgba(0,247,255,.15);">
+                <div id="status-message" style="color: rgba(247,243,255,.85); font-size: 1em; line-height: 1.4;"></div>
+              </div>
+
             </div>
           </div>
 
@@ -995,10 +989,10 @@
             shambhaviPetal.setAttribute('fill', 'url(#shambhaviGradient)');
             shambhaviPetal.setAttribute('filter', 'url(#glow)');
           } else {
-            shambhaviPetal.setAttribute('fill', `rgba(0, 247, 255, ${0.35 + petalPracticeData.shambhaviRatio * 0.5})`);
+            shambhaviPetal.setAttribute('fill', `rgba(255, 43, 214, ${0.35 + petalPracticeData.shambhaviRatio * 0.5})`);
           }
 
-          shambhaviPetal.setAttribute('stroke', '#00F7FF');
+          shambhaviPetal.setAttribute('stroke', '#FF2BD6');
           shambhaviPetal.setAttribute('stroke-width', petalPracticeData.shambhaviRatio >= 0.8 ? '2' : '1');
           g.appendChild(shambhaviPetal);
         }
@@ -1041,20 +1035,26 @@
       const allDates = [...new Set([...shambhaviSessions, ...ishaSessions].map(s => s.date))].sort();
       const relevantDates = allDates.slice(startDay - 1, startDay - 1 + relevantDays);
 
-      let shambhaviDays = 0;
-      let ishaDays = 0;
+      let shambhaviSessionCount = 0;
+      let ishaSessionCount = 0;
 
+      // Count actual sessions (not just days)
       relevantDates.forEach(date => {
         const shambhaviCount = shambhaviSessions.filter(s => s.date === date).length;
         const ishaCount = ishaSessions.filter(s => s.date === date).length;
 
-        if (shambhaviCount > 0) shambhaviDays++;
-        if (ishaCount > 0) ishaDays++;
+        shambhaviSessionCount += shambhaviCount;
+        ishaSessionCount += ishaCount;
       });
 
+      // Calculate ratios based on expected sessions per day
+      // Shambhavi: 2 sessions per day, Isha: 1 session per day
+      const expectedShambhaviSessions = relevantDays * 2;
+      const expectedIshaSessions = relevantDays * 1;
+
       return {
-        shambhaviRatio: relevantDays > 0 ? shambhaviDays / maxDays : 0,
-        ishaRatio: relevantDays > 0 ? ishaDays / maxDays : 0
+        shambhaviRatio: expectedShambhaviSessions > 0 ? Math.min(1, shambhaviSessionCount / expectedShambhaviSessions) : 0,
+        ishaRatio: expectedIshaSessions > 0 ? Math.min(1, ishaSessionCount / expectedIshaSessions) : 0
       };
     }
 
@@ -1283,4 +1283,3 @@
   </script>
 </body>
 </html>
-
