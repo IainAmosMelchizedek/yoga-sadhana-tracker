@@ -286,28 +286,6 @@
       flex-direction: column;
     }
 
-    .mandala-placeholder{
-      width: 250px;
-      height: 250px;
-      border: 3px solid rgba(255,43,214,.55);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(45deg,
-        rgba(255,43,214,.12),
-        rgba(0,247,255,.10),
-        rgba(182,255,0,.08)
-      );
-      box-shadow: var(--glow-pink), var(--glow-cyan);
-    }
-
-    .mandala-text{
-      text-align: center;
-      color: var(--ink-dim);
-      font-style: italic;
-    }
-
     .export-section{
       background: rgba(122,44,255,.10);
       padding: 25px;
@@ -323,6 +301,45 @@
       justify-content: center;
       flex-wrap: wrap;
       margin-top: 20px;
+    }
+
+    .voice-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .voice-btn:hover {
+      background: var(--btn-2-hover) !important;
+      transform: scale(1.1);
+      box-shadow: var(--glow-cyan), var(--glow-pink) !important;
+    }
+
+    .voice-btn.recording {
+      background: linear-gradient(45deg, var(--neon-lime), var(--neon-orange)) !important;
+      animation: pulse 1.5s infinite;
+      box-shadow: var(--glow-lime) !important;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .voice-status {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--glass);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      padding: 15px 20px;
+      color: var(--ink);
+      font-weight: bold;
+      box-shadow: var(--glow-cyan);
+      z-index: 1000;
+      display: none;
     }
 
     @media (max-width: 768px){
@@ -427,13 +444,13 @@
                   </div>
                 </div>
               </div>
-
+              
               <div class="current-cycle" style="background: rgba(122,44,255,.12); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255,43,214,.25);">
                 <h4 style="color: rgba(247,243,255,.92); margin-bottom: 10px; text-shadow: 0 0 10px rgba(255,43,214,.22);">Current 40-Day Cycle</h4>
                 <div id="cycle-progress" style="color: rgba(247,243,255,.92); font-size: 1.1em;"></div>
                 <div id="days-remaining" style="color: rgba(247,243,255,.82); font-size: 0.9em; margin-top: 5px;"></div>
               </div>
-
+              
               <div class="mandala-achievements" style="min-height: 60px;"></div>
             </div>
           </div>
@@ -450,51 +467,7 @@
           </div>
 
           <div class="export-section">
-            <h3 style="color: rgba(247,243,255,.92); text-align: center; margin-bottom: 20px; text-shadow: 0 0 12px rgba(0,247,255,.2);">Import Current Practice Status</h3>
-            <div id="import-section" style="margin-bottom: 25px;">
-              <p style="color: rgba(247,243,255,.82); text-align: center; margin-bottom: 15px; font-style: italic;">
-                Already been practicing consistently? Record your authentic practice history to reflect your true spiritual journey.
-              </p>
-              <div class="export-buttons">
-                <button class="btn secondary" onclick="showImportForm()">📥 Import Current Progress</button>
-                <button class="btn secondary" onclick="fixMissingIshaSessions()">🔧 Fix Missing Isha Sessions</button>
-              </div>
-
-              <div id="import-form" style="display: none; background: rgba(0,247,255,.08); padding: 20px; border-radius: 10px; margin-top: 20px; border: 1px solid rgba(0,247,255,.25);">
-                <div class="form-group">
-                  <label>Practice Start Date:</label>
-                  <input type="date" id="import-start-date" />
-                </div>
-                <div class="form-group">
-                  <label>Current Day in Cycle:</label>
-                  <select id="import-current-day">
-                    <option value="">Select current day...</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Practices You've Been Doing:</label>
-                  <div style="margin-top: 10px;">
-                    <label style="display: flex; align-items: center; margin-bottom: 10px; font-weight: normal; color: rgba(247,243,255,.9); text-shadow:none;">
-                      <input type="checkbox" id="import-shambhavi" style="margin-right: 10px;" />
-                      Shambhavi Mahamudra (2x daily - morning & evening)
-                    </label>
-                    <label style="display: flex; align-items: center; font-weight: normal; color: rgba(247,243,255,.9); text-shadow:none;">
-                      <input type="checkbox" id="import-isha" style="margin-right: 10px;" />
-                      Isha Kriya (daily practice)
-                    </label>
-                  </div>
-                  <p style="font-size: 0.85em; color: rgba(247,243,255,.78); font-style: italic; margin-top: 10px;">
-                    Note: Session times will be estimated based on traditional practice schedules. Your authentic practice history deserves to be properly reflected.
-                  </p>
-                </div>
-                <div class="export-buttons" style="margin-top: 20px;">
-                  <button class="btn" onclick="importProgress()">Import Progress</button>
-                  <button class="btn secondary" onclick="cancelImport()">Cancel</button>
-                </div>
-              </div>
-            </div>
-
-            <h3 style="color: rgba(247,243,255,.92); text-align: center; margin-bottom: 20px; text-shadow: 0 0 12px rgba(255,43,214,.2);">Export Practice Data</h3>
+            <h3 style="color: rgba(247,243,255,.92); text-align: center; margin-bottom: 20px; text-shadow: 0 0 12px rgba(0,247,255,.2);">Export Practice Data</h3>
             <div class="export-buttons">
               <button class="btn" onclick="exportData('shambhavi')">Export Shambhavi Data</button>
               <button class="btn" onclick="exportData('isha')">Export Isha Kriya Data</button>
@@ -537,10 +510,15 @@
             </div>
             <div class="form-group">
               <label>Notes, Visions, or Insights:</label>
-              <textarea id="shambhavi-notes" placeholder="Record any experiences, visions, insights, or observations from your practice..."></textarea>
+              <div style="position: relative;">
+                <textarea id="shambhavi-notes" placeholder="Record any experiences, visions, insights, or observations from your practice..."></textarea>
+                <button type="button" id="shambhavi-voice-btn" class="voice-btn" onclick="toggleVoiceRecording('shambhavi-notes', 'shambhavi-voice-btn')" style="position: absolute; right: 8px; top: 8px; background: var(--btn-2-grad); border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; box-shadow: var(--glow-pink); transition: all 0.3s ease;">
+                  <span class="voice-icon">🎤</span>
+                </button>
+              </div>
             </div>
             <div class="practice-buttons">
-              <button class="btn" onclick="saveSession('shambhavi')">✨ Save Session</button>
+              <button class="btn" onclick="saveSession('shambhavi')">Save Session</button>
               <button class="btn secondary" onclick="cancelSession()">Cancel</button>
             </div>
           </div>
@@ -572,10 +550,15 @@
             </div>
             <div class="form-group">
               <label>Notes, Visions, or Insights:</label>
-              <textarea id="isha-kriya-notes" placeholder="Record any experiences, visions, insights, or observations from your practice..."></textarea>
+              <div style="position: relative;">
+                <textarea id="isha-kriya-notes" placeholder="Record any experiences, visions, insights, or observations from your practice..."></textarea>
+                <button type="button" id="isha-voice-btn" class="voice-btn" onclick="toggleVoiceRecording('isha-kriya-notes', 'isha-voice-btn')" style="position: absolute; right: 8px; top: 8px; background: var(--btn-2-grad); border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; box-shadow: var(--glow-pink); transition: all 0.3s ease;">
+                  <span class="voice-icon">🎤</span>
+                </button>
+              </div>
             </div>
             <div class="practice-buttons">
-              <button class="btn" onclick="saveSession('isha-kriya')">✨ Save Session</button>
+              <button class="btn" onclick="saveSession('isha-kriya')">Save Session</button>
               <button class="btn secondary" onclick="cancelSession()">Cancel</button>
             </div>
           </div>
@@ -595,8 +578,6 @@
       updateStreaks();
       updateTotals();
       updateMandala();
-      setupImportForm();
-      checkPracticeHistory();
 
       // Set up navigation
       const navButtons = document.querySelectorAll('.nav-btn');
@@ -631,7 +612,7 @@
 
       if (practiceType === 'shambhavi') {
         document.getElementById('shambhavi-session-type').value =
-          sessionType === 'morning' ? 'Morning Practice 🌅' : 'Evening Practice 🌙';
+          sessionType === 'morning' ? 'Morning Practice' : 'Evening Practice';
         document.getElementById('shambhavi-datetime').value = localDateTime;
       } else if (practiceType === 'isha-kriya') {
         document.getElementById('isha-kriya-datetime').value = localDateTime;
@@ -688,7 +669,7 @@
       updateTotals();
       updateMandala();
 
-      alert('✨ Session recorded successfully! Your practice has been saved.');
+      alert('Session recorded successfully! Your practice has been saved.');
     }
 
     // Cancel session recording
@@ -717,10 +698,7 @@
     function calculateStreak(sessions) {
       if (sessions.length === 0) return 0;
 
-      // Sort sessions by date (most recent first)
       const sortedSessions = sessions.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
-
-      // Get unique dates
       const uniqueDates = [...new Set(sortedSessions.map(session => session.date))];
       uniqueDates.sort((a, b) => new Date(b) - new Date(a));
 
@@ -730,7 +708,6 @@
       let streak = 0;
       let currentDate = new Date(today);
 
-      // If today doesn't have a session, start checking from yesterday
       if (uniqueDates[0] !== today) {
         currentDate.setDate(currentDate.getDate() - 1);
       }
@@ -781,7 +758,7 @@
 
     function exportToExcel(data, filename, practiceType) {
       if (data.length === 0) {
-        alert(`No ${practiceType === 'shambhavi' ? 'Shambhavi Mahamudra' : 'Isha Kriya'} sessions to export yet. Start practicing and your data will appear here! 🧘‍♂️`);
+        alert(`No ${practiceType === 'shambhavi' ? 'Shambhavi Mahamudra' : 'Isha Kriya'} sessions to export yet. Start practicing and your data will appear here!`);
         return;
       }
 
@@ -831,7 +808,7 @@
 
     function exportCombinedData() {
       if (shambhaviSessions.length === 0 && ishaSessions.length === 0) {
-        alert('No practice sessions to export yet. Start your sadhana and your data will appear here! 🕉️');
+        alert('No practice sessions to export yet. Start your sadhana and your data will appear here!');
         return;
       }
 
@@ -982,7 +959,7 @@
 
       const sizes = {
         large: { height: 35, rx: 8 },
-        medium:{ height: 28, rx: 6 },
+        medium: { height: 28, rx: 6 },
         small: { height: 20, rx: 4 }
       };
 
@@ -1092,14 +1069,14 @@
 
       if (cycleProgress && daysRemainingEl) {
         if (currentCycleDays === 0 && totalDays > 0) {
-          cycleProgress.innerHTML = `🌸 Cycle ${completedCycles} Complete! Starting new cycle...`;
+          cycleProgress.innerHTML = `Cycle ${completedCycles} Complete! Starting new cycle...`;
           daysRemainingEl.innerHTML = '40 days ahead in this new journey';
         } else if (totalDays === 0) {
           cycleProgress.innerHTML = 'Begin your sacred practice journey';
           daysRemainingEl.innerHTML = '40 days to first milestone';
         } else {
           cycleProgress.innerHTML = `Day ${currentCycleDays} of 40-day cycle ${completedCycles + 1}`;
-          daysRemainingEl.innerHTML = `${daysRemaining} days until cycle completion 🪷`;
+          daysRemainingEl.innerHTML = `${daysRemaining} days until cycle completion`;
         }
       }
     }
@@ -1108,12 +1085,12 @@
       const totalDays = getTotalPracticeDays();
       const milestoneAchievements = [];
 
-      if (totalDays >= 40) milestoneAchievements.push('🌸 40-Day Lotus Cycle Complete');
-      if (totalDays >= 80) milestoneAchievements.push('🪷 Second Lotus Cycle Complete');
-      if (totalDays >= 108) milestoneAchievements.push('🕉️ Sacred 108-Day Milestone Achieved');
-      if (totalDays >= 180) milestoneAchievements.push('🌟 Half-Year Spiritual Journey');
-      if (totalDays >= 270) milestoneAchievements.push('⭐ Three Quarters Complete');
-      if (totalDays >= 365) milestoneAchievements.push('🏔️ Full Year Sacred Journey');
+      if (totalDays >= 40) milestoneAchievements.push('40-Day Lotus Cycle Complete');
+      if (totalDays >= 80) milestoneAchievements.push('Second Lotus Cycle Complete');
+      if (totalDays >= 108) milestoneAchievements.push('Sacred 108-Day Milestone Achieved');
+      if (totalDays >= 180) milestoneAchievements.push('Half-Year Spiritual Journey');
+      if (totalDays >= 270) milestoneAchievements.push('Three Quarters Complete');
+      if (totalDays >= 365) milestoneAchievements.push('Full Year Sacred Journey');
 
       const achievementDiv = document.querySelector('.mandala-achievements');
       if (achievementDiv) {
@@ -1124,181 +1101,185 @@
       }
     }
 
-    // Import Progress Functionality
-    function setupImportForm() {
-      const select = document.getElementById('import-current-day');
-      if (select) {
-        for (let i = 1; i <= 50; i++) {
-          const option = document.createElement('option');
-          option.value = i;
-          option.textContent = `Day ${i}`;
-          select.appendChild(option);
-        }
-      }
-    }
+    // Voice Recognition System
+    let currentRecognition = null;
+    let isRecording = false;
 
-    function showImportForm() {
-      const form = document.getElementById('import-form');
-
-      const today = new Date();
-      const defaultDate = new Date(today.getTime() - (28 * 24 * 60 * 60 * 1000));
-      document.getElementById('import-start-date').value = defaultDate.toISOString().split('T')[0];
-      document.getElementById('import-current-day').value = '28';
-
-      document.getElementById('import-shambhavi').checked = true;
-
-      form.style.display = 'block';
-      form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    function cancelImport() {
-      document.getElementById('import-form').style.display = 'none';
-    }
-
-    function importProgress() {
-      const startDate = document.getElementById('import-start-date').value;
-      const currentDay = parseInt(document.getElementById('import-current-day').value, 10);
-      const includeShambhavi = document.getElementById('import-shambhavi').checked;
-      const includeIsha = document.getElementById('import-isha').checked;
-
-      if (!startDate || !currentDay || (!includeShambhavi && !includeIsha)) {
-        alert('Please fill in all fields and select at least one practice type.');
-        return;
+    function initializeVoiceRecognition() {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        console.log('Speech recognition not supported in this browser');
+        return null;
       }
 
-      const start = new Date(startDate);
-      let sessionsAdded = 0;
-
-      for (let day = 0; day < currentDay; day++) {
-        const sessionDate = new Date(start);
-        sessionDate.setDate(start.getDate() + day);
-
-        const dateString = sessionDate.toISOString().split('T')[0];
-        const baseTimestamp = sessionDate.getTime();
-
-        if (includeShambhavi) {
-          const morningSession = {
-            id: baseTimestamp + Math.random(),
-            timestamp: new Date(baseTimestamp).toISOString(),
-            sessionType: 'morning',
-            datetime: `${dateString}T07:30`,
-            version: 'core',
-            notes: 'Historical practice session - estimated time based on traditional schedule',
-            date: dateString
-          };
-          shambhaviSessions.push(morningSession);
-          sessionsAdded++;
-
-          const eveningSession = {
-            id: baseTimestamp + Math.random() + 1,
-            timestamp: new Date(baseTimestamp).toISOString(),
-            sessionType: 'evening',
-            datetime: `${dateString}T18:30`,
-            version: 'core',
-            notes: 'Imported from previous practice cycle',
-            date: dateString
-          };
-          shambhaviSessions.push(eveningSession);
-          sessionsAdded++;
-        }
-
-        if (includeIsha) {
-          const ishaSession = {
-            id: baseTimestamp + Math.random() + 2,
-            timestamp: new Date(baseTimestamp).toISOString(),
-            datetime: `${dateString}T14:00`,
-            duration: '15 minutes',
-            notes: 'Imported from previous practice cycle',
-            date: dateString
-          };
-          ishaSessions.push(ishaSession);
-          sessionsAdded++;
-        }
-      }
-
-      saveData();
-      updateStreaks();
-      updateTotals();
-      updateMandala();
-
-      document.getElementById('import-form').style.display = 'none';
-      document.getElementById('import-section').innerHTML = `
-        <div style="text-align: center; padding: 20px; background: rgba(0,247,255,.08); border-radius: 10px; border: 1px solid rgba(182,255,0,.35); box-shadow: 0 0 18px rgba(0,247,255,.15);">
-          <h4 style="color: rgba(182,255,0,.92); margin-bottom: 10px; text-shadow: 0 0 10px rgba(182,255,0,.18);">✨ Progress Successfully Imported!</h4>
-          <p style="color: rgba(247,243,255,.86);">Added ${sessionsAdded} sessions from your ${currentDay}-day practice journey.</p>
-          <p style="color: rgba(247,243,255,.76); font-size: 0.9em; font-style: italic;">Your mandala now reflects your complete spiritual practice history.</p>
-        </div>
-      `;
-
-      document.querySelector('.mandala-container').scrollIntoView({ behavior: 'smooth' });
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+      
+      return recognition;
     }
 
-    function checkPracticeHistory() {
-      const hasEstablishedPractice = shambhaviSessions.length >= 40 && ishaSessions.length >= 20;
+    function toggleVoiceRecording(textareaId, buttonId) {
+      const textarea = document.getElementById(textareaId);
+      const button = document.getElementById(buttonId);
+      const voiceIcon = button.querySelector('.voice-icon');
 
-      if (hasEstablishedPractice) {
-        const importSection = document.getElementById('import-section');
-        if (importSection) {
-          importSection.innerHTML = `
-            <div style="text-align: center; padding: 20px; background: rgba(0,247,255,.08); border-radius: 10px; border: 1px solid rgba(0,247,255,.25); box-shadow: 0 0 18px rgba(255,43,214,.12); margin-bottom: 25px;">
-              <h4 style="color: rgba(182,255,0,.92); margin-bottom: 10px; text-shadow: 0 0 10px rgba(182,255,0,.18);">🪷 Practice History Complete</h4>
-              <p style="color: rgba(247,243,255,.86);">Your authentic spiritual journey: ${shambhaviSessions.length} Shambhavi + ${ishaSessions.length} Isha Kriya sessions.</p>
-              <p style="color: rgba(247,243,255,.76); font-size: 0.9em; font-style: italic;">Continue adding new sessions as you practice. The lotus mandala grows with your dedication.</p>
-            </div>
-          `;
-        }
-      }
-    }
-
-    // Fix Missing Isha Sessions Function
-    function fixMissingIshaSessions() {
-      if (shambhaviSessions.length === 0) {
-        alert('No Shambhavi sessions found. Please import your practice history first.');
-        return;
-      }
-
-      const sortedShambhavi = shambhaviSessions.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
-      const startDate = new Date(sortedShambhavi[0].date);
-
-      const shambhaviDates = [...new Set(shambhaviSessions.map(s => s.date))].sort();
-      const ishaDates = [...new Set(ishaSessions.map(s => s.date))];
-
-      let addedSessions = 0;
-
-      shambhaviDates.forEach(dateString => {
-        if (!ishaDates.includes(dateString)) {
-          const ishaSession = {
-            id: Date.now() + Math.random(),
-            timestamp: new Date().toISOString(),
-            datetime: `${dateString}T14:00`,
-            duration: '15 minutes',
-            notes: 'Historical practice session - added to complete practice history',
-            date: dateString
-          };
-          ishaSessions.push(ishaSession);
-          addedSessions++;
-        }
-      });
-
-      if (addedSessions > 0) {
-        saveData();
-        updateStreaks();
-        updateTotals();
-        updateMandala();
-
-        alert(`✨ Fixed! Added ${addedSessions} missing Isha Kriya sessions to complete your practice history.`);
-
-        document.getElementById('import-section').innerHTML = `
-          <div style="text-align: center; padding: 20px; background: rgba(0,247,255,.08); border-radius: 10px; border: 1px solid rgba(182,255,0,.35); box-shadow: 0 0 18px rgba(0,247,255,.15);">
-            <h4 style="color: rgba(182,255,0,.92); margin-bottom: 10px; text-shadow: 0 0 10px rgba(182,255,0,.18);">✨ Practice History Complete!</h4>
-            <p style="color: rgba(247,243,255,.86);">Your authentic 28-day journey: ${shambhaviSessions.length} Shambhavi + ${ishaSessions.length} Isha Kriya sessions.</p>
-            <p style="color: rgba(247,243,255,.76); font-size: 0.9em; font-style: italic;">Your mandala now perfectly reflects your complete spiritual practice.</p>
-          </div>
-        `;
+      if (isRecording) {
+        stopRecording(button, voiceIcon);
       } else {
-        alert('No missing Isha sessions found. Your practice history appears complete!');
+        startRecording(textarea, button, voiceIcon);
       }
     }
+
+    function startRecording(textarea, button, voiceIcon) {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert('Voice recognition is not supported in your browser. Please try Chrome, Edge, or Safari.');
+        return;
+      }
+
+      currentRecognition = initializeVoiceRecognition();
+      if (!currentRecognition) return;
+
+      isRecording = true;
+      button.classList.add('recording');
+      voiceIcon.textContent = '⏹️';
+      
+      showVoiceStatus('Listening... Speak your insights');
+
+      let finalTranscript = '';
+      let interimTranscript = '';
+
+      currentRecognition.onstart = () => {
+        console.log('Voice recognition started');
+      };
+
+      currentRecognition.onresult = (event) => {
+        finalTranscript = '';
+        interimTranscript = '';
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript + ' ';
+          } else {
+            interimTranscript += transcript;
+          }
+        }
+
+        // Update textarea with current transcript
+        const currentValue = textarea.value;
+        const lastSpaceIndex = currentValue.lastIndexOf(' ');
+        const baseText = lastSpaceIndex > 0 ? currentValue.substring(0, lastSpaceIndex + 1) : '';
+        
+        textarea.value = baseText + finalTranscript + interimTranscript;
+        
+        // Show what's being processed
+        if (interimTranscript) {
+          showVoiceStatus(`Listening: "${interimTranscript}"`);
+        } else if (finalTranscript.trim()) {
+          showVoiceStatus('Got it! Continue speaking or click stop');
+        }
+      };
+
+      currentRecognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        let errorMessage = 'Voice recognition error';
+        
+        switch(event.error) {
+          case 'no-speech':
+            errorMessage = 'No speech detected. Please try again.';
+            break;
+          case 'audio-capture':
+            errorMessage = 'No microphone found. Please check your audio settings.';
+            break;
+          case 'not-allowed':
+            errorMessage = 'Microphone access denied. Please allow microphone access and try again.';
+            break;
+          case 'network':
+            errorMessage = 'Network error. Please check your connection and try again.';
+            break;
+          default:
+            errorMessage = `Voice recognition error: ${event.error}`;
+        }
+        
+        showVoiceStatus(errorMessage, true);
+        setTimeout(() => {
+          stopRecording(button, voiceIcon);
+        }, 3000);
+      };
+
+      currentRecognition.onend = () => {
+        console.log('Voice recognition ended');
+        if (isRecording) {
+          // Recognition ended unexpectedly, try to restart
+          setTimeout(() => {
+            if (isRecording) {
+              try {
+                currentRecognition.start();
+              } catch (e) {
+                console.log('Could not restart recognition:', e);
+                stopRecording(button, voiceIcon);
+              }
+            }
+          }, 100);
+        }
+      };
+
+      try {
+        currentRecognition.start();
+      } catch (error) {
+        console.error('Failed to start voice recognition:', error);
+        alert('Failed to start voice recognition. Please ensure you have a microphone connected and permissions granted.');
+        stopRecording(button, voiceIcon);
+      }
+    }
+
+    function stopRecording(button, voiceIcon) {
+      if (currentRecognition && isRecording) {
+        isRecording = false;
+        currentRecognition.stop();
+        currentRecognition = null;
+      }
+
+      button.classList.remove('recording');
+      voiceIcon.textContent = '🎤';
+      
+      hideVoiceStatus();
+    }
+
+    function showVoiceStatus(message, isError = false) {
+      let statusDiv = document.querySelector('.voice-status');
+      
+      if (!statusDiv) {
+        statusDiv = document.createElement('div');
+        statusDiv.className = 'voice-status';
+        document.body.appendChild(statusDiv);
+      }
+
+      statusDiv.textContent = message;
+      statusDiv.style.display = 'block';
+      statusDiv.style.borderColor = isError ? 'var(--neon-orange)' : 'var(--neon-cyan)';
+      statusDiv.style.boxShadow = isError ? 'var(--glow-pink)' : 'var(--glow-cyan)';
+    }
+
+    function hideVoiceStatus() {
+      const statusDiv = document.querySelector('.voice-status');
+      if (statusDiv) {
+        statusDiv.style.display = 'none';
+      }
+    }
+
+    // Initialize voice recognition on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check for voice recognition support and show status
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        console.log('Voice recognition not supported in this browser');
+      } else {
+        console.log('Voice recognition supported and ready');
+      }
+    });
   </script>
 </body>
 </html>
