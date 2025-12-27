@@ -8,72 +8,28 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* =========================
-       PSYCHEDELIC THEME (COLORS)
-       ========================= */
     :root{
       --bg-0:#070014;
       --bg-1:#14002e;
-
       --ink:#f7f3ff;
       --ink-dim:rgba(247,243,255,.78);
-
       --neon-pink:#ff2bd6;
       --neon-cyan:#00f7ff;
       --neon-lime:#b6ff00;
       --neon-violet:#7a2cff;
       --neon-orange:#ff7a00;
-
       --glass:rgba(10, 2, 24, .55);
       --glass-2:rgba(10, 2, 24, .35);
-
       --glow-cyan:0 0 24px rgba(0,247,255,.35);
       --glow-pink:0 0 24px rgba(255,43,214,.35);
       --glow-lime:0 0 24px rgba(182,255,0,.28);
-
-      --bg-grad: linear-gradient(135deg,
-        #070014 0%,
-        #14002e 22%,
-        #2a0066 45%,
-        #004b7a 70%,
-        #002b3a 100%
-      );
-
-      --header-grad: linear-gradient(90deg,
-        var(--neon-pink),
-        var(--neon-violet),
-        var(--neon-cyan),
-        var(--neon-lime)
-      );
-
-      --card-grad: linear-gradient(135deg,
-        rgba(122,44,255,.22) 0%,
-        rgba(0,247,255,.16) 35%,
-        rgba(255,43,214,.14) 70%,
-        rgba(182,255,0,.10) 100%
-      );
-
-      --btn-grad: linear-gradient(45deg,
-        var(--neon-pink),
-        var(--neon-violet),
-        var(--neon-cyan)
-      );
-
-      --btn-grad-hover: linear-gradient(45deg,
-        var(--neon-cyan),
-        var(--neon-lime),
-        var(--neon-pink)
-      );
-
-      --btn-2-grad: linear-gradient(45deg,
-        var(--neon-violet),
-        var(--neon-pink)
-      );
-
-      --btn-2-hover: linear-gradient(45deg,
-        var(--neon-pink),
-        var(--neon-cyan)
-      );
+      --bg-grad: linear-gradient(135deg, #070014 0%, #14002e 22%, #2a0066 45%, #004b7a 70%, #002b3a 100%);
+      --header-grad: linear-gradient(90deg, var(--neon-pink), var(--neon-violet), var(--neon-cyan), var(--neon-lime));
+      --card-grad: linear-gradient(135deg, rgba(122,44,255,.22) 0%, rgba(0,247,255,.16) 35%, rgba(255,43,214,.14) 70%, rgba(182,255,0,.10) 100%);
+      --btn-grad: linear-gradient(45deg, var(--neon-pink), var(--neon-violet), var(--neon-cyan));
+      --btn-grad-hover: linear-gradient(45deg, var(--neon-cyan), var(--neon-lime), var(--neon-pink));
+      --btn-2-grad: linear-gradient(45deg, var(--neon-violet), var(--neon-pink));
+      --btn-2-hover: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan));
     }
 
     body{
@@ -303,288 +259,193 @@
       margin-top: 20px;
     }
 
-    .voice-btn {
+    .cycle-info {
+      font-size: 1em;
+      color: var(--ink);
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    /* Mandala Styles */
+    .mandala-dashboard {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .mandala-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mandala-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .mandala-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(7, 0, 20, 0.6);
+      transition: all 0.3s ease;
+    }
+
+    .mandala-circle.perfect {
+      background: linear-gradient(135deg, #ff9a00, #ffcc00);
+      border-color: #ffcc00;
+      box-shadow: 0 0 12px rgba(255, 170, 0, 0.6);
+    }
+
+    .mandala-circle.shambhavi-complete {
+      background: linear-gradient(135deg, #ff2bd6, #ff6bef);
+      border-color: #ff2bd6;
+      box-shadow: 0 0 12px rgba(255, 43, 214, 0.6);
+    }
+
+    .mandala-circle.partial {
+      background: linear-gradient(135deg, #00f7ff, #00b8cc);
+      border-color: #00f7ff;
+      box-shadow: 0 0 12px rgba(0, 247, 255, 0.6);
+    }
+
+    .mandala-legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 15px;
+    }
+
+    .legend-item {
       display: flex;
       align-items: center;
-      justify-content: center;
-    }
-
-    .voice-btn:hover {
-      background: var(--btn-2-hover) !important;
-      transform: scale(1.1);
-      box-shadow: var(--glow-cyan), var(--glow-pink) !important;
-    }
-
-    .voice-btn.recording {
-      background: linear-gradient(45deg, var(--neon-lime), var(--neon-orange)) !important;
-      animation: pulse 1.5s infinite;
-      box-shadow: var(--glow-lime) !important;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-
-    .voice-status {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--glass);
-      border: 2px solid var(--neon-cyan);
-      border-radius: 10px;
-      padding: 15px 20px;
-      color: var(--ink);
-      font-weight: bold;
-      box-shadow: var(--glow-cyan);
-      z-index: 1000;
-      display: none;
-    }
-
-    /* Enhanced Cosmic Circle Styles */
-    .cosmic-dashboard {
-      position: relative;
-      width: 400px;
-      height: 400px;
-      margin: 0 auto 30px;
-    }
-
-    .cosmic-rings {
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
-
-    .energy-particles {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-
-    .particle {
-      position: absolute;
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      opacity: 0;
-      animation: floatParticle 6s infinite;
-    }
-
-    @keyframes floatParticle {
-      0% { opacity: 0; transform: translateY(20px) scale(0); }
-      10% { opacity: 1; transform: translateY(15px) scale(1); }
-      90% { opacity: 1; transform: translateY(-15px) scale(1); }
-      100% { opacity: 0; transform: translateY(-20px) scale(0); }
-    }
-
-    .progress-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      z-index: 10;
-    }
-
-    .om-symbol {
-      font-size: 2.5em;
-      color: var(--ink);
-      text-shadow: 0 0 20px rgba(0,247,255,.6), 0 0 40px rgba(255,43,214,.4);
-      margin-bottom: 10px;
-      animation: omPulse 4s ease-in-out infinite;
-    }
-
-    @keyframes omPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
-    .cycle-info {
-      font-size: 0.9em;
+      gap: 8px;
+      font-size: 0.85em;
       color: var(--ink-dim);
-      margin-top: 5px;
     }
 
-    /* Mandala Visualization Styles */
-.mandala-dashboard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  margin: 20px 0;
-}
-
-.mandala-grid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.mandala-row {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-}
-
-.mandala-circle {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  background: rgba(7, 0, 20, 0.6);
-  transition: all 0.3s ease;
-}
-
-.mandala-circle.perfect {
-  background: linear-gradient(135deg, #ff9a00, #ffcc00);
-  border-color: #ffcc00;
-  box-shadow: 0 0 12px rgba(255, 170, 0, 0.6);
-}
-
-.mandala-circle.shambhavi-complete {
-  background: linear-gradient(135deg, #ff2bd6, #ff6bef);
-  border-color: #ff2bd6;
-  box-shadow: 0 0 12px rgba(255, 43, 214, 0.6);
-}
-
-.mandala-circle.partial {
-  background: linear-gradient(135deg, #00f7ff, #00b8cc);
-  border-color: #00f7ff;
-  box-shadow: 0 0 12px rgba(0, 247, 255, 0.6);
-}
-
-.mandala-legend {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 15px;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.85em;
-  color: var(--ink-dim);
-}
-
-.legend-circle {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.legend-perfect {
-  background: linear-gradient(135deg, #ff9a00, #ffcc00);
-  border-color: #ffcc00;
-}
-
-.legend-shambhavi {
-  background: linear-gradient(135deg, #ff2bd6, #ff6bef);
-  border-color: #ff2bd6;
-}
-
-.legend-partial {
-  background: linear-gradient(135deg, #00f7ff, #00b8cc);
-  border-color: #00f7ff;
-}
-
-.legend-empty {
-  background: rgba(7, 0, 20, 0.6);
-} @keyframes rotateRing {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+    .legend-circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
     }
 
-    @keyframes sparkle {
-      0%, 100% { opacity: 0; transform: scale(0); }
-      50% { opacity: 1; transform: scale(1); }
+    .legend-perfect {
+      background: linear-gradient(135deg, #ff9a00, #ffcc00);
+      border-color: #ffcc00;
+    }
+
+    .legend-shambhavi {
+      background: linear-gradient(135deg, #ff2bd6, #ff6bef);
+      border-color: #ff2bd6;
+    }
+
+    .legend-partial {
+      background: linear-gradient(135deg, #00f7ff, #00b8cc);
+      border-color: #00f7ff;
+    }
+
+    .legend-empty {
+      background: rgba(7, 0, 20, 0.6);
+    }
+
+    /* Stats Grid - 5 columns */
+    .essential-stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+      width: 100%;
+      max-width: 850px;
+    }
+
+    .stat-card {
+      border-radius: 15px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.3em;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 0.75em;
+      color: rgba(247,243,255,.9);
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     @media (max-width: 768px){
-  .nav-tabs{
-    flex-direction: column;
-    width: 100%;
-  }
+      .nav-tabs{
+        flex-direction: column;
+        width: 100%;
+      }
 
-  .nav-tabs button{
-    padding: 12px 20px;
-    font-size: 1em;
-  }
+      .nav-tabs button{
+        padding: 12px 20px;
+        font-size: 1em;
+      }
 
-  .practice-buttons{
-    flex-direction: column;
-    align-items: center;
-  }
+      .practice-buttons{
+        flex-direction: column;
+        align-items: center;
+      }
 
-  .cosmic-dashboard {
-    width: 320px;
-    height: 320px;
-  }
-}
-  @media (max-width: 768px){
-  .nav-tabs{
-    flex-direction: column;
-    width: 100%;
-  }
+      .mandala-circle {
+        width: 24px;
+        height: 24px;
+      }
 
-  .nav-tabs button{
-    padding: 12px 20px;
-    font-size: 1em;
-  }
+      .mandala-row {
+        gap: 5px;
+      }
 
-  .practice-buttons{
-    flex-direction: column;
-    align-items: center;
-  }
+      .mandala-grid {
+        gap: 5px;
+      }
 
-  .mandala-circle {
-    width: 24px;
-    height: 24px;
-  }
+      .mandala-legend {
+        gap: 10px;
+        padding: 0 10px;
+      }
 
-  .mandala-row {
-    gap: 5px;
-  }
+      .legend-item {
+        font-size: 0.7em;
+      }
 
-  .mandala-grid {
-    gap: 5px;
-  }
+      .legend-circle {
+        width: 14px;
+        height: 14px;
+      }
 
-  .mandala-legend {
-    gap: 10px;
-    padding: 0 10px;
-  }
+      .essential-stats {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 10px !important;
+      }
 
-  .legend-item {
-    font-size: 0.7em;
-  }
+      .stat-card {
+        padding: 10px !important;
+      }
 
-  .legend-circle {
-    width: 14px;
-    height: 14px;
-  }
+      .stat-number {
+        font-size: 1em !important;
+      }
 
-  .essential-stats {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 10px !important;
-  }
-
-  .stat-card {
-    padding: 12px !important;
-  }
-
-  .stat-number {
-    font-size: 1.1em !important;
-  }
-} </style>
+      .stat-label {
+        font-size: 0.65em !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -611,79 +472,63 @@
           <div class="mandala-container">
             <div class="progress-dashboard" style="display: flex; flex-direction: column; align-items: center; gap: 30px;">
               
-           <!-- Mandala Visualization -->
-<div class="mandala-dashboard">
-  <div class="mandala-grid" id="mandala-grid">
-    <!-- 40 circles will be generated by JavaScript -->
-  </div>
-  
-  <!-- Legend -->
-  <div class="mandala-legend">
-    <div class="legend-item">
-      <div class="legend-circle legend-perfect"></div>
-      <span>All 3 Practices</span>
-    </div>
-    <div class="legend-item">
-      <div class="legend-circle legend-shambhavi"></div>
-      <span>Both Shambhavi</span>
-    </div>
-    <div class="legend-item">
-      <div class="legend-circle legend-partial"></div>
-      <span>Partial</span>
-    </div>
-    <div class="legend-item">
-      <div class="legend-circle legend-empty"></div>
-      <span>Not Yet</span>
-    </div>
-  </div>
-  
-  <div class="cycle-info" id="cycle-display">Day 1 of Cycle 1</div>
-</div>
-
-              <!-- Essential Stats with correct data -->
-              <div class="essential-stats" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; width: 100%; max-width: 700px;">
+              <!-- Mandala Visualization -->
+              <div class="mandala-dashboard">
+                <div class="mandala-grid" id="mandala-grid"></div>
                 
-                <!-- Current Cycle of Year -->
-                <div class="stat-card" style="background: linear-gradient(135deg, rgba(0,247,255,.15) 0%, rgba(0,247,255,.08) 100%); border: 2px solid rgba(0,247,255,.4); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 8px 25px rgba(0,247,255,.15);">
-                  <div class="stat-number" id="year-cycle-info" style="font-size: 1.4em; font-weight: bold; color: var(--neon-cyan); margin-bottom: 8px; text-shadow: 0 0 15px rgba(0,247,255,.5);">1 of 9</div>
-                  <div class="stat-label" style="font-size: 0.85em; color: rgba(247,243,255,.9); text-transform: uppercase; letter-spacing: 1px;">Cycle</div>
+                <div class="mandala-legend">
+                  <div class="legend-item">
+                    <div class="legend-circle legend-perfect"></div>
+                    <span>All 3 Practices</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-circle legend-shambhavi"></div>
+                    <span>Both Shambhavi</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-circle legend-partial"></div>
+                    <span>Partial</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-circle legend-empty"></div>
+                    <span>Not Yet</span>
+                  </div>
+                </div>
+                
+                <div class="cycle-info" id="cycle-display">Day 1 of Cycle 2</div>
+              </div>
+
+              <!-- 5 Stat Boxes -->
+              <div class="essential-stats">
+                <div class="stat-card" style="background: linear-gradient(135deg, rgba(0,247,255,.15) 0%, rgba(0,247,255,.08) 100%); border: 2px solid rgba(0,247,255,.4); box-shadow: 0 8px 25px rgba(0,247,255,.15);">
+                  <div class="stat-number" id="year-cycle-info" style="color: var(--neon-cyan); text-shadow: 0 0 15px rgba(0,247,255,.5);">2 of 9</div>
+                  <div class="stat-label">Cycle</div>
                 </div>
 
-                <!-- Total Combined Sessions -->
-                <div class="stat-card" style="background: linear-gradient(135deg, rgba(255,43,214,.15) 0%, rgba(255,43,214,.08) 100%); border: 2px solid rgba(255,43,214,.4); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 8px 25px rgba(255,43,214,.15);">
-                  <div class="stat-number" id="total-sessions" style="font-size: 1.4em; font-weight: bold; color: var(--neon-pink); margin-bottom: 8px; text-shadow: 0 0 15px rgba(255,43,214,.5);">0</div>
-                  <div class="stat-label" style="font-size: 0.85em; color: rgba(247,243,255,.9); text-transform: uppercase; letter-spacing: 1px;">Total Sessions</div>
+                <div class="stat-card" style="background: linear-gradient(135deg, rgba(255,43,214,.15) 0%, rgba(255,43,214,.08) 100%); border: 2px solid rgba(255,43,214,.4); box-shadow: 0 8px 25px rgba(255,43,214,.15);">
+                  <div class="stat-number" id="total-sessions" style="color: var(--neon-pink); text-shadow: 0 0 15px rgba(255,43,214,.5);">120</div>
+                  <div class="stat-label">Total Sessions</div>
                 </div>
 
-                <!-- Days Remaining -->
-                <div class="stat-card" style="background: linear-gradient(135deg, rgba(182,255,0,.15) 0%, rgba(182,255,0,.08) 100%); border: 2px solid rgba(182,255,0,.4); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 8px 25px rgba(182,255,0,.15);">
-                  <div class="stat-number" id="days-remaining" style="font-size: 1.4em; font-weight: bold; color: var(--neon-lime); margin-bottom: 8px; text-shadow: 0 0 15px rgba(182,255,0,.5);">40</div>
-                  <div class="stat-label" style="font-size: 0.85em; color: rgba(247,243,255,.9); text-transform: uppercase; letter-spacing: 1px;">Days Left</div>
+                <div class="stat-card" style="background: linear-gradient(135deg, rgba(182,255,0,.15) 0%, rgba(182,255,0,.08) 100%); border: 2px solid rgba(182,255,0,.4); box-shadow: 0 8px 25px rgba(182,255,0,.15);">
+                  <div class="stat-number" id="days-remaining" style="color: var(--neon-lime); text-shadow: 0 0 15px rgba(182,255,0,.5);">40</div>
+                  <div class="stat-label">Days Left in Cycle</div>
                 </div>
 
-                <!-- Progress Percentage -->
-                <div class="stat-card" style="background: linear-gradient(135deg, rgba(122,44,255,.15) 0%, rgba(122,44,255,.08) 100%); border: 2px solid rgba(122,44,255,.4); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 8px 25px rgba(122,44,255,.15);">
-                  <div class="stat-number" id="cycle-percentage" style="font-size: 1.4em; font-weight: bold; color: var(--neon-violet); margin-bottom: 8px; text-shadow: 0 0 15px rgba(122,44,255,.5);">0%</div>
-                  <div class="stat-label" style="font-size: 0.85em; color: rgba(247,243,255,.9); text-transform: uppercase; letter-spacing: 1px;">Complete</div>
+                <div class="stat-card" style="background: linear-gradient(135deg, rgba(122,44,255,.15) 0%, rgba(122,44,255,.08) 100%); border: 2px solid rgba(122,44,255,.4); box-shadow: 0 8px 25px rgba(122,44,255,.15);">
+                  <div class="stat-number" id="cycle-percentage" style="color: var(--neon-violet); text-shadow: 0 0 15px rgba(122,44,255,.5);">0%</div>
+                  <div class="stat-label">Cycle Progress</div>
+                </div>
+
+                <div class="stat-card" style="background: linear-gradient(135deg, rgba(255,122,0,.15) 0%, rgba(255,122,0,.08) 100%); border: 2px solid rgba(255,122,0,.4); box-shadow: 0 8px 25px rgba(255,122,0,.15);">
+                  <div class="stat-number" id="journey-percentage" style="color: var(--neon-orange); text-shadow: 0 0 15px rgba(255,122,0,.5);">11%</div>
+                  <div class="stat-label">Journey Progress</div>
                 </div>
               </div>
 
-              <!-- Practice Breakdown (Fixed) -->
-              <div class="practice-breakdown" style="display: flex; gap: 40px; justify-content: center; align-items: center; background: rgba(10,2,24,.6); padding: 20px; border-radius: 15px; border: 1px solid rgba(0,247,255,.25);">
-                <div class="practice-detail">
-                  <span style="color: rgba(247,243,255,.8); font-size: 0.9em; margin-right: 10px;">Shambhavi:</span>
-                  <span id="shambhavi-count" style="font-size: 1.2em; font-weight: bold; color: var(--neon-pink);">0</span>
-                </div>
-                <div style="color: rgba(247,243,255,.3);">|</div>
-                <div class="practice-detail">
-                  <span style="color: rgba(247,243,255,.8); font-size: 0.9em; margin-right: 10px;">Isha Kriya:</span>
-                  <span id="isha-count" style="font-size: 1.2em; font-weight: bold; color: var(--neon-lime);">0</span>
-                </div>
-              </div>
-
-              <!-- Enhanced Progress Message -->
+              <!-- Progress Message -->
               <div class="progress-message" style="text-align: center; max-width: 500px; padding: 15px; background: rgba(0,247,255,.05); border-radius: 10px; border: 1px solid rgba(0,247,255,.15);">
-                <div id="status-message" style="color: rgba(247,243,255,.85); font-size: 1em; line-height: 1.4;">Begin your sacred practice to see your spiritual journey unfold</div>
+                <div id="status-message" style="color: rgba(247,243,255,.85); font-size: 1em; line-height: 1.4;">120 sessions across 40 days of dedicated practice</div>
               </div>
 
             </div>
@@ -691,11 +536,11 @@
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
             <div class="streak-display">
-              <div class="streak-number" id="shambhavi-total">0</div>
+              <div class="streak-number" id="shambhavi-total">80</div>
               <div class="streak-label">Shambhavi Sessions</div>
             </div>
             <div class="streak-display">
-              <div class="streak-number" id="isha-total">0</div>
+              <div class="streak-number" id="isha-total">40</div>
               <div class="streak-label">Isha Kriya Sessions</div>
             </div>
           </div>
@@ -726,7 +571,7 @@
           </div>
 
           <div class="session-form" id="shambhavi-form" style="display: none;">
-            <h3 style="color: var(--neon-lime); margin-bottom: 20px; text-shadow: 0 0 10px rgba(182,255,0,.22);">Record Session Details</h3>
+            <h3 style="color: var(--neon-lime); margin-bottom: 20px;">Record Session Details</h3>
             <div class="form-group">
               <label>Session Type:</label>
               <input type="text" id="shambhavi-session-type" readonly />
@@ -744,12 +589,7 @@
             </div>
             <div class="form-group">
               <label>Notes, Visions, or Insights:</label>
-              <div style="position: relative;">
-                <textarea id="shambhavi-notes" placeholder="Record any experiences, visions, insights, or observations from your practice..."></textarea>
-                <button type="button" id="shambhavi-voice-btn" class="voice-btn" onclick="toggleVoiceRecording('shambhavi-notes', 'shambhavi-voice-btn')" style="position: absolute; right: 8px; top: 8px; background: var(--btn-2-grad); border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; box-shadow: var(--glow-pink); transition: all 0.3s ease;">
-                  <span class="voice-icon">🎤</span>
-                </button>
-              </div>
+              <textarea id="shambhavi-notes" placeholder="Record any experiences..."></textarea>
             </div>
             <div class="practice-buttons">
               <button class="btn" onclick="saveSession('shambhavi')">Save Session</button>
@@ -773,23 +613,18 @@
           </div>
 
           <div class="session-form" id="isha-kriya-form" style="display: none;">
-            <h3 style="color: var(--neon-lime); margin-bottom: 20px; text-shadow: 0 0 10px rgba(182,255,0,.22);">Record Session Details</h3>
+            <h3 style="color: var(--neon-lime); margin-bottom: 20px;">Record Session Details</h3>
             <div class="form-group">
               <label>Date & Time:</label>
               <input type="datetime-local" id="isha-kriya-datetime" />
             </div>
             <div class="form-group">
               <label>Session Duration:</label>
-              <input type="text" id="isha-kriya-duration" value="15 minutes" readonly style="background-color: rgba(247,243,255,.18); color: var(--ink);" />
+              <input type="text" id="isha-kriya-duration" value="15 minutes" readonly style="background-color: rgba(247,243,255,.18);" />
             </div>
             <div class="form-group">
               <label>Notes, Visions, or Insights:</label>
-              <div style="position: relative;">
-                <textarea id="isha-kriya-notes" placeholder="Record any experiences, visions, insights, or observations from your practice..."></textarea>
-                <button type="button" id="isha-voice-btn" class="voice-btn" onclick="toggleVoiceRecording('isha-kriya-notes', 'isha-voice-btn')" style="position: absolute; right: 8px; top: 8px; background: var(--btn-2-grad); border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; box-shadow: var(--glow-pink); transition: all 0.3s ease;">
-                  <span class="voice-icon">🎤</span>
-                </button>
-              </div>
+              <textarea id="isha-kriya-notes" placeholder="Record any experiences..."></textarea>
             </div>
             <div class="practice-buttons">
               <button class="btn" onclick="saveSession('isha-kriya')">Save Session</button>
@@ -802,96 +637,81 @@
   </div>
 
   <script>
-    // Global variables for data storage
-    // Cycle 1 completed data (Nov 17 - Dec 26, 2025)
-{id: 80, timestamp: "2025-12-26T18:00:00", sessionType: "evening", datetime: "2025-12-26T18:00", version: "full", notes: "", date: "2025-12-26"}
-];
+    // Cycle 1 completed data: Nov 16 - Dec 25, 2025 (40 days)
+    const cycle1Shambhavi = [];
+    const cycle1Isha = [];
+    
+    const startDate = new Date('2025-11-16');
+    for (let i = 0; i < 40; i++) {
+      const currentDate = new Date(startDate);
+      currentDate.setDate(startDate.getDate() + i);
+      const dateStr = currentDate.toISOString().split('T')[0];
+      
+      cycle1Shambhavi.push({
+        id: i * 2 + 1,
+        timestamp: `${dateStr}T06:00:00`,
+        sessionType: "morning",
+        datetime: `${dateStr}T06:00`,
+        version: "full",
+        notes: "",
+        date: dateStr
+      });
+      
+      cycle1Shambhavi.push({
+        id: i * 2 + 2,
+        timestamp: `${dateStr}T18:00:00`,
+        sessionType: "evening",
+        datetime: `${dateStr}T18:00`,
+        version: "full",
+        notes: "",
+        date: dateStr
+      });
+      
+      cycle1Isha.push({
+        id: i + 1,
+        timestamp: `${dateStr}T12:00:00`,
+        datetime: `${dateStr}T12:00`,
+        duration: "15 minutes",
+        notes: "",
+        date: dateStr
+      });
+    }
 
-let ishaSessions = [
-  {id: 1, timestamp: "2025-11-17T12:00:00", datetime: "2025-11-17T12:00", duration: "15 minutes", notes: "", date: "2025-11-17"},
-  {id: 2, timestamp: "2025-11-18T12:00:00", datetime: "2025-11-18T12:00", duration: "15 minutes", notes: "", date: "2025-11-18"},
-  {id: 3, timestamp: "2025-11-19T12:00:00", datetime: "2025-11-19T12:00", duration: "15 minutes", notes: "", date: "2025-11-19"},
-  {id: 4, timestamp: "2025-11-20T12:00:00", datetime: "2025-11-20T12:00", duration: "15 minutes", notes: "", date: "2025-11-20"},
-  {id: 5, timestamp: "2025-11-21T12:00:00", datetime: "2025-11-21T12:00", duration: "15 minutes", notes: "", date: "2025-11-21"},
-  {id: 6, timestamp: "2025-11-22T12:00:00", datetime: "2025-11-22T12:00", duration: "15 minutes", notes: "", date: "2025-11-22"},
-  {id: 7, timestamp: "2025-11-23T12:00:00", datetime: "2025-11-23T12:00", duration: "15 minutes", notes: "", date: "2025-11-23"},
-  {id: 8, timestamp: "2025-11-24T12:00:00", datetime: "2025-11-24T12:00", duration: "15 minutes", notes: "", date: "2025-11-24"},
-  {id: 9, timestamp: "2025-11-25T12:00:00", datetime: "2025-11-25T12:00", duration: "15 minutes", notes: "", date: "2025-11-25"},
-  {id: 10, timestamp: "2025-11-26T12:00:00", datetime: "2025-11-26T12:00", duration: "15 minutes", notes: "", date: "2025-11-26"},
-  {id: 11, timestamp: "2025-11-27T12:00:00", datetime: "2025-11-27T12:00", duration: "15 minutes", notes: "", date: "2025-11-27"},
-  {id: 12, timestamp: "2025-11-28T12:00:00", datetime: "2025-11-28T12:00", duration: "15 minutes", notes: "", date: "2025-11-28"},
-  {id: 13, timestamp: "2025-11-29T12:00:00", datetime: "2025-11-29T12:00", duration: "15 minutes", notes: "", date: "2025-11-29"},
-  {id: 14, timestamp: "2025-11-30T12:00:00", datetime: "2025-11-30T12:00", duration: "15 minutes", notes: "", date: "2025-11-30"},
-  {id: 15, timestamp: "2025-12-01T12:00:00", datetime: "2025-12-01T12:00", duration: "15 minutes", notes: "", date: "2025-12-01"},
-  {id: 16, timestamp: "2025-12-02T12:00:00", datetime: "2025-12-02T12:00", duration: "15 minutes", notes: "", date: "2025-12-02"},
-  {id: 17, timestamp: "2025-12-03T12:00:00", datetime: "2025-12-03T12:00", duration: "15 minutes", notes: "", date: "2025-12-03"},
-  {id: 18, timestamp: "2025-12-04T12:00:00", datetime: "2025-12-04T12:00", duration: "15 minutes", notes: "", date: "2025-12-04"},
-  {id: 19, timestamp: "2025-12-05T12:00:00", datetime: "2025-12-05T12:00", duration: "15 minutes", notes: "", date: "2025-12-05"},
-  {id: 20, timestamp: "2025-12-06T12:00:00", datetime: "2025-12-06T12:00", duration: "15 minutes", notes: "", date: "2025-12-06"},
-  {id: 21, timestamp: "2025-12-07T12:00:00", datetime: "2025-12-07T12:00", duration: "15 minutes", notes: "", date: "2025-12-07"},
-  {id: 22, timestamp: "2025-12-08T12:00:00", datetime: "2025-12-08T12:00", duration: "15 minutes", notes: "", date: "2025-12-08"},
-  {id: 23, timestamp: "2025-12-09T12:00:00", datetime: "2025-12-09T12:00", duration: "15 minutes", notes: "", date: "2025-12-09"},
-  {id: 24, timestamp: "2025-12-10T12:00:00", datetime: "2025-12-10T12:00", duration: "15 minutes", notes: "", date: "2025-12-10"},
-  {id: 25, timestamp: "2025-12-11T12:00:00", datetime: "2025-12-11T12:00", duration: "15 minutes", notes: "", date: "2025-11-11"},
-  {id: 26, timestamp: "2025-12-12T12:00:00", datetime: "2025-12-12T12:00", duration: "15 minutes", notes: "", date: "2025-12-12"},
-  {id: 27, timestamp: "2025-12-13T12:00:00", datetime: "2025-12-13T12:00", duration: "15 minutes", notes: "", date: "2025-12-13"},
-  {id: 28, timestamp: "2025-12-14T12:00:00", datetime: "2025-12-14T12:00", duration: "15 minutes", notes: "", date: "2025-12-14"},
-  {id: 29, timestamp: "2025-12-15T12:00:00", datetime: "2025-12-15T12:00", duration: "15 minutes", notes: "", date: "2025-12-15"},
-  {id: 30, timestamp: "2025-12-16T12:00:00", datetime: "2025-12-16T12:00", duration: "15 minutes", notes: "", date: "2025-12-16"},
-  {id: 31, timestamp: "2025-12-17T12:00:00", datetime: "2025-12-17T12:00", duration: "15 minutes", notes: "", date: "2025-12-17"},
-  {id: 32, timestamp: "2025-12-18T12:00:00", datetime: "2025-12-18T12:00", duration: "15 minutes", notes: "", date: "2025-12-18"},
-  {id: 33, timestamp: "2025-12-19T12:00:00", datetime: "2025-12-19T12:00", duration: "15 minutes", notes: "", date: "2025-12-19"},
-  {id: 34, timestamp: "2025-12-20T12:00:00", datetime: "2025-12-20T12:00", duration: "15 minutes", notes: "", date: "2025-12-20"},
-  {id: 35, timestamp: "2025-12-21T12:00:00", datetime: "2025-12-21T12:00", duration: "15 minutes", notes: "", date: "2025-12-21"},
-  {id: 36, timestamp: "2025-12-22T12:00:00", datetime: "2025-12-22T12:00", duration: "15 minutes", notes: "", date: "2025-12-22"},
-  {id: 37, timestamp: "2025-12-23T12:00:00", datetime: "2025-12-23T12:00", duration: "15 minutes", notes: "", date: "2025-12-23"},
-  {id: 38, timestamp: "2025-12-24T12:00:00", datetime: "2025-12-24T12:00", duration: "15 minutes", notes: "", date: "2025-12-24"},
-  {id: 39, timestamp: "2025-12-25T12:00:00", datetime: "2025-12-25T12:00", duration: "15 minutes", notes: "", date: "2025-12-25"},
-  {id: 40, timestamp: "2025-12-26T12:00:00", datetime: "2025-12-26T12:00", duration: "15 minutes", notes: "", date: "2025-12-26"}
-];
+    let shambhaviSessions = [...cycle1Shambhavi];
+    let ishaSessions = [...cycle1Isha];
 
-    // Initialize the application
+    // Fixed start date for calculating cycles
+    const JOURNEY_START = new Date('2025-11-16');
+
     document.addEventListener('DOMContentLoaded', function() {
       loadData();
       updateAllDisplays();
-      initializeCosmicVisualization();
+      buildMandalaGrid();
+      updateMandalaVisualization();
 
-      // Set up navigation
-      const navButtons = document.querySelectorAll('.nav-btn');
-      navButtons.forEach(btn => {
+      document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-          const targetTab = this.getAttribute('data-tab');
-          switchTab(targetTab);
+          switchTab(this.getAttribute('data-tab'));
         });
       });
     });
 
-    // Tab switching functionality
     function switchTab(targetTab) {
-      // Hide all tab panes
-      const tabPanes = document.querySelectorAll('.tab-pane');
-      tabPanes.forEach(pane => pane.classList.remove('active'));
-
-      // Remove active class from all nav buttons
-      const navButtons = document.querySelectorAll('.nav-btn');
-      navButtons.forEach(btn => btn.classList.remove('active'));
-
-      // Show target tab and activate button
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.getElementById(targetTab).classList.add('active');
       document.querySelector(`[data-tab="${targetTab}"]`).classList.add('active');
     }
 
-    // Record session functionality
     function recordSession(practiceType, sessionType) {
       const form = document.getElementById(practiceType + '-form');
       const now = new Date();
       const localDateTime = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
 
       if (practiceType === 'shambhavi') {
-        document.getElementById('shambhavi-session-type').value =
-          sessionType === 'morning' ? 'Morning Practice' : 'Evening Practice';
+        document.getElementById('shambhavi-session-type').value = sessionType === 'morning' ? 'Morning Practice' : 'Evening Practice';
         document.getElementById('shambhavi-datetime').value = localDateTime;
-      } else if (practiceType === 'isha-kriya') {
+      } else {
         document.getElementById('isha-kriya-datetime').value = localDateTime;
       }
 
@@ -899,66 +719,43 @@ let ishaSessions = [
       form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    // Save session functionality
     function saveSession(practiceType) {
-      let sessionData = {
+      const sessionData = {
         id: Date.now(),
         timestamp: new Date().toISOString()
       };
 
       if (practiceType === 'shambhavi') {
         const sessionType = document.getElementById('shambhavi-session-type').value;
-        const datetime = document.getElementById('shambhavi-datetime').value;
-        const version = document.getElementById('shambhavi-version').value;
-        const notes = document.getElementById('shambhavi-notes').value;
-
         sessionData.sessionType = sessionType.includes('Morning') ? 'morning' : 'evening';
-        sessionData.datetime = datetime;
-        sessionData.version = version;
-        sessionData.notes = notes;
-        sessionData.date = datetime.split('T')[0];
-
+        sessionData.datetime = document.getElementById('shambhavi-datetime').value;
+        sessionData.version = document.getElementById('shambhavi-version').value;
+        sessionData.notes = document.getElementById('shambhavi-notes').value;
+        sessionData.date = sessionData.datetime.split('T')[0];
         shambhaviSessions.push(sessionData);
-
-        // Clear form
         document.getElementById('shambhavi-notes').value = '';
         document.getElementById('shambhavi-form').style.display = 'none';
-
-      } else if (practiceType === 'isha-kriya') {
-        const datetime = document.getElementById('isha-kriya-datetime').value;
-        const duration = document.getElementById('isha-kriya-duration').value;
-        const notes = document.getElementById('isha-kriya-notes').value;
-
-        sessionData.datetime = datetime;
-        sessionData.duration = duration;
-        sessionData.notes = notes;
-        sessionData.date = datetime.split('T')[0];
-
+      } else {
+        sessionData.datetime = document.getElementById('isha-kriya-datetime').value;
+        sessionData.duration = document.getElementById('isha-kriya-duration').value;
+        sessionData.notes = document.getElementById('isha-kriya-notes').value;
+        sessionData.date = sessionData.datetime.split('T')[0];
         ishaSessions.push(sessionData);
-
-        // Clear form
         document.getElementById('isha-kriya-notes').value = '';
         document.getElementById('isha-kriya-form').style.display = 'none';
       }
 
       saveData();
       updateAllDisplays();
-      updateCosmicVisualization();
-
-      alert('Session recorded successfully! Your practice has been saved.');
+      updateMandalaVisualization();
+      alert('Session recorded successfully!');
     }
 
-    // Cancel session recording
     function cancelSession() {
       document.getElementById('shambhavi-form').style.display = 'none';
       document.getElementById('isha-kriya-form').style.display = 'none';
-
-      // Clear any partially filled forms
-      document.getElementById('shambhavi-notes').value = '';
-      document.getElementById('isha-kriya-notes').value = '';
     }
 
-    // FIXED: Update all displays with correct session counts
     function updateAllDisplays() {
       updateStreaks();
       updateTotals();
@@ -966,114 +763,99 @@ let ishaSessions = [
       updateProgressMessage();
     }
 
-    // Update streak displays
     function updateStreaks() {
       document.getElementById('shambhavi-streak').textContent = calculateStreak(shambhaviSessions);
       document.getElementById('isha-streak').textContent = calculateStreak(ishaSessions);
     }
 
-    // Update total counts
     function updateTotals() {
-      const shambhaviTotal = shambhaviSessions.length;
-      const ishaTotal = ishaSessions.length;
-      
-      document.getElementById('shambhavi-total').textContent = shambhaviTotal;
-      document.getElementById('isha-total').textContent = ishaTotal;
-      
-      // FIXED: Update dashboard counts to match these totals
-      document.getElementById('shambhavi-count').textContent = shambhaviTotal;
-      document.getElementById('isha-count').textContent = ishaTotal;
+      document.getElementById('shambhavi-total').textContent = shambhaviSessions.length;
+      document.getElementById('isha-total').textContent = ishaSessions.length;
     }
 
-    // FIXED: Update dashboard statistics
     function updateDashboardStats() {
       const totalDays = getTotalPracticeDays();
       const totalSessions = shambhaviSessions.length + ishaSessions.length;
-      const currentCycle = Math.floor(totalDays / 40) + 1;
-      const currentCycleDays = totalDays % 40 || (totalDays > 0 ? 40 : 0);
-      const daysRemaining = totalDays > 0 ? (40 - (totalDays % 40)) % 40 || 40 : 40;
-      const cyclePercentage = totalDays > 0 ? Math.floor((currentCycleDays / 40) * 100) : 0;
+      
+      // Calculate current cycle (1-indexed)
+      const completedCycles = Math.floor(totalDays / 40);
+      const currentCycle = completedCycles + 1;
+      
+      // Days in current cycle (for cycle 2, we need days AFTER the first 40)
+      const daysInCurrentCycle = totalDays - (completedCycles * 40);
+      
+      // Days remaining in current cycle
+      const daysRemaining = 40 - daysInCurrentCycle;
+      
+      // Cycle progress percentage
+      const cyclePercentage = Math.floor((daysInCurrentCycle / 40) * 100);
+      
+      // Journey progress (completed cycles out of 9)
+      const journeyPercentage = Math.floor((completedCycles / 9) * 100);
 
-      // Update all dashboard elements
       document.getElementById('year-cycle-info').textContent = `${currentCycle} of 9`;
       document.getElementById('total-sessions').textContent = totalSessions;
       document.getElementById('days-remaining').textContent = daysRemaining;
       document.getElementById('cycle-percentage').textContent = `${cyclePercentage}%`;
-      document.getElementById('cycle-display').textContent = `Day ${currentCycleDays || 1} of Cycle ${currentCycle}`;
+      document.getElementById('journey-percentage').textContent = `${journeyPercentage}%`;
+      document.getElementById('cycle-display').textContent = `Day ${daysInCurrentCycle || 1} of Cycle ${currentCycle}`;
     }
 
-    // Update progress message
     function updateProgressMessage() {
       const totalDays = getTotalPracticeDays();
       const totalSessions = shambhaviSessions.length + ishaSessions.length;
+      const completedCycles = Math.floor(totalDays / 40);
       
       let message = "";
-      if (totalSessions === 0) {
-        message = "Begin your sacred practice to see your spiritual journey unfold";
-      } else if (totalDays < 7) {
-        message = `Beautiful beginning! ${totalSessions} sessions completed in your first week of practice`;
-      } else if (totalDays < 21) {
-        message = `Building momentum! ${totalSessions} sessions across ${totalDays} days of dedicated practice`;
-      } else if (totalDays < 40) {
-        message = `Strong foundation! ${totalSessions} sessions as you approach your first 40-day milestone`;
+      if (completedCycles === 0) {
+        message = `${totalSessions} sessions across ${totalDays} days of dedicated practice`;
       } else {
-        const cycles = Math.floor(totalDays / 40);
-        message = `Sacred journey deepening! ${totalSessions} sessions across ${cycles} completed cycle${cycles > 1 ? 's' : ''}`;
+        message = `${totalSessions} sessions across ${completedCycles} completed cycle${completedCycles > 1 ? 's' : ''} (${totalDays} days)`;
       }
       
       document.getElementById('status-message').textContent = message;
     }
 
-    // Calculate consecutive day streak
     function calculateStreak(sessions) {
       if (sessions.length === 0) return 0;
-
-      const sortedSessions = sessions.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
-      const uniqueDates = [...new Set(sortedSessions.map(session => session.date))];
-      uniqueDates.sort((a, b) => new Date(b) - new Date(a));
-
+      const uniqueDates = [...new Set(sessions.map(s => s.date))].sort((a, b) => new Date(b) - new Date(a));
       if (uniqueDates.length === 0) return 0;
 
       const today = new Date().toISOString().split('T')[0];
       let streak = 0;
-      let currentDate = new Date(today);
+      let checkDate = new Date(today);
 
       if (uniqueDates[0] !== today) {
-        currentDate.setDate(currentDate.getDate() - 1);
+        checkDate.setDate(checkDate.getDate() - 1);
       }
 
-      for (let i = 0; i < uniqueDates.length; i++) {
-        const checkDate = currentDate.toISOString().split('T')[0];
-
-        if (uniqueDates.includes(checkDate)) {
+      for (let i = 0; i < 400; i++) {
+        const checkDateStr = checkDate.toISOString().split('T')[0];
+        if (uniqueDates.includes(checkDateStr)) {
           streak++;
-          currentDate.setDate(currentDate.getDate() - 1);
+          checkDate.setDate(checkDate.getDate() - 1);
         } else {
           break;
         }
       }
-
       return streak;
     }
 
-    // FIXED: Calculate total practice days correctly
     function getTotalPracticeDays() {
       const allSessions = [...shambhaviSessions, ...ishaSessions];
-      const uniqueDates = [...new Set(allSessions.map(session => session.date))];
-      return uniqueDates.filter(date => date).length; // Filter out any undefined dates
+      const uniqueDates = [...new Set(allSessions.map(s => s.date))];
+      return uniqueDates.filter(d => d).length;
     }
 
-    // Data persistence
     function saveData() {
       localStorage.setItem('yogaSadhana_shambhavi', JSON.stringify(shambhaviSessions));
       localStorage.setItem('yogaSadhana_isha', JSON.stringify(ishaSessions));
     }
 
-function loadData() {
+    function loadData() {
       const savedShambhavi = localStorage.getItem('yogaSadhana_shambhavi');
       const savedIsha = localStorage.getItem('yogaSadhana_isha');
       
-      // Only load from localStorage if it has more data than our pre-populated data
       if (savedShambhavi) {
         const parsed = JSON.parse(savedShambhavi);
         if (parsed.length > shambhaviSessions.length) {
@@ -1086,395 +868,145 @@ function loadData() {
           ishaSessions = parsed;
         }
       }
-      
-      // Save the pre-populated data to localStorage so it persists
       saveData();
     }
 
-    // Enhanced Cosmic Visualization
- // Mandala Visualization
-function initializeCosmicVisualization() {
-  buildMandalaGrid();
-  updateMandalaVisualization();
-}
-
-function buildMandalaGrid() {
-  const grid = document.getElementById('mandala-grid');
-  grid.innerHTML = '';
-  
-  // Diamond pattern: 2-4-6-8-8-6-4-2 = 40 circles
-  const rowPattern = [2, 4, 6, 8, 8, 6, 4, 2];
-  let dayIndex = 0;
-  
-  rowPattern.forEach((circleCount, rowIndex) => {
-    const row = document.createElement('div');
-    row.className = 'mandala-row';
-    
-    for (let i = 0; i < circleCount; i++) {
-      const circle = document.createElement('div');
-      circle.className = 'mandala-circle';
-      circle.setAttribute('data-day', dayIndex + 1);
-      dayIndex++;
-      row.appendChild(circle);
-    }
-    
-    grid.appendChild(row);
-  });
-}
-
-function updateMandalaVisualization() {
-  const totalDays = getTotalPracticeDays();
-  const currentCycle = Math.floor(totalDays / 40);
-  const cycleStartDay = currentCycle * 40;
-  
-  // Get all unique dates from sessions
-  const allDates = getAllPracticeDates();
-  
-  // Get dates for current cycle only
-  const sortedDates = [...allDates].sort((a, b) => new Date(a) - new Date(b));
-  const cycleDates = sortedDates.slice(cycleStartDay, cycleStartDay + 40);
-  
-  // Update each circle in the mandala
-  const circles = document.querySelectorAll('.mandala-circle');
-  
-  circles.forEach((circle, index) => {
-    // Reset classes
-    circle.className = 'mandala-circle';
-    
-    if (index < cycleDates.length) {
-      const date = cycleDates[index];
-      const dayStatus = getDayStatus(date);
+    // Mandala - shows CURRENT cycle only
+    function buildMandalaGrid() {
+      const grid = document.getElementById('mandala-grid');
+      grid.innerHTML = '';
       
-      if (dayStatus.perfect) {
-        circle.classList.add('perfect');
-      } else if (dayStatus.bothShambhavi) {
-        circle.classList.add('shambhavi-complete');
-      } else if (dayStatus.partial) {
-        circle.classList.add('partial');
-      }
+      const rowPattern = [2, 4, 6, 8, 8, 6, 4, 2];
+      let dayIndex = 0;
+      
+      rowPattern.forEach((circleCount) => {
+        const row = document.createElement('div');
+        row.className = 'mandala-row';
+        
+        for (let i = 0; i < circleCount; i++) {
+          const circle = document.createElement('div');
+          circle.className = 'mandala-circle';
+          circle.setAttribute('data-day', dayIndex + 1);
+          dayIndex++;
+          row.appendChild(circle);
+        }
+        grid.appendChild(row);
+      });
     }
-  });
-}
 
-function getAllPracticeDates() {
-  const allSessions = [...shambhaviSessions, ...ishaSessions];
-  const uniqueDates = [...new Set(allSessions.map(session => session.date))];
-  return uniqueDates.filter(date => date);
-}
+    function updateMandalaVisualization() {
+      const totalDays = getTotalPracticeDays();
+      const completedCycles = Math.floor(totalDays / 40);
+      
+      // Get all dates sorted
+      const allDates = getAllPracticeDates().sort((a, b) => new Date(a) - new Date(b));
+      
+      // Get only dates for CURRENT cycle (after completed cycles)
+      const cycleStartIndex = completedCycles * 40;
+      const currentCycleDates = allDates.slice(cycleStartIndex);
+      
+      const circles = document.querySelectorAll('.mandala-circle');
+      
+      circles.forEach((circle, index) => {
+        circle.className = 'mandala-circle';
+        
+        if (index < currentCycleDates.length) {
+          const date = currentCycleDates[index];
+          const status = getDayStatus(date);
+          
+          if (status.perfect) {
+            circle.classList.add('perfect');
+          } else if (status.bothShambhavi) {
+            circle.classList.add('shambhavi-complete');
+          } else if (status.partial) {
+            circle.classList.add('partial');
+          }
+        }
+      });
+    }
 
-function getDayStatus(date) {
-  // Find all sessions for this date
-  const shambhaviOnDate = shambhaviSessions.filter(s => s.date === date);
-  const ishaOnDate = ishaSessions.filter(s => s.date === date);
-  
-  const hasMorning = shambhaviOnDate.some(s => s.sessionType === 'morning');
-  const hasEvening = shambhaviOnDate.some(s => s.sessionType === 'evening');
-  const hasIsha = ishaOnDate.length > 0;
-  
-  const bothShambhavi = hasMorning && hasEvening;
-  const perfect = bothShambhavi && hasIsha;
-  const partial = hasMorning || hasEvening || hasIsha;
-  
-  return {
-    perfect: perfect,
-    bothShambhavi: bothShambhavi && !perfect,
-    partial: partial && !perfect && !bothShambhavi
-  };
-}
+    function getAllPracticeDates() {
+      const allSessions = [...shambhaviSessions, ...ishaSessions];
+      return [...new Set(allSessions.map(s => s.date))].filter(d => d);
+    }
 
-function updateCosmicVisualization() {
-  updateMandalaVisualization();
-}   
+    function getDayStatus(date) {
+      const shambhaviOnDate = shambhaviSessions.filter(s => s.date === date);
+      const ishaOnDate = ishaSessions.filter(s => s.date === date);
+      
+      const hasMorning = shambhaviOnDate.some(s => s.sessionType === 'morning');
+      const hasEvening = shambhaviOnDate.some(s => s.sessionType === 'evening');
+      const hasIsha = ishaOnDate.length > 0;
+      
+      const bothShambhavi = hasMorning && hasEvening;
+      const perfect = bothShambhavi && hasIsha;
+      const partial = hasMorning || hasEvening || hasIsha;
+      
+      return {
+        perfect,
+        bothShambhavi: bothShambhavi && !perfect,
+        partial: partial && !perfect && !bothShambhavi
+      };
+    }
 
-    // Export functionality - Excel downloads (CSV)
     function exportData(type) {
-      if (type === 'shambhavi') {
-        exportToExcel(shambhaviSessions, 'Shambhavi_Mahamudra_Sessions', 'shambhavi');
-      } else if (type === 'isha') {
-        exportToExcel(ishaSessions, 'Isha_Kriya_Sessions', 'isha');
-      } else if (type === 'all') {
-        exportCombinedData();
-      }
+      if (type === 'shambhavi') exportToCSV(shambhaviSessions, 'Shambhavi_Sessions', 'shambhavi');
+      else if (type === 'isha') exportToCSV(ishaSessions, 'Isha_Kriya_Sessions', 'isha');
+      else exportCombinedData();
     }
 
-    function exportToExcel(data, filename, practiceType) {
-      if (data.length === 0) {
-        alert(`No ${practiceType === 'shambhavi' ? 'Shambhavi Mahamudra' : 'Isha Kriya'} sessions to export yet. Start practicing and your data will appear here!`);
-        return;
-      }
-
-      let csv = '';
-      let headers = [];
-
-      if (practiceType === 'shambhavi') {
-        headers = ['Date', 'Time', 'Session Type', 'Practice Version', 'Notes/Visions/Insights'];
-        csv = headers.join(',') + '\n';
-
-        data.forEach(session => {
-          const date = new Date(session.datetime).toLocaleDateString();
-          const time = new Date(session.datetime).toLocaleTimeString();
-          const sessionType = session.sessionType === 'morning' ? 'Morning Practice' : 'Evening Practice';
-          const version = session.version === 'full' ? 'Full Practice (40 min)' : 'Core Practice (21 min)';
-          const notes = `"${(session.notes || '').replace(/"/g, '""')}"`;
-
-          csv += `${date},${time},${sessionType},${version},${notes}\n`;
-        });
-      } else {
-        headers = ['Date', 'Time', 'Duration', 'Notes/Visions/Insights'];
-        csv = headers.join(',') + '\n';
-
-        data.forEach(session => {
-          const date = new Date(session.datetime).toLocaleDateString();
-          const time = new Date(session.datetime).toLocaleTimeString();
-          const duration = `"${session.duration || 'Not specified'}"`;
-          const notes = `"${(session.notes || '').replace(/"/g, '""')}"`;
-
-          csv += `${date},${time},${duration},${notes}\n`;
-        });
-      }
-
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-
-      if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `${filename}_${getCurrentDateString()}.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
+    function exportToCSV(data, filename, type) {
+      if (data.length === 0) { alert('No sessions to export.'); return; }
+      
+      let csv = type === 'shambhavi' 
+        ? 'Date,Time,Session Type,Version,Notes\n'
+        : 'Date,Time,Duration,Notes\n';
+      
+      data.forEach(s => {
+        const date = new Date(s.datetime).toLocaleDateString();
+        const time = new Date(s.datetime).toLocaleTimeString();
+        const notes = `"${(s.notes || '').replace(/"/g, '""')}"`;
+        
+        if (type === 'shambhavi') {
+          csv += `${date},${time},${s.sessionType},${s.version},${notes}\n`;
+        } else {
+          csv += `${date},${time},${s.duration},${notes}\n`;
+        }
+      });
+      
+      downloadCSV(csv, filename);
     }
 
     function exportCombinedData() {
       if (shambhaviSessions.length === 0 && ishaSessions.length === 0) {
-        alert('No practice sessions to export yet. Start your sadhana and your data will appear here!');
+        alert('No sessions to export.');
         return;
       }
-
-      let csv = 'Practice Type,Date,Time,Session Details,Duration/Version,Notes/Visions/Insights\n';
-
-      shambhaviSessions.forEach(session => {
-        const date = new Date(session.datetime).toLocaleDateString();
-        const time = new Date(session.datetime).toLocaleTimeString();
-        const sessionType = session.sessionType === 'morning' ? 'Morning Practice' : 'Evening Practice';
-        const version = session.version === 'full' ? 'Full Practice (40 min)' : 'Core Practice (21 min)';
-        const notes = `"${(session.notes || '').replace(/"/g, '""')}"`;
-
-        csv += `Shambhavi Mahamudra,${date},${time},${sessionType},${version},${notes}\n`;
+      
+      let csv = 'Type,Date,Time,Details,Notes\n';
+      
+      shambhaviSessions.forEach(s => {
+        const date = new Date(s.datetime).toLocaleDateString();
+        const time = new Date(s.datetime).toLocaleTimeString();
+        csv += `Shambhavi,${date},${time},${s.sessionType} - ${s.version},"${(s.notes || '').replace(/"/g, '""')}"\n`;
       });
-
-      ishaSessions.forEach(session => {
-        const date = new Date(session.datetime).toLocaleDateString();
-        const time = new Date(session.datetime).toLocaleTimeString();
-        const duration = `"${session.duration || 'Not specified'}"`;
-        const notes = `"${(session.notes || '').replace(/"/g, '""')}"`;
-
-        csv += `Isha Kriya,${date},${time},Daily Practice,${duration},${notes}\n`;
+      
+      ishaSessions.forEach(s => {
+        const date = new Date(s.datetime).toLocaleDateString();
+        const time = new Date(s.datetime).toLocaleTimeString();
+        csv += `Isha Kriya,${date},${time},${s.duration},"${(s.notes || '').replace(/"/g, '""')}"\n`;
       });
+      
+      downloadCSV(csv, 'Yoga_Sadhana_Complete');
+    }
 
+    function downloadCSV(csv, filename) {
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement('a');
-
-      if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `Yoga_Sadhana_Complete_Data_${getCurrentDateString()}.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
+      link.href = URL.createObjectURL(blob);
+      link.download = `${filename}_${new Date().toISOString().split('T')[0]}.csv`;
+      link.click();
     }
-
-    function getCurrentDateString() {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const day = String(now.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    }
-
-    // Voice Recognition System (unchanged)
-    let currentRecognition = null;
-    let isRecording = false;
-
-    function initializeVoiceRecognition() {
-      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        console.log('Speech recognition not supported in this browser');
-        return null;
-      }
-
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const recognition = new SpeechRecognition();
-      
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = 'en-US';
-      
-      return recognition;
-    }
-
-    function toggleVoiceRecording(textareaId, buttonId) {
-      const textarea = document.getElementById(textareaId);
-      const button = document.getElementById(buttonId);
-      const voiceIcon = button.querySelector('.voice-icon');
-
-      if (isRecording) {
-        stopRecording(button, voiceIcon);
-      } else {
-        startRecording(textarea, button, voiceIcon);
-      }
-    }
-
-    function startRecording(textarea, button, voiceIcon) {
-      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        alert('Voice recognition is not supported in your browser. Please try Chrome, Edge, or Safari.');
-        return;
-      }
-
-      currentRecognition = initializeVoiceRecognition();
-      if (!currentRecognition) return;
-
-      isRecording = true;
-      button.classList.add('recording');
-      voiceIcon.textContent = '⏹️';
-      
-      showVoiceStatus('Listening... Speak your insights');
-
-      let finalTranscript = '';
-      let interimTranscript = '';
-
-      currentRecognition.onstart = () => {
-        console.log('Voice recognition started');
-      };
-
-      currentRecognition.onresult = (event) => {
-        finalTranscript = '';
-        interimTranscript = '';
-
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const transcript = event.results[i][0].transcript;
-          if (event.results[i].isFinal) {
-            finalTranscript += transcript + ' ';
-          } else {
-            interimTranscript += transcript;
-          }
-        }
-
-        // Update textarea with current transcript
-        const currentValue = textarea.value;
-        const lastSpaceIndex = currentValue.lastIndexOf(' ');
-        const baseText = lastSpaceIndex > 0 ? currentValue.substring(0, lastSpaceIndex + 1) : '';
-        
-        textarea.value = baseText + finalTranscript + interimTranscript;
-        
-        // Show what's being processed
-        if (interimTranscript) {
-          showVoiceStatus(`Listening: "${interimTranscript}"`);
-        } else if (finalTranscript.trim()) {
-          showVoiceStatus('Got it! Continue speaking or click stop');
-        }
-      };
-
-      currentRecognition.onerror = (event) => {
-        console.error('Speech recognition error:', event.error);
-        let errorMessage = 'Voice recognition error';
-        
-        switch(event.error) {
-          case 'no-speech':
-            errorMessage = 'No speech detected. Please try again.';
-            break;
-          case 'audio-capture':
-            errorMessage = 'No microphone found. Please check your audio settings.';
-            break;
-          case 'not-allowed':
-            errorMessage = 'Microphone access denied. Please allow microphone access and try again.';
-            break;
-          case 'network':
-            errorMessage = 'Network error. Please check your connection and try again.';
-            break;
-          default:
-            errorMessage = `Voice recognition error: ${event.error}`;
-        }
-        
-        showVoiceStatus(errorMessage, true);
-        setTimeout(() => {
-          stopRecording(button, voiceIcon);
-        }, 3000);
-      };
-
-      currentRecognition.onend = () => {
-        console.log('Voice recognition ended');
-        if (isRecording) {
-          // Recognition ended unexpectedly, try to restart
-          setTimeout(() => {
-            if (isRecording) {
-              try {
-                currentRecognition.start();
-              } catch (e) {
-                console.log('Could not restart recognition:', e);
-                stopRecording(button, voiceIcon);
-              }
-            }
-          }, 100);
-        }
-      };
-
-      try {
-        currentRecognition.start();
-      } catch (error) {
-        console.error('Failed to start voice recognition:', error);
-        alert('Failed to start voice recognition. Please ensure you have a microphone connected and permissions granted.');
-        stopRecording(button, voiceIcon);
-      }
-    }
-
-    function stopRecording(button, voiceIcon) {
-      if (currentRecognition && isRecording) {
-        isRecording = false;
-        currentRecognition.stop();
-        currentRecognition = null;
-      }
-
-      button.classList.remove('recording');
-      voiceIcon.textContent = '🎤';
-      
-      hideVoiceStatus();
-    }
-
-    function showVoiceStatus(message, isError = false) {
-      let statusDiv = document.querySelector('.voice-status');
-      
-      if (!statusDiv) {
-        statusDiv = document.createElement('div');
-        statusDiv.className = 'voice-status';
-        document.body.appendChild(statusDiv);
-      }
-
-      statusDiv.textContent = message;
-      statusDiv.style.display = 'block';
-      statusDiv.style.borderColor = isError ? 'var(--neon-orange)' : 'var(--neon-cyan)';
-      statusDiv.style.boxShadow = isError ? 'var(--glow-pink)' : 'var(--glow-cyan)';
-    }
-
-    function hideVoiceStatus() {
-      const statusDiv = document.querySelector('.voice-status');
-      if (statusDiv) {
-        statusDiv.style.display = 'none';
-      }
-    }
-
-    // Initialize voice recognition on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      // Check for voice recognition support and show status
-      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        console.log('Voice recognition not supported in this browser');
-      } else {
-        console.log('Voice recognition supported and ready');
-      }
-    });
   </script>
 </body>
 </html>
