@@ -1105,17 +1105,26 @@ let shambhaviSessions = [
       localStorage.setItem('yogaSadhana_isha', JSON.stringify(ishaSessions));
     }
 
-    function loadData() {
+function loadData() {
       const savedShambhavi = localStorage.getItem('yogaSadhana_shambhavi');
       const savedIsha = localStorage.getItem('yogaSadhana_isha');
-
+      
+      // Only load from localStorage if it has more data than our pre-populated data
       if (savedShambhavi) {
-        shambhaviSessions = JSON.parse(savedShambhavi);
+        const parsed = JSON.parse(savedShambhavi);
+        if (parsed.length > shambhaviSessions.length) {
+          shambhaviSessions = parsed;
+        }
       }
-
       if (savedIsha) {
-        ishaSessions = JSON.parse(savedIsha);
+        const parsed = JSON.parse(savedIsha);
+        if (parsed.length > ishaSessions.length) {
+          ishaSessions = parsed;
+        }
       }
+      
+      // Save the pre-populated data to localStorage so it persists
+      saveData();
     }
 
     // Enhanced Cosmic Visualization
