@@ -922,37 +922,42 @@
         grid.appendChild(row);
       });
     }
-
-    function updateMandalaVisualization() {
-      const totalDays = getTotalPracticeDays();
-      const completedCycles = Math.floor(totalDays / 40);
+function updateMandalaVisualization() {
+  const totalDays = getTotalPracticeDays();
+  const completedCycles = Math.floor(totalDays / 40);
+  
+  // Get all dates sorted
+  const allDates = getAllPracticeDates().sort((a, b) => new Date(a) - new Date(b));
+  
+  // Get only dates for CURRENT cycle (after completed cycles)
+  const cycleStartIndex = completedCycles * 40;
+  const currentCycleDates = allDates.slice(cycleStartIndex);
+  
+  const circles = document.querySelectorAll('.mandala-circle');
+  
+  circles.forEach((circle, index) => {
+    // Reset all classes
+    circle.className = 'mandala-circle';
+    
+    if (index < currentCycleDates.length) {
+      const date = currentCycleDates[index];
+      const status = getDayStatus(date);
       
-      // Get all dates sorted
-      const allDates = getAllPracticeDates().sort((a, b) => new Date(a) - new Date(b));
-      
-      // Get only dates for CURRENT cycle (after completed cycles)
-      const cycleStartIndex = completedCycles * 40;
-      const currentCycleDates = allDates.slice(cycleStartIndex);
-      
-      const circles = document.querySelectorAll('.mandala-circle');
-      
-      circles.forEach((circle, index) => {
-        circle.className = 'mandala-circle';
-        
-        if (index < currentCycleDates.length) {
-          const date = currentCycleDates[index];
-          const status = getDayStatus(date);
-          
-          if (status.perfect) {
-            circle.classList.add('perfect');
-          } else if (status.bothShambhavi) {
-            circle.classList.add('shambhavi-complete');
-          } else if (status.partial) {
-            circle.classList.add('partial');
-          }
-        }
-      });
+      if (status.perfect) {
+        circle.classList.add('perfect');
+      } else if (status.bothShambhavi) {
+        circle.classList.add('shambhavi-complete');
+      } else if (status.partial) {
+        circle.classList.add('partial');
+      } else if (status.ishaOnly) {
+        circle.classList.add('isha-only');
+      } else if (status.oneShambhavi) {
+        circle.classList.add('one-shambhavi');
+      }
     }
+  });
+}
+   
 
     function getAllPracticeDates() {
       const allSessions = [...shambhaviSessions, ...ishaSessions];
