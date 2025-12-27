@@ -984,67 +984,99 @@
     }
 
     // Enhanced Cosmic Visualization
-    function initializeCosmicVisualization() {
-      createEnergyParticles();
-      updateCosmicVisualization();
-    }
+ // Mandala Visualization
+function initializeCosmicVisualization() {
+  buildMandalaGrid();
+  updateMandalaVisualization();
+}
 
-    function createEnergyParticles() {
-      const particleContainer = document.getElementById('energy-particles');
-      const particleCount = 15;
-      
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        // Random positioning around the circle
-        const angle = (i / particleCount) * 360;
-        const radius = 100 + Math.random() * 80;
-        const x = 200 + Math.cos(angle * Math.PI / 180) * radius;
-        const y = 200 + Math.sin(angle * Math.PI / 180) * radius;
-        
-        particle.style.left = x + 'px';
-        particle.style.top = y + 'px';
-        particle.style.backgroundColor = i % 3 === 0 ? '#ff2bd6' : (i % 3 === 1 ? '#00f7ff' : '#b6ff00');
-        particle.style.animationDelay = Math.random() * 6 + 's';
-        particle.style.boxShadow = `0 0 10px ${particle.style.backgroundColor}`;
-        
-        particleContainer.appendChild(particle);
-      }
+function buildMandalaGrid() {
+  const grid = document.getElementById('mandala-grid');
+  grid.innerHTML = '';
+  
+  // Diamond pattern: 2-4-6-8-8-6-4-2 = 40 circles
+  const rowPattern = [2, 4, 6, 8, 8, 6, 4, 2];
+  let dayIndex = 0;
+  
+  rowPattern.forEach((circleCount, rowIndex) => {
+    const row = document.createElement('div');
+    row.className = 'mandala-row';
+    
+    for (let i = 0; i < circleCount; i++) {
+      const circle = document.createElement('div');
+      circle.className = 'mandala-circle';
+      circle.setAttribute('data-day', dayIndex + 1);
+      dayIndex++;
+      row.appendChild(circle);
     }
+    
+    grid.appendChild(row);
+  });
+}
 
-    function updateCosmicVisualization() {
-      const totalDays = getTotalPracticeDays();
-      const shambhaviProgress = shambhaviSessions.length;
-      const ishaProgress = ishaSessions.length;
+function updateMandalaVisualization() {
+  const totalDays = getTotalPracticeDays();
+  const currentCycle = Math.floor(totalDays / 40);
+  const cycleStartDay = currentCycle * 40;
+  
+  // Get all unique dates from sessions
+  const allDates = getAllPracticeDates();
+  
+  // Get dates for current cycle only
+  const sortedDates = [...allDates].sort((a, b) => new Date(a) - new Date(b));
+  const cycleDates = sortedDates.slice(cycleStartDay, cycleStartDay + 40);
+  
+  // Update each circle in the mandala
+  const circles = document.querySelectorAll('.mandala-circle');
+  
+  circles.forEach((circle, index) => {
+    // Reset classes
+    circle.className = 'mandala-circle';
+    
+    if (index < cycleDates.length) {
+      const date = cycleDates[index];
+      const dayStatus = getDayStatus(date);
       
-      // Calculate progress percentages for visual rings
-      const maxSessionsFor40Days = 80; // 40 days * 2 sessions per day for Shambhavi
-      const maxIshaFor40Days = 40; // 40 days * 1 session per day for Isha
-      
-      const shambhaviPercentage = Math.min((shambhaviProgress / maxSessionsFor40Days) * 100, 100);
-      const ishaPercentage = Math.min((ishaProgress / maxIshaFor40Days) * 100, 100);
-      
-      // Update Shambhavi progress ring
-      const shambhaviCircle = document.getElementById('shambhavi-progress');
-      const shambhaviCircumference = 2 * Math.PI * 140;
-      const shambhaviDashArray = `${(shambhaviPercentage / 100) * shambhaviCircumference} ${shambhaviCircumference}`;
-      shambhaviCircle.setAttribute('stroke-dasharray', shambhaviDashArray);
-      
-      // Update Isha progress ring
-      const ishaCircle = document.getElementById('isha-progress');
-      const ishaCircumference = 2 * Math.PI * 100;
-      const ishaDashArray = `${(ishaPercentage / 100) * ishaCircumference} ${ishaCircumference}`;
-      ishaCircle.setAttribute('stroke-dasharray', ishaDashArray);
-      
-      // Add pulsing effect for active practice
-      if (shambhaviProgress > 0) {
-        shambhaviCircle.style.animation = 'rotateRing 20s linear infinite';
-      }
-      if (ishaProgress > 0) {
-        ishaCircle.style.animation = 'rotateRing 15s linear infinite reverse';
+      if (dayStatus.perfect) {
+        circle.classList.add('perfect');
+      } else if (dayStatus.bothShambhavi) {
+        circle.classList.add('shambhavi-complete');
+      } else if (dayStatus.partial) {
+        circle.classList.add('partial');
       }
     }
+  });
+}
+
+function getAllPracticeDates() {
+  const allSessions = [...shambhaviSessions, ...ishaSessions];
+  const uniqueDates = [...new Set(allSessions.map(session => session.date))];
+  return uniqueDates.filter(date => date);
+}
+
+function getDayStatus(date) {
+  // Find all sessions for this date
+  const shambhaviOnDate = shambhaviSessions.filter(s => s.date === date);
+  const ishaOnDate = ishaSessions.filter(s => s.date === date);
+  
+  const hasMorning = shambhaviOnDate.some(s => s.sessionType === 'morning');
+  const hasEvening = shambhaviOnDate.some(s => s.sessionType === 'evening');
+  const hasIsha = ishaOnDate.length > 0;
+  
+  const bothShambhavi = hasMorning && hasEvening;
+  const perfect = bothShambhavi && hasIsha;
+  const partial = hasMorning || hasEvening || hasIsha;
+  
+  return {
+    perfect: perfect,
+    bothShambhavi: bothShambhavi && !perfect,
+    partial: partial && !perfect && !bothShambhavi
+  };
+}
+
+function updateCosmicVisualization() {
+  updateMandalaVisualization();
+}   
 
     // Export functionality - Excel downloads (CSV)
     function exportData(type) {
