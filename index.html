@@ -297,59 +297,115 @@
       transition: all 0.3s ease;
     }
 
-    .mandala-circle.perfect {
-      background: linear-gradient(135deg, #ff9a00, #ffcc00);
-      border-color: #ffcc00;
-      box-shadow: 0 0 12px rgba(255, 170, 0, 0.6);
-    }
-
-    .mandala-circle.shambhavi-complete {
-      background: linear-gradient(135deg, #ff2bd6, #ff6bef);
-      border-color: #ff2bd6;
-      box-shadow: 0 0 12px rgba(255, 43, 214, 0.6);
-    }
-
-   .mandala-circle.partial {
-  background: linear-gradient(135deg, #00f7ff, #00b8cc);
-  border-color: #00f7ff;
-  box-shadow: 0 0 12px rgba(0, 247, 255, 0.6);
+    /* 1. MS + ES + Isha - Gold/Orange */
+.mandala-circle.perfect {
+  background: linear-gradient(135deg, #FF9500, #FFB340);
+  border-color: #FF9500;
+  box-shadow: 0 0 12px rgba(255, 149, 0, 0.6);
 }
 
-.mandala-circle.isha-only {
-  background: linear-gradient(135deg, #00FF9F, #00cc7a);
-  border-color: #00FF9F;
-  box-shadow: 0 0 12px rgba(0, 255, 159, 0.6);
+/* 2. MS + ES only - Hot Pink */
+.mandala-circle.both-shambhavi {
+  background: linear-gradient(135deg, #FF1493, #FF69B4);
+  border-color: #FF1493;
+  box-shadow: 0 0 12px rgba(255, 20, 147, 0.6);
 }
 
+/* 3. MS + Isha - Blue */
 .mandala-circle.ms-isha {
-  background: linear-gradient(135deg, #0066FF, #0044cc);
+  background: linear-gradient(135deg, #0066FF, #3399FF);
   border-color: #0066FF;
   box-shadow: 0 0 12px rgba(0, 102, 255, 0.6);
 }
 
+/* 4. ES + Isha - Green */
 .mandala-circle.es-isha {
-  background: linear-gradient(135deg, #FFE600, #ccb800);
-  border-color: #FFE600;
-  box-shadow: 0 0 12px rgba(255, 230, 0, 0.6);
+  background: linear-gradient(135deg, #00C853, #00E676);
+  border-color: #00C853;
+  box-shadow: 0 0 12px rgba(0, 200, 83, 0.6);
 }
 
+/* 5. MS Only - Deep Violet */
 .mandala-circle.ms-only {
-  background: linear-gradient(135deg, #CF9FFF, #a070dd);
-  border-color: #CF9FFF;
-  box-shadow: 0 0 12px rgba(207, 159, 255, 0.6);
+  background: linear-gradient(135deg, #7B00FF, #9F40FF);
+  border-color: #7B00FF;
+  box-shadow: 0 0 12px rgba(123, 0, 255, 0.6);
 }
 
+/* 6. ES Only - Red */
 .mandala-circle.es-only {
-  background: linear-gradient(135deg, #FF2D55, #cc1a3a);
-  border-color: #FF2D55;
-  box-shadow: 0 0 12px rgba(255, 45, 85, 0.6);
+  background: linear-gradient(135deg, #FF0000, #FF4444);
+  border-color: #FF0000;
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
 }
 
+/* 7. Isha Only - Cyan */
 .mandala-circle.isha-only {
-  background: linear-gradient(135deg, #00FF9F, #00cc7a);
-  border-color: #00FF9F;
-  box-shadow: 0 0 12px rgba(0, 255, 159, 0.6);
+  background: linear-gradient(135deg, #00FFFF, #40FFFF);
+  border-color: #00FFFF;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
 }
+
+    /* Legend Styles */
+    .mandala-legend {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 15px;
+      max-width: 700px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8em;
+      color: var(--ink-dim);
+    }
+
+    .legend-circle {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .legend-perfect {
+      background: linear-gradient(135deg, #ff9a00, #ffcc00);
+      border-color: #ffcc00;
+    }
+
+    .legend-both-shambhavi {
+      background: linear-gradient(135deg, #ff2bd6, #ff6bef);
+      border-color: #ff2bd6;
+    }
+
+    .legend-ms-isha {
+      background: linear-gradient(135deg, #0066FF, #0044cc);
+      border-color: #0066FF;
+    }
+
+    .legend-es-isha {
+      background: linear-gradient(135deg, #FFE600, #ccb800);
+      border-color: #FFE600;
+    }
+
+    .legend-ms-only {
+      background: linear-gradient(135deg, #CF9FFF, #a070dd);
+      border-color: #CF9FFF;
+    }
+
+    .legend-es-only {
+      background: linear-gradient(135deg, #FF2D55, #cc1a3a);
+      border-color: #FF2D55;
+    }
+
+    .legend-isha-only {
+      background: linear-gradient(135deg, #00FF9F, #00cc7a);
+      border-color: #00FF9F;
+    }
+
     .legend-empty {
       background: rgba(7, 0, 20, 0.6);
     }
@@ -412,17 +468,18 @@
       }
 
       .mandala-legend {
-        gap: 10px;
+        gap: 8px;
         padding: 0 10px;
       }
 
       .legend-item {
-        font-size: 0.7em;
+        font-size: 0.65em;
+        gap: 4px;
       }
 
       .legend-circle {
-        width: 14px;
-        height: 14px;
+        width: 12px;
+        height: 12px;
       }
 
       .essential-stats {
@@ -473,32 +530,41 @@
               <div class="mandala-dashboard">
                 <div class="mandala-grid" id="mandala-grid"></div>
                 
+                <!-- Legend with all 8 states -->
                 <div class="mandala-legend">
-  <div class="legend-item">
-    <div class="legend-circle legend-perfect"></div>
-    <span>All 3 Practices</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-circle legend-shambhavi"></div>
-    <span>Both Shambhavi</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-circle legend-partial"></div>
-    <span>Shambhavi + Isha</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-circle legend-isha-only"></div>
-    <span>Isha Only</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-circle legend-one-shambhavi"></div>
-    <span>One Shambhavi</span>
-  </div>
-  <div class="legend-item">
-    <div class="legend-circle legend-empty"></div>
-    <span>Not Yet</span>
-  </div>
-</div>
+                  <div class="legend-item">
+                    <div class="legend-circle legend-perfect"></div>
+                    <span>MS + ES + Isha</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-circle legend-both-shambhavi"></div>
+                    <span>MS + ES</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-circle legend-ms-isha"></div>
+                    <span>MS + Isha</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-circle legend-es-isha"></div>
+                    <span>ES + Isha</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-circle legend-ms-only"></div>
+                    <span>MS Only</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-circle legend-es-only"></div>
+                    <span>ES Only</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-circle legend-isha-only"></div>
+                    <span>Isha Only</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-circle legend-empty"></div>
+                    <span>Not Yet</span>
+                  </div>
+                </div>
                 
                 <div class="cycle-info" id="cycle-display">Day 1 of Cycle 2</div>
               </div>
@@ -533,7 +599,7 @@
 
               <!-- Progress Message -->
               <div class="progress-message" style="text-align: center; max-width: 500px; padding: 15px; background: rgba(0,247,255,.05); border-radius: 10px; border: 1px solid rgba(0,247,255,.15);">
-                <div id="status-message" style="color: rgba(247,243,255,.85); font-size: 1em; line-height: 1.4;">120 sessions across 40 days of dedicated practice</div>
+                <div id="status-message" style="color: rgba(247,243,255,.85); font-size: 1em; line-height: 1.4;">120 sessions across 1 completed cycle (40 days)</div>
               </div>
 
             </div>
@@ -571,8 +637,8 @@
           </div>
 
           <div class="practice-buttons">
-            <button class="btn" onclick="recordSession('shambhavi', 'morning')">Record Morning Session</button>
-            <button class="btn" onclick="recordSession('shambhavi', 'evening')">Record Evening Session</button>
+            <button class="btn" onclick="recordSession('shambhavi', 'morning')">Record Morning Session (MS)</button>
+            <button class="btn" onclick="recordSession('shambhavi', 'evening')">Record Evening Session (ES)</button>
           </div>
 
           <div class="session-form" id="shambhavi-form" style="display: none;">
@@ -614,7 +680,7 @@
           </div>
 
           <div class="practice-buttons">
-            <button class="btn" onclick="recordSession('isha-kriya', 'daily')">Record Session</button>
+            <button class="btn" onclick="recordSession('isha-kriya', 'daily')">Record Isha Kriya Session</button>
           </div>
 
           <div class="session-form" id="isha-kriya-form" style="display: none;">
@@ -685,9 +751,6 @@
     let shambhaviSessions = [...cycle1Shambhavi];
     let ishaSessions = [...cycle1Isha];
 
-    // Fixed start date for calculating cycles
-    const JOURNEY_START = new Date('2025-11-16');
-
     document.addEventListener('DOMContentLoaded', function() {
       loadData();
       updateAllDisplays();
@@ -714,7 +777,7 @@
       const localDateTime = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
 
       if (practiceType === 'shambhavi') {
-        document.getElementById('shambhavi-session-type').value = sessionType === 'morning' ? 'Morning Practice' : 'Evening Practice';
+        document.getElementById('shambhavi-session-type').value = sessionType === 'morning' ? 'Morning Practice (MS)' : 'Evening Practice (ES)';
         document.getElementById('shambhavi-datetime').value = localDateTime;
       } else {
         document.getElementById('isha-kriya-datetime').value = localDateTime;
@@ -782,20 +845,11 @@
       const totalDays = getTotalPracticeDays();
       const totalSessions = shambhaviSessions.length + ishaSessions.length;
       
-      // Calculate current cycle (1-indexed)
       const completedCycles = Math.floor(totalDays / 40);
       const currentCycle = completedCycles + 1;
-      
-      // Days in current cycle (for cycle 2, we need days AFTER the first 40)
       const daysInCurrentCycle = totalDays - (completedCycles * 40);
-      
-      // Days remaining in current cycle
       const daysRemaining = 40 - daysInCurrentCycle;
-      
-      // Cycle progress percentage
       const cyclePercentage = Math.floor((daysInCurrentCycle / 40) * 100);
-      
-      // Journey progress (completed cycles out of 9)
       const journeyPercentage = Math.floor((completedCycles / 9) * 100);
 
       document.getElementById('year-cycle-info').textContent = `${currentCycle} of 9`;
@@ -811,12 +865,9 @@
       const totalSessions = shambhaviSessions.length + ishaSessions.length;
       const completedCycles = Math.floor(totalDays / 40);
       
-      let message = "";
-      if (completedCycles === 0) {
-        message = `${totalSessions} sessions across ${totalDays} days of dedicated practice`;
-      } else {
-        message = `${totalSessions} sessions across ${completedCycles} completed cycle${completedCycles > 1 ? 's' : ''} (${totalDays} days)`;
-      }
+      let message = completedCycles === 0
+        ? `${totalSessions} sessions across ${totalDays} days of dedicated practice`
+        : `${totalSessions} sessions across ${completedCycles} completed cycle${completedCycles > 1 ? 's' : ''} (${totalDays} days)`;
       
       document.getElementById('status-message').textContent = message;
     }
@@ -876,7 +927,6 @@
       saveData();
     }
 
-    // Mandala - shows CURRENT cycle only
     function buildMandalaGrid() {
       const grid = document.getElementById('mandala-grid');
       grid.innerHTML = '';
@@ -898,82 +948,66 @@
         grid.appendChild(row);
       });
     }
-function updateMandalaVisualization() {
-  const totalDays = getTotalPracticeDays();
-  const completedCycles = Math.floor(totalDays / 40);
-  
-  // Get all dates sorted
-  const allDates = getAllPracticeDates().sort((a, b) => new Date(a) - new Date(b));
-  
-  // Get only dates for CURRENT cycle (after completed cycles)
-  const cycleStartIndex = completedCycles * 40;
-  const currentCycleDates = allDates.slice(cycleStartIndex);
-  
-  const circles = document.querySelectorAll('.mandala-circle');
-  
-  circles.forEach((circle, index) => {
-    // Reset all classes
-    circle.className = 'mandala-circle';
-    
-    if (index < currentCycleDates.length) {
-      const date = currentCycleDates[index];
-      const status = getDayStatus(date);
+
+    function updateMandalaVisualization() {
+      const totalDays = getTotalPracticeDays();
+      const completedCycles = Math.floor(totalDays / 40);
       
-      if (status.perfect) {
-        circle.classList.add('perfect');
-      } else if (status.bothShambhavi) {
-        circle.classList.add('shambhavi-complete');
-      } else if (status.partial) {
-        circle.classList.add('partial');
-      } else if (status.ishaOnly) {
-        circle.classList.add('isha-only');
-      } else if (status.oneShambhavi) {
-        circle.classList.add('one-shambhavi');
-      }
+      const allDates = getAllPracticeDates().sort((a, b) => new Date(a) - new Date(b));
+      const cycleStartIndex = completedCycles * 40;
+      const currentCycleDates = allDates.slice(cycleStartIndex);
+      
+      const circles = document.querySelectorAll('.mandala-circle');
+      
+      circles.forEach((circle, index) => {
+        circle.className = 'mandala-circle';
+        
+        if (index < currentCycleDates.length) {
+          const date = currentCycleDates[index];
+          const status = getDayStatus(date);
+          
+          if (status.perfect) {
+            circle.classList.add('perfect');
+          } else if (status.bothShambhavi) {
+            circle.classList.add('both-shambhavi');
+          } else if (status.msIsha) {
+            circle.classList.add('ms-isha');
+          } else if (status.esIsha) {
+            circle.classList.add('es-isha');
+          } else if (status.msOnly) {
+            circle.classList.add('ms-only');
+          } else if (status.esOnly) {
+            circle.classList.add('es-only');
+          } else if (status.ishaOnly) {
+            circle.classList.add('isha-only');
+          }
+        }
+      });
     }
-  });
-}
-   
 
     function getAllPracticeDates() {
       const allSessions = [...shambhaviSessions, ...ishaSessions];
       return [...new Set(allSessions.map(s => s.date))].filter(d => d);
     }
 
-   function getDayStatus(date) {
-  const shambhaviOnDate = shambhaviSessions.filter(s => s.date === date);
-  const ishaOnDate = ishaSessions.filter(s => s.date === date);
-  
-  const hasMorning = shambhaviOnDate.some(s => s.sessionType === 'morning');
-  const hasEvening = shambhaviOnDate.some(s => s.sessionType === 'evening');
-  const hasIsha = ishaOnDate.length > 0;
-  
-  const bothShambhavi = hasMorning && hasEvening;
-  const oneShambhavi = (hasMorning || hasEvening) && !bothShambhavi;
-  
-  // All 3 practices = perfect (gold)
-  const perfect = bothShambhavi && hasIsha;
-  
-  // Both Shambhavi but no Isha (pink)
-  const shambhaviOnly = bothShambhavi && !hasIsha;
-  
-  // One Shambhavi + Isha (cyan)
-  const partial = oneShambhavi && hasIsha;
-  
-  // Isha only, no Shambhavi (mint green)
-  const ishaOnly = hasIsha && !hasMorning && !hasEvening;
-  
-  // One Shambhavi only, no Isha (purple)
-  const oneShambhaviOnly = oneShambhavi && !hasIsha;
-  
-  return {
-    perfect,
-    bothShambhavi: shambhaviOnly,
-    partial,
-    ishaOnly,
-    oneShambhavi: oneShambhaviOnly
-  };
-}
+    function getDayStatus(date) {
+      const shambhaviOnDate = shambhaviSessions.filter(s => s.date === date);
+      const ishaOnDate = ishaSessions.filter(s => s.date === date);
+      
+      const hasMorning = shambhaviOnDate.some(s => s.sessionType === 'morning');
+      const hasEvening = shambhaviOnDate.some(s => s.sessionType === 'evening');
+      const hasIsha = ishaOnDate.length > 0;
+      
+      return {
+        perfect: hasMorning && hasEvening && hasIsha,           // MS + ES + Isha (Gold)
+        bothShambhavi: hasMorning && hasEvening && !hasIsha,    // MS + ES only (Hot Pink)
+        msIsha: hasMorning && !hasEvening && hasIsha,           // MS + Isha (Electric Blue)
+        esIsha: !hasMorning && hasEvening && hasIsha,           // ES + Isha (Bright Yellow)
+        msOnly: hasMorning && !hasEvening && !hasIsha,          // MS only (Lavender)
+        esOnly: !hasMorning && hasEvening && !hasIsha,          // ES only (Red/Crimson)
+        ishaOnly: !hasMorning && !hasEvening && hasIsha         // Isha only (Mint Green)
+      };
+    }
 
     function exportData(type) {
       if (type === 'shambhavi') exportToCSV(shambhaviSessions, 'Shambhavi_Sessions', 'shambhavi');
