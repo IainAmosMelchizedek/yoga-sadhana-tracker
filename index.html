@@ -529,7 +529,62 @@
     height: 320px;
   }
 }
-  </style>
+  @media (max-width: 768px){
+  .nav-tabs{
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-tabs button{
+    padding: 12px 20px;
+    font-size: 1em;
+  }
+
+  .practice-buttons{
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mandala-circle {
+    width: 24px;
+    height: 24px;
+  }
+
+  .mandala-row {
+    gap: 5px;
+  }
+
+  .mandala-grid {
+    gap: 5px;
+  }
+
+  .mandala-legend {
+    gap: 10px;
+    padding: 0 10px;
+  }
+
+  .legend-item {
+    font-size: 0.7em;
+  }
+
+  .legend-circle {
+    width: 14px;
+    height: 14px;
+  }
+
+  .essential-stats {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  .stat-card {
+    padding: 12px !important;
+  }
+
+  .stat-number {
+    font-size: 1.1em !important;
+  }
+} </style>
 </head>
 
 <body>
