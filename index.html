@@ -959,24 +959,40 @@
       return [...new Set(allSessions.map(s => s.date))].filter(d => d);
     }
 
-    function getDayStatus(date) {
-      const shambhaviOnDate = shambhaviSessions.filter(s => s.date === date);
-      const ishaOnDate = ishaSessions.filter(s => s.date === date);
-      
-      const hasMorning = shambhaviOnDate.some(s => s.sessionType === 'morning');
-      const hasEvening = shambhaviOnDate.some(s => s.sessionType === 'evening');
-      const hasIsha = ishaOnDate.length > 0;
-      
-      const bothShambhavi = hasMorning && hasEvening;
-      const perfect = bothShambhavi && hasIsha;
-      const partial = hasMorning || hasEvening || hasIsha;
-      
-      return {
-        perfect,
-        bothShambhavi: bothShambhavi && !perfect,
-        partial: partial && !perfect && !bothShambhavi
-      };
-    }
+   function getDayStatus(date) {
+  const shambhaviOnDate = shambhaviSessions.filter(s => s.date === date);
+  const ishaOnDate = ishaSessions.filter(s => s.date === date);
+  
+  const hasMorning = shambhaviOnDate.some(s => s.sessionType === 'morning');
+  const hasEvening = shambhaviOnDate.some(s => s.sessionType === 'evening');
+  const hasIsha = ishaOnDate.length > 0;
+  
+  const bothShambhavi = hasMorning && hasEvening;
+  const oneShambhavi = (hasMorning || hasEvening) && !bothShambhavi;
+  
+  // All 3 practices = perfect (gold)
+  const perfect = bothShambhavi && hasIsha;
+  
+  // Both Shambhavi but no Isha (pink)
+  const shambhaviOnly = bothShambhavi && !hasIsha;
+  
+  // One Shambhavi + Isha (cyan)
+  const partial = oneShambhavi && hasIsha;
+  
+  // Isha only, no Shambhavi (mint green)
+  const ishaOnly = hasIsha && !hasMorning && !hasEvening;
+  
+  // One Shambhavi only, no Isha (purple)
+  const oneShambhaviOnly = oneShambhavi && !hasIsha;
+  
+  return {
+    perfect,
+    bothShambhavi: shambhaviOnly,
+    partial,
+    ishaOnly,
+    oneShambhavi: oneShambhaviOnly
+  };
+}
 
     function exportData(type) {
       if (type === 'shambhavi') exportToCSV(shambhaviSessions, 'Shambhavi_Sessions', 'shambhavi');
