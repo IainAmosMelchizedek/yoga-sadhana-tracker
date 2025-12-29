@@ -900,6 +900,22 @@
 
     function autoLogGuidedSession() {
       const statusEl = document.getElementById('audio-status');
+      const today = new Date().toISOString().split('T')[0];
+      
+      // Check for duplicate before auto-logging
+      const existingSession = checkForDuplicateSession(today, guidedSessionType);
+      if (existingSession) {
+        const sessionLabel = guidedSessionType === 'morning' ? 'Morning (MS)' : 'Evening (ES)';
+        const existingTime = formatSessionTime(existingSession.datetime);
+        
+        statusEl.textContent = `⚠️ ${sessionLabel} already logged for today at ${existingTime}. Session not duplicated.`;
+        statusEl.classList.remove('recording');
+        
+        // Reset guided practice state
+        guidedPracticeActive = false;
+        guidedSessionType = null;
+        return;
+      }
       
       // Create session data
       const sessionData = {
@@ -909,7 +925,7 @@
         datetime: new Date().toISOString().slice(0, 16),
         version: 'full',
         notes: 'Completed via guided audio practice',
-        date: new Date().toISOString().split('T')[0]
+        date: today
       };
       
       // Add to sessions
@@ -954,6 +970,18 @@
       form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
+    function checkForDuplicateSession(date, sessionType) {
+      const existingSession = shambhaviSessions.find(s => 
+        s.date === date && s.sessionType === sessionType
+      );
+      return existingSession;
+    }
+
+    function formatSessionTime(datetime) {
+      const date = new Date(datetime);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
     function saveSession(practiceType) {
       const sessionData = {
         id: Date.now(),
@@ -967,6 +995,18 @@
         sessionData.version = document.getElementById('shambhavi-version').value;
         sessionData.notes = document.getElementById('shambhavi-notes').value;
         sessionData.date = sessionData.datetime.split('T')[0];
+        
+        // Check for duplicate
+        const existingSession = checkForDuplicateSession(sessionData.date, sessionData.sessionType);
+        if (existingSession) {
+          const sessionLabel = sessionData.sessionType === 'morning' ? 'Morning (MS)' : 'Evening (ES)';
+          const existingTime = formatSessionTime(existingSession.datetime);
+          const existingVersion = existingSession.version === 'full' ? 'Full Practice' : 'Core Practice';
+          
+          alert(`⚠️ Duplicate Entry Detected!\n\nYou've already logged a ${sessionLabel} session for ${sessionData.date}.\n\nExisting entry:\n• Time: ${existingTime}\n• Version: ${existingVersion}\n• Notes: ${existingSession.notes || '(none)'}\n\nThis entry was not saved.`);
+          return;
+        }
+        
         shambhaviSessions.push(sessionData);
         document.getElementById('shambhavi-notes').value = '';
         document.getElementById('shambhavi-form').style.display = 'none';
