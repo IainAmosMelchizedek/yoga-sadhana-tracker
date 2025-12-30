@@ -266,7 +266,6 @@
       text-align: center;
     }
 
-    /* Mandala Styles */
     .mandala-dashboard {
       display: flex;
       flex-direction: column;
@@ -297,56 +296,48 @@
       transition: all 0.3s ease;
     }
 
-    /* 1. MS + ES + Isha - Gold/Orange */
     .mandala-circle.perfect {
       background: linear-gradient(135deg, #FF9500, #FFB340);
       border-color: #FF9500;
       box-shadow: 0 0 12px rgba(255, 149, 0, 0.6);
     }
 
-    /* 2. MS + ES only - Hot Pink */
     .mandala-circle.both-shambhavi {
       background: linear-gradient(135deg, #FF1493, #FF69B4);
       border-color: #FF1493;
       box-shadow: 0 0 12px rgba(255, 20, 147, 0.6);
     }
 
-    /* 3. MS + Isha - Blue */
     .mandala-circle.ms-isha {
       background: linear-gradient(135deg, #0066FF, #3399FF);
       border-color: #0066FF;
       box-shadow: 0 0 12px rgba(0, 102, 255, 0.6);
     }
 
-    /* 4. ES + Isha - Green */
     .mandala-circle.es-isha {
       background: linear-gradient(135deg, #00C853, #00E676);
       border-color: #00C853;
       box-shadow: 0 0 12px rgba(0, 200, 83, 0.6);
     }
 
-    /* 5. MS Only - Deep Violet */
     .mandala-circle.ms-only {
       background: linear-gradient(135deg, #7B00FF, #9F40FF);
       border-color: #7B00FF;
       box-shadow: 0 0 12px rgba(123, 0, 255, 0.6);
     }
 
-    /* 6. ES Only - Red */
     .mandala-circle.es-only {
       background: linear-gradient(135deg, #FF0000, #FF4444);
       border-color: #FF0000;
       box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
     }
 
-    /* 7. Isha Only - Cyan */
     .mandala-circle.isha-only {
       background: linear-gradient(135deg, #00FFFF, #40FFFF);
       border-color: #00FFFF;
       box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
     }
 
-    /* Legend Styles */
     .mandala-legend {
       display: flex;
       gap: 15px;
@@ -410,7 +401,6 @@
       background: rgba(7, 0, 20, 0.6);
     }
 
-    /* Stats Grid - 5 columns */
     .essential-stats {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -438,7 +428,61 @@
       letter-spacing: 1px;
     }
 
-    /* Manage Sessions Styles */
+    .guided-practice-section {
+      margin-top: 30px;
+      padding: 25px;
+      background: rgba(182,255,0,.08);
+      border-radius: 10px;
+      border: 2px solid rgba(182,255,0,.35);
+      box-shadow: 0 0 24px rgba(182,255,0,.15);
+    }
+
+    .guided-practice-section h3 {
+      color: var(--neon-lime);
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 0 0 12px rgba(182,255,0,.35);
+      font-size: 1.4em;
+    }
+
+    .audio-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .audio-player-wrapper {
+      width: 100%;
+      max-width: 500px;
+      display: none;
+    }
+
+    .audio-player-wrapper.visible {
+      display: block;
+    }
+
+    .audio-player-wrapper audio {
+      width: 100%;
+    }
+
+    .audio-status {
+      text-align: center;
+      color: var(--ink-dim);
+      font-size: 0.95em;
+      min-height: 24px;
+    }
+
+    .audio-status.recording {
+      color: var(--neon-lime);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
     .manage-sessions-section {
       margin-top: 30px;
       padding: 25px;
@@ -564,62 +608,6 @@
       margin-bottom: 20px;
     }
 
-    /* Guided Practice Audio Styles */
-    .guided-practice-section {
-      margin-top: 30px;
-      padding: 25px;
-      background: rgba(182,255,0,.08);
-      border-radius: 10px;
-      border: 2px solid rgba(182,255,0,.35);
-      box-shadow: 0 0 24px rgba(182,255,0,.15);
-    }
-
-    .guided-practice-section h3 {
-      color: var(--neon-lime);
-      text-align: center;
-      margin-bottom: 20px;
-      text-shadow: 0 0 12px rgba(182,255,0,.35);
-      font-size: 1.4em;
-    }
-
-    .audio-controls {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .audio-player-wrapper {
-      width: 100%;
-      max-width: 500px;
-      display: none;
-    }
-
-    .audio-player-wrapper.visible {
-      display: block;
-    }
-
-    .audio-player-wrapper audio {
-      width: 100%;
-    }
-
-    .audio-status {
-      text-align: center;
-      color: var(--ink-dim);
-      font-size: 0.95em;
-      min-height: 24px;
-    }
-
-    .audio-status.recording {
-      color: var(--neon-lime);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
     @media (max-width: 768px){
       .nav-tabs{
         flex-direction: column;
@@ -680,6 +668,16 @@
       .stat-label {
         font-size: 0.65em !important;
       }
+
+      .session-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .session-item-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
     }
   </style>
 </head>
@@ -708,11 +706,9 @@
           <div class="mandala-container">
             <div class="progress-dashboard" style="display: flex; flex-direction: column; align-items: center; gap: 30px;">
               
-              <!-- Mandala Visualization -->
               <div class="mandala-dashboard">
                 <div class="mandala-grid" id="mandala-grid"></div>
                 
-                <!-- Legend with all 8 states -->
                 <div class="mandala-legend">
                   <div class="legend-item">
                     <div class="legend-circle legend-perfect"></div>
@@ -751,7 +747,6 @@
                 <div class="cycle-info" id="cycle-display">Day 1 of Cycle 2</div>
               </div>
 
-              <!-- 5 Stat Boxes -->
               <div class="essential-stats">
                 <div class="stat-card" style="background: linear-gradient(135deg, rgba(0,247,255,.15) 0%, rgba(0,247,255,.08) 100%); border: 2px solid rgba(0,247,255,.4); box-shadow: 0 8px 25px rgba(0,247,255,.15);">
                   <div class="stat-number" id="year-cycle-info" style="color: var(--neon-cyan); text-shadow: 0 0 15px rgba(0,247,255,.5);">2 of 9</div>
@@ -779,7 +774,6 @@
                 </div>
               </div>
 
-              <!-- Progress Message -->
               <div class="progress-message" style="text-align: center; max-width: 500px; padding: 15px; background: rgba(0,247,255,.05); border-radius: 10px; border: 1px solid rgba(0,247,255,.15);">
                 <div id="status-message" style="color: rgba(247,243,255,.85); font-size: 1em; line-height: 1.4;">120 sessions across 1 completed cycle (40 days)</div>
               </div>
@@ -850,7 +844,6 @@
             </div>
           </div>
 
-          <!-- Guided Practice Audio Section -->
           <div class="guided-practice-section">
             <h3>Guided Shambhavi Practice</h3>
             <div class="audio-controls">
@@ -867,12 +860,9 @@
             </div>
           </div>
 
-          <!-- Manage Sessions Section -->
           <div class="manage-sessions-section">
             <h3>Manage Recent Sessions (Last 3 Days)</h3>
-            <div class="session-list" id="shambhavi-session-list">
-              <!-- Sessions will be populated by JavaScript -->
-            </div>
+            <div class="session-list" id="shambhavi-session-list"></div>
           </div>
 
         </div>
@@ -911,12 +901,9 @@
             </div>
           </div>
 
-          <!-- Manage Sessions Section for Isha Kriya -->
           <div class="manage-sessions-section">
             <h3>Manage Recent Sessions (Last 3 Days)</h3>
-            <div class="session-list" id="isha-session-list">
-              <!-- Sessions will be populated by JavaScript -->
-            </div>
+            <div class="session-list" id="isha-session-list"></div>
           </div>
 
         </div>
@@ -958,7 +945,7 @@
   </div>
 
   <script>
-    // Cycle 1 completed data: Nov 16 - Dec 25, 2025 (40 days)
+    // Cycle 1 completed data
     const cycle1Shambhavi = [];
     const cycle1Isha = [];
     
@@ -1001,13 +988,12 @@
     let shambhaviSessions = [...cycle1Shambhavi];
     let ishaSessions = [...cycle1Isha];
 
-    // Audio player variables
     let guidedPracticeActive = false;
     let guidedSessionType = null;
-    
-    // Edit session variables
     let currentEditSession = null;
     let currentEditType = null;
+
+    // ==================== INITIALIZATION ====================
 
     document.addEventListener('DOMContentLoaded', function() {
       loadData();
@@ -1024,20 +1010,204 @@
       });
     });
 
+    // ==================== MANAGE SESSIONS FUNCTIONS ====================
+
+    function getLastThreeDaysDates() {
+      const dates = [];
+      for (let i = 0; i < 3; i++) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        dates.push(date.toISOString().split('T')[0]);
+      }
+      return dates;
+    }
+
+    function renderRecentSessions() {
+      renderShambhaviRecentSessions();
+      renderIshaRecentSessions();
+    }
+
+    function renderShambhaviRecentSessions() {
+      const listEl = document.getElementById('shambhavi-session-list');
+      const recentDates = getLastThreeDaysDates();
+      
+      const recentSessions = shambhaviSessions
+        .filter(s => recentDates.includes(s.date))
+        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+      
+      if (recentSessions.length === 0) {
+        listEl.innerHTML = '<div class="no-sessions-message">No sessions in the last 3 days</div>';
+        return;
+      }
+      
+      listEl.innerHTML = recentSessions.map(session => {
+        const dateObj = new Date(session.datetime);
+        const dateStr = dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        const timeStr = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const typeLabel = session.sessionType === 'morning' ? 'Morning (MS)' : 'Evening (ES)';
+        const versionLabel = session.version === 'full' ? 'Full' : 'Core';
+        
+        return `
+          <div class="session-item">
+            <div class="session-item-info">
+              <div class="session-item-date">${dateStr} - ${typeLabel}</div>
+              <div class="session-item-details">Time: ${timeStr} | Version: ${versionLabel}${session.notes ? ' | Notes: ' + session.notes.substring(0, 30) + (session.notes.length > 30 ? '...' : '') : ''}</div>
+            </div>
+            <div class="session-item-actions">
+              <button class="btn-small" onclick="editSession('shambhavi', ${session.id})">Edit</button>
+              <button class="btn-small delete" onclick="deleteSession('shambhavi', ${session.id})">Delete</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderIshaRecentSessions() {
+      const listEl = document.getElementById('isha-session-list');
+      const recentDates = getLastThreeDaysDates();
+      
+      const recentSessions = ishaSessions
+        .filter(s => recentDates.includes(s.date))
+        .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+      
+      if (recentSessions.length === 0) {
+        listEl.innerHTML = '<div class="no-sessions-message">No sessions in the last 3 days</div>';
+        return;
+      }
+      
+      listEl.innerHTML = recentSessions.map(session => {
+        const dateObj = new Date(session.datetime);
+        const dateStr = dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        const timeStr = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        return `
+          <div class="session-item">
+            <div class="session-item-info">
+              <div class="session-item-date">${dateStr} - Isha Kriya</div>
+              <div class="session-item-details">Time: ${timeStr}${session.notes ? ' | Notes: ' + session.notes.substring(0, 30) + (session.notes.length > 30 ? '...' : '') : ''}</div>
+            </div>
+            <div class="session-item-actions">
+              <button class="btn-small" onclick="editSession('isha', ${session.id})">Edit</button>
+              <button class="btn-small delete" onclick="deleteSession('isha', ${session.id})">Delete</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function editSession(type, sessionId) {
+      const overlay = document.getElementById('edit-form-overlay');
+      const titleEl = document.getElementById('edit-form-title');
+      const sessionTypeGroup = document.getElementById('edit-session-type-group');
+      const versionGroup = document.getElementById('edit-version-group');
+      
+      currentEditType = type;
+      
+      if (type === 'shambhavi') {
+        currentEditSession = shambhaviSessions.find(s => s.id === sessionId);
+        titleEl.textContent = 'Edit Shambhavi Session';
+        sessionTypeGroup.style.display = 'block';
+        versionGroup.style.display = 'block';
+        
+        document.getElementById('edit-session-type').value = currentEditSession.sessionType;
+        document.getElementById('edit-version').value = currentEditSession.version;
+      } else {
+        currentEditSession = ishaSessions.find(s => s.id === sessionId);
+        titleEl.textContent = 'Edit Isha Kriya Session';
+        sessionTypeGroup.style.display = 'none';
+        versionGroup.style.display = 'none';
+      }
+      
+      document.getElementById('edit-datetime').value = currentEditSession.datetime;
+      document.getElementById('edit-notes').value = currentEditSession.notes || '';
+      
+      overlay.classList.add('visible');
+    }
+
+    function closeEditForm() {
+      document.getElementById('edit-form-overlay').classList.remove('visible');
+      currentEditSession = null;
+      currentEditType = null;
+    }
+
+    function saveEditedSession() {
+      const newDatetime = document.getElementById('edit-datetime').value;
+      const newNotes = document.getElementById('edit-notes').value;
+      const newDate = newDatetime.split('T')[0];
+      
+      if (currentEditType === 'shambhavi') {
+        const newSessionType = document.getElementById('edit-session-type').value;
+        const newVersion = document.getElementById('edit-version').value;
+        
+        const duplicate = shambhaviSessions.find(s => 
+          s.id !== currentEditSession.id && 
+          s.date === newDate && 
+          s.sessionType === newSessionType
+        );
+        
+        if (duplicate) {
+          const typeLabel = newSessionType === 'morning' ? 'Morning (MS)' : 'Evening (ES)';
+          alert(`⚠️ Cannot save: A ${typeLabel} session already exists for ${newDate}.`);
+          return;
+        }
+        
+        const sessionIndex = shambhaviSessions.findIndex(s => s.id === currentEditSession.id);
+        shambhaviSessions[sessionIndex] = {
+          ...currentEditSession,
+          datetime: newDatetime,
+          date: newDate,
+          sessionType: newSessionType,
+          version: newVersion,
+          notes: newNotes
+        };
+      } else {
+        const sessionIndex = ishaSessions.findIndex(s => s.id === currentEditSession.id);
+        ishaSessions[sessionIndex] = {
+          ...currentEditSession,
+          datetime: newDatetime,
+          date: newDate,
+          notes: newNotes
+        };
+      }
+      
+      saveData();
+      updateAllDisplays();
+      updateMandalaVisualization();
+      renderRecentSessions();
+      closeEditForm();
+      alert('Session updated successfully!');
+    }
+
+    function deleteSession(type, sessionId) {
+      const confirmDelete = confirm('Are you sure you want to delete this session? This cannot be undone.');
+      
+      if (!confirmDelete) return;
+      
+      if (type === 'shambhavi') {
+        shambhaviSessions = shambhaviSessions.filter(s => s.id !== sessionId);
+      } else {
+        ishaSessions = ishaSessions.filter(s => s.id !== sessionId);
+      }
+      
+      saveData();
+      updateAllDisplays();
+      updateMandalaVisualization();
+      renderRecentSessions();
+      alert('Session deleted successfully!');
+    }
+
     // ==================== AUDIO PLAYER FUNCTIONS ====================
     
     function setupAudioPlayer() {
       const audio = document.getElementById('shambhavi-audio');
       const statusEl = document.getElementById('audio-status');
       
-      // When audio ends, auto-log the session
       audio.addEventListener('ended', function() {
         if (guidedPracticeActive) {
           autoLogGuidedSession();
         }
       });
 
-      // Update status while playing
       audio.addEventListener('play', function() {
         statusEl.textContent = 'Practice in progress... Session will be logged automatically when complete.';
         statusEl.classList.add('recording');
@@ -1057,20 +1227,13 @@
       const statusEl = document.getElementById('audio-status');
       const btn = document.getElementById('start-guided-btn');
       
-      // Determine if this is morning or evening based on current time
       const currentHour = new Date().getHours();
       guidedSessionType = currentHour < 12 ? 'morning' : 'evening';
       
-      // Show the audio player
       playerWrapper.classList.add('visible');
-      
-      // Update button text
       btn.textContent = 'Restart Guided Meditation';
-      
-      // Set status
       statusEl.textContent = `Starting ${guidedSessionType} guided practice...`;
       
-      // Start playing
       guidedPracticeActive = true;
       audio.currentTime = 0;
       audio.play().catch(e => {
@@ -1083,7 +1246,6 @@
       const statusEl = document.getElementById('audio-status');
       const today = new Date().toISOString().split('T')[0];
       
-      // Check for duplicate before auto-logging
       const existingSession = checkForDuplicateSession(today, guidedSessionType);
       if (existingSession) {
         const sessionLabel = guidedSessionType === 'morning' ? 'Morning (MS)' : 'Evening (ES)';
@@ -1092,13 +1254,11 @@
         statusEl.textContent = `⚠️ ${sessionLabel} already logged for today at ${existingTime}. Session not duplicated.`;
         statusEl.classList.remove('recording');
         
-        // Reset guided practice state
         guidedPracticeActive = false;
         guidedSessionType = null;
         return;
       }
       
-      // Create session data
       const sessionData = {
         id: Date.now(),
         timestamp: new Date().toISOString(),
@@ -1109,24 +1269,35 @@
         date: today
       };
       
-      // Add to sessions
       shambhaviSessions.push(sessionData);
       
-      // Save and update displays
       saveData();
       updateAllDisplays();
       updateMandalaVisualization();
+      renderRecentSessions();
       
-      // Update status
       statusEl.textContent = `✓ ${guidedSessionType.charAt(0).toUpperCase() + guidedSessionType.slice(1)} session logged successfully!`;
       statusEl.classList.remove('recording');
       
-      // Reset guided practice state
       guidedPracticeActive = false;
       guidedSessionType = null;
     }
 
-    // ==================== ORIGINAL FUNCTIONS ====================
+    // ==================== DUPLICATE CHECK FUNCTIONS ====================
+
+    function checkForDuplicateSession(date, sessionType) {
+      const existingSession = shambhaviSessions.find(s => 
+        s.date === date && s.sessionType === sessionType
+      );
+      return existingSession;
+    }
+
+    function formatSessionTime(datetime) {
+      const date = new Date(datetime);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // ==================== TAB & FORM FUNCTIONS ====================
 
     function switchTab(targetTab) {
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
@@ -1151,18 +1322,6 @@
       form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    function checkForDuplicateSession(date, sessionType) {
-      const existingSession = shambhaviSessions.find(s => 
-        s.date === date && s.sessionType === sessionType
-      );
-      return existingSession;
-    }
-
-    function formatSessionTime(datetime) {
-      const date = new Date(datetime);
-      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }
-
     function saveSession(practiceType) {
       const sessionData = {
         id: Date.now(),
@@ -1177,7 +1336,6 @@
         sessionData.notes = document.getElementById('shambhavi-notes').value;
         sessionData.date = sessionData.datetime.split('T')[0];
         
-        // Check for duplicate
         const existingSession = checkForDuplicateSession(sessionData.date, sessionData.sessionType);
         if (existingSession) {
           const sessionLabel = sessionData.sessionType === 'morning' ? 'Morning (MS)' : 'Evening (ES)';
@@ -1204,6 +1362,7 @@
       saveData();
       updateAllDisplays();
       updateMandalaVisualization();
+      renderRecentSessions();
       alert('Session recorded successfully!');
     }
 
@@ -1211,6 +1370,8 @@
       document.getElementById('shambhavi-form').style.display = 'none';
       document.getElementById('isha-kriya-form').style.display = 'none';
     }
+
+    // ==================== DISPLAY UPDATE FUNCTIONS ====================
 
     function updateAllDisplays() {
       updateStreaks();
@@ -1260,6 +1421,8 @@
       document.getElementById('status-message').textContent = message;
     }
 
+    // ==================== CALCULATION FUNCTIONS ====================
+
     function calculateStreak(sessions) {
       if (sessions.length === 0) return 0;
       const uniqueDates = [...new Set(sessions.map(s => s.date))].sort((a, b) => new Date(b) - new Date(a));
@@ -1291,6 +1454,8 @@
       return uniqueDates.filter(d => d).length;
     }
 
+    // ==================== DATA STORAGE FUNCTIONS ====================
+
     function saveData() {
       localStorage.setItem('yogaSadhana_shambhavi', JSON.stringify(shambhaviSessions));
       localStorage.setItem('yogaSadhana_isha', JSON.stringify(ishaSessions));
@@ -1314,6 +1479,8 @@
       }
       saveData();
     }
+
+    // ==================== MANDALA FUNCTIONS ====================
 
     function buildMandalaGrid() {
       const grid = document.getElementById('mandala-grid');
@@ -1396,6 +1563,8 @@
         ishaOnly: !hasMorning && !hasEvening && hasIsha
       };
     }
+
+    // ==================== EXPORT FUNCTIONS ====================
 
     function exportData(type) {
       if (type === 'shambhavi') exportToCSV(shambhaviSessions, 'Shambhavi_Sessions', 'shambhavi');
