@@ -857,12 +857,33 @@
 
           <div class="guided-practice-section">
             <h3>Guided Shambhavi Practice</h3>
+            
+            <div class="practice-selection" style="margin-bottom: 20px;">
+              <p style="color: var(--ink-dim); margin-bottom: 15px; text-align: center;">Select your practice:</p>
+              
+              <div style="display: flex; flex-direction: column; gap: 12px; max-width: 400px; margin: 0 auto;">
+                <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 12px 15px; background: rgba(7,0,20,.45); border: 2px solid rgba(122,44,255,.35); border-radius: 8px; transition: all 0.3s ease;">
+                  <input type="radio" name="practice-type" value="full" checked style="width: 18px; height: 18px; accent-color: var(--neon-cyan);">
+                  <span style="color: var(--ink);">
+                    <strong style="color: var(--neon-cyan);">Full Practice</strong> (~50 min with preparatory asanas)
+                  </span>
+                </label>
+                
+                <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 12px 15px; background: rgba(7,0,20,.45); border: 2px solid rgba(122,44,255,.35); border-radius: 8px; transition: all 0.3s ease;">
+                  <input type="radio" name="practice-type" value="core" style="width: 18px; height: 18px; accent-color: var(--neon-lime);">
+                  <span style="color: var(--ink);">
+                    <strong style="color: var(--neon-lime);">Core Practice</strong> (~32 min without preparatory asanas)
+                  </span>
+                </label>
+              </div>
+            </div>
+            
             <div class="audio-controls">
               <button class="btn" id="start-guided-btn" onclick="startGuidedPractice()">Start Guided Meditation</button>
               
               <div class="audio-player-wrapper" id="audio-player-wrapper">
                 <audio id="shambhavi-audio" controls>
-                  <source src="https://github.com/IainAmosMelchizedek/yoga-sadhana-tracker/raw/main/shambhavi_mahamudra_compressed.mp3" type="audio/mpeg">
+                  <source id="audio-source" src="https://github.com/IainAmosMelchizedek/yoga-sadhana-tracker/raw/main/shambhavi_mahamudra_compressed.mp3" type="audio/mpeg">
                   Your browser does not support the audio element.
                 </audio>
               </div>
@@ -1001,6 +1022,7 @@
 
     let guidedPracticeActive = false;
     let guidedSessionType = null;
+    let guidedPracticeVersion = null;
     let currentEditSession = null;
     let currentEditType = null;
 
@@ -1234,19 +1256,41 @@
 
     function startGuidedPractice() {
       const audio = document.getElementById('shambhavi-audio');
+      const audioSource = document.getElementById('audio-source');
       const playerWrapper = document.getElementById('audio-player-wrapper');
       const statusEl = document.getElementById('audio-status');
       const btn = document.getElementById('start-guided-btn');
       
+      // Get selected practice type
+      const selectedPractice = document.querySelector('input[name="practice-type"]:checked').value;
+      
+      // Set the correct audio source based on selection
+      if (selectedPractice === 'full') {
+        audioSource.src = "https://github.com/IainAmosMelchizedek/yoga-sadhana-tracker/raw/main/shambhavi_mahamudra_compressed.mp3";
+        statusEl.textContent = "Loading Full Practice (~50 min with preparatory asanas)...";
+      } else {
+        audioSource.src = "https://github.com/IainAmosMelchizedek/yoga-sadhana-tracker/raw/main/shambhavi_core_practice_compressed.mp3";
+        statusEl.textContent = "Loading Core Practice (~32 min without preparatory asanas)...";
+      }
+      
+      // Reload the audio with new source
+      audio.load();
+      
+      // Determine if this is morning or evening based on current time
       const currentHour = new Date().getHours();
       guidedSessionType = currentHour < 12 ? 'morning' : 'evening';
       
-      playerWrapper.classList.add('visible');
-      btn.textContent = 'Restart Guided Meditation';
-      statusEl.textContent = `Starting ${guidedSessionType} guided practice...`;
+      // Store which practice version for logging
+      guidedPracticeVersion = selectedPractice;
       
+      // Show the audio player
+      playerWrapper.classList.add('visible');
+      
+      // Update button text
+      btn.textContent = 'Restart Guided Meditation';
+      
+      // Start playing
       guidedPracticeActive = true;
-      audio.currentTime = 0;
       audio.play().catch(e => {
         statusEl.textContent = 'Click play on the audio player to begin';
         statusEl.classList.remove('recording');
@@ -1267,16 +1311,21 @@
         
         guidedPracticeActive = false;
         guidedSessionType = null;
+        guidedPracticeVersion = null;
         return;
       }
+      
+      // Determine version based on which audio was played
+      const versionToLog = guidedPracticeVersion === 'full' ? 'full' : 'core';
+      const versionLabel = guidedPracticeVersion === 'full' ? 'Full Practice (guided)' : 'Core Practice (guided)';
       
       const sessionData = {
         id: Date.now(),
         timestamp: new Date().toISOString(),
         sessionType: guidedSessionType,
         datetime: new Date().toISOString().slice(0, 16),
-        version: 'full',
-        notes: 'Completed via guided audio practice',
+        version: versionToLog,
+        notes: `Completed via ${versionLabel}`,
         date: today
       };
       
@@ -1287,11 +1336,12 @@
       updateMandalaVisualization();
       renderRecentSessions();
       
-      statusEl.textContent = `✓ ${guidedSessionType.charAt(0).toUpperCase() + guidedSessionType.slice(1)} session logged successfully!`;
+      statusEl.textContent = `✓ ${guidedSessionType.charAt(0).toUpperCase() + guidedSessionType.slice(1)} session (${versionLabel}) logged successfully!`;
       statusEl.classList.remove('recording');
       
       guidedPracticeActive = false;
       guidedSessionType = null;
+      guidedPracticeVersion = null;
     }
 
     // ==================== DUPLICATE CHECK FUNCTIONS ====================
