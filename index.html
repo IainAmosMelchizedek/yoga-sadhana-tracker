@@ -1052,3 +1052,189 @@
       document.getElementById('total-sessions').textContent = totalSessions;
       document.getElementById('days-remaining').textContent = 40 - daysInCurrentCycle;
       document.getElementById('cycle-percentage').textContent = `${Math.floor((daysInCurrentCycle / 40) * 100
+
+// This continues from where the main file was cut off
+// Replace the incomplete updateDashboardStats function and add remaining code:
+
+    function updateDashboardStats() {
+      const totalDays = getTotalPracticeDays();
+      const totalSessions = shambhaviSessions.length + ishaSessions.length;
+      const completedCycles = Math.floor(totalDays / 40);
+      const currentCycle = completedCycles + 1;
+      const daysInCurrentCycle = totalDays - (completedCycles * 40);
+      const daysRemaining = 40 - daysInCurrentCycle;
+      const cyclePercentage = Math.floor((daysInCurrentCycle / 40) * 100);
+      const journeyPercentage = Math.floor((completedCycles / 9) * 100);
+
+      document.getElementById('year-cycle-info').textContent = `${currentCycle} of 9`;
+      document.getElementById('total-sessions').textContent = totalSessions;
+      document.getElementById('days-remaining').textContent = daysRemaining;
+      document.getElementById('cycle-percentage').textContent = `${cyclePercentage}%`;
+      document.getElementById('journey-percentage').textContent = `${journeyPercentage}%`;
+      document.getElementById('cycle-display').textContent = `Day ${daysInCurrentCycle || 1} of Cycle ${currentCycle}`;
+    }
+
+    function updateProgressMessage() {
+      const totalDays = getTotalPracticeDays();
+      const totalSessions = shambhaviSessions.length + ishaSessions.length;
+      const completedCycles = Math.floor(totalDays / 40);
+      let message = completedCycles === 0
+        ? `${totalSessions} sessions across ${totalDays} days of dedicated practice`
+        : `${totalSessions} sessions across ${completedCycles} completed cycle${completedCycles > 1 ? 's' : ''} (${totalDays} days)`;
+      document.getElementById('status-message').textContent = message;
+    }
+
+    function calculateStreak(sessions) {
+      if (sessions.length === 0) return 0;
+      const uniqueDates = [...new Set(sessions.map(s => s.date))].sort((a, b) => new Date(b) - new Date(a));
+      if (uniqueDates.length === 0) return 0;
+      const today = new Date().toISOString().split('T')[0];
+      let streak = 0;
+      let checkDate = new Date(today);
+      if (uniqueDates[0] !== today) checkDate.setDate(checkDate.getDate() - 1);
+      for (let i = 0; i < 400; i++) {
+        const checkDateStr = checkDate.toISOString().split('T')[0];
+        if (uniqueDates.includes(checkDateStr)) { streak++; checkDate.setDate(checkDate.getDate() - 1); }
+        else break;
+      }
+      return streak;
+    }
+
+    function getTotalPracticeDays() {
+      const allSessions = [...shambhaviSessions, ...ishaSessions];
+      const uniqueDates = [...new Set(allSessions.map(s => s.date))];
+      return uniqueDates.filter(d => d).length;
+    }
+
+    // DATA STORAGE
+    function saveData() {
+      localStorage.setItem('yogaSadhana_shambhavi', JSON.stringify(shambhaviSessions));
+      localStorage.setItem('yogaSadhana_isha', JSON.stringify(ishaSessions));
+    }
+
+    function loadData() {
+      const savedShambhavi = localStorage.getItem('yogaSadhana_shambhavi');
+      const savedIsha = localStorage.getItem('yogaSadhana_isha');
+      if (savedShambhavi) {
+        const parsed = JSON.parse(savedShambhavi);
+        if (parsed.length > shambhaviSessions.length) shambhaviSessions = parsed;
+      }
+      if (savedIsha) {
+        const parsed = JSON.parse(savedIsha);
+        if (parsed.length > ishaSessions.length) ishaSessions = parsed;
+      }
+      saveData();
+    }
+
+    // MANDALA FUNCTIONS
+    function buildMandalaGrid() {
+      const grid = document.getElementById('mandala-grid');
+      grid.innerHTML = '';
+      const rowPattern = [2, 4, 6, 8, 8, 6, 4, 2];
+      let dayIndex = 0;
+      rowPattern.forEach((circleCount) => {
+        const row = document.createElement('div');
+        row.className = 'mandala-row';
+        for (let i = 0; i < circleCount; i++) {
+          const circle = document.createElement('div');
+          circle.className = 'mandala-circle';
+          circle.setAttribute('data-day', dayIndex + 1);
+          dayIndex++;
+          row.appendChild(circle);
+        }
+        grid.appendChild(row);
+      });
+    }
+
+    function updateMandalaVisualization() {
+      const totalDays = getTotalPracticeDays();
+      const completedCycles = Math.floor(totalDays / 40);
+      const allDates = getAllPracticeDates().sort((a, b) => new Date(a) - new Date(b));
+      const cycleStartIndex = completedCycles * 40;
+      const currentCycleDates = allDates.slice(cycleStartIndex);
+      const circles = document.querySelectorAll('.mandala-circle');
+      
+      circles.forEach((circle, index) => {
+        circle.className = 'mandala-circle';
+        if (index < currentCycleDates.length) {
+          const date = currentCycleDates[index];
+          const status = getDayStatus(date);
+          if (status.perfect) circle.classList.add('perfect');
+          else if (status.bothShambhavi) circle.classList.add('both-shambhavi');
+          else if (status.msIsha) circle.classList.add('ms-isha');
+          else if (status.esIsha) circle.classList.add('es-isha');
+          else if (status.msOnly) circle.classList.add('ms-only');
+          else if (status.esOnly) circle.classList.add('es-only');
+          else if (status.ishaOnly) circle.classList.add('isha-only');
+        }
+      });
+    }
+
+    function getAllPracticeDates() {
+      const allSessions = [...shambhaviSessions, ...ishaSessions];
+      return [...new Set(allSessions.map(s => s.date))].filter(d => d);
+    }
+
+    function getDayStatus(date) {
+      const shambhaviOnDate = shambhaviSessions.filter(s => s.date === date);
+      const ishaOnDate = ishaSessions.filter(s => s.date === date);
+      const hasMorning = shambhaviOnDate.some(s => s.sessionType === 'morning');
+      const hasEvening = shambhaviOnDate.some(s => s.sessionType === 'evening');
+      const hasIsha = ishaOnDate.length > 0;
+      return {
+        perfect: hasMorning && hasEvening && hasIsha,
+        bothShambhavi: hasMorning && hasEvening && !hasIsha,
+        msIsha: hasMorning && !hasEvening && hasIsha,
+        esIsha: !hasMorning && hasEvening && hasIsha,
+        msOnly: hasMorning && !hasEvening && !hasIsha,
+        esOnly: !hasMorning && hasEvening && !hasIsha,
+        ishaOnly: !hasMorning && !hasEvening && hasIsha
+      };
+    }
+
+    // EXPORT FUNCTIONS
+    function exportData(type) {
+      if (type === 'shambhavi') exportToCSV(shambhaviSessions, 'Shambhavi_Sessions', 'shambhavi');
+      else if (type === 'isha') exportToCSV(ishaSessions, 'Isha_Kriya_Sessions', 'isha');
+      else exportCombinedData();
+    }
+
+    function exportToCSV(data, filename, type) {
+      if (data.length === 0) { alert('No sessions to export.'); return; }
+      let csv = type === 'shambhavi' ? 'Date,Time,Session Type,Version,Notes\n' : 'Date,Time,Duration,Notes\n';
+      data.forEach(s => {
+        const date = new Date(s.datetime).toLocaleDateString();
+        const time = new Date(s.datetime).toLocaleTimeString();
+        const notes = `"${(s.notes || '').replace(/"/g, '""')}"`;
+        if (type === 'shambhavi') csv += `${date},${time},${s.sessionType},${s.version},${notes}\n`;
+        else csv += `${date},${time},${s.duration},${notes}\n`;
+      });
+      downloadCSV(csv, filename);
+    }
+
+    function exportCombinedData() {
+      if (shambhaviSessions.length === 0 && ishaSessions.length === 0) { alert('No sessions to export.'); return; }
+      let csv = 'Type,Date,Time,Details,Notes\n';
+      shambhaviSessions.forEach(s => {
+        const date = new Date(s.datetime).toLocaleDateString();
+        const time = new Date(s.datetime).toLocaleTimeString();
+        csv += `Shambhavi,${date},${time},${s.sessionType} - ${s.version},"${(s.notes || '').replace(/"/g, '""')}"\n`;
+      });
+      ishaSessions.forEach(s => {
+        const date = new Date(s.datetime).toLocaleDateString();
+        const time = new Date(s.datetime).toLocaleTimeString();
+        csv += `Isha Kriya,${date},${time},${s.duration},"${(s.notes || '').replace(/"/g, '""')}"\n`;
+      });
+      downloadCSV(csv, 'Yoga_Sadhana_Complete');
+    }
+
+    function downloadCSV(csv, filename) {
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${filename}_${new Date().toISOString().split('T')[0]}.csv`;
+      link.click();
+    }
+  </script>
+</body>
+</html>                                                                              
