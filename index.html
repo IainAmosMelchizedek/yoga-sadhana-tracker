@@ -438,6 +438,132 @@
       letter-spacing: 1px;
     }
 
+    /* Manage Sessions Styles */
+    .manage-sessions-section {
+      margin-top: 30px;
+      padding: 25px;
+      background: rgba(0,247,255,.08);
+      border-radius: 10px;
+      border: 2px solid rgba(0,247,255,.35);
+      box-shadow: var(--glow-cyan);
+    }
+
+    .manage-sessions-section h3 {
+      color: var(--neon-cyan);
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 0 0 12px rgba(0,247,255,.35);
+      font-size: 1.4em;
+    }
+
+    .session-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .session-item {
+      background: rgba(7,0,20,.45);
+      border: 1px solid rgba(122,44,255,.35);
+      border-radius: 8px;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .session-item-info {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .session-item-date {
+      color: var(--neon-lime);
+      font-weight: bold;
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+
+    .session-item-details {
+      color: var(--ink-dim);
+      font-size: 0.9em;
+    }
+
+    .session-item-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-small {
+      background: var(--btn-2-grad);
+      border: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      color: white;
+      font-size: 0.85em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    .btn-small:hover {
+      background: var(--btn-2-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-small.delete {
+      background: linear-gradient(45deg, #ff4444, #cc0000);
+    }
+
+    .btn-small.delete:hover {
+      background: linear-gradient(45deg, #ff6666, #ff4444);
+    }
+
+    .no-sessions-message {
+      text-align: center;
+      color: var(--ink-dim);
+      font-style: italic;
+      padding: 20px;
+    }
+
+    .edit-form-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(7,0,20,.85);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .edit-form-overlay.visible {
+      display: flex;
+    }
+
+    .edit-form-container {
+      background: var(--card-grad);
+      border: 2px solid rgba(0,247,255,.45);
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--glow-cyan), var(--glow-pink);
+    }
+
+    .edit-form-container h3 {
+      color: var(--neon-lime);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
     /* Guided Practice Audio Styles */
     .guided-practice-section {
       margin-top: 30px;
@@ -741,6 +867,14 @@
             </div>
           </div>
 
+          <!-- Manage Sessions Section -->
+          <div class="manage-sessions-section">
+            <h3>Manage Recent Sessions (Last 3 Days)</h3>
+            <div class="session-list" id="shambhavi-session-list">
+              <!-- Sessions will be populated by JavaScript -->
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -776,9 +910,51 @@
               <button class="btn secondary" onclick="cancelSession()">Cancel</button>
             </div>
           </div>
+
+          <!-- Manage Sessions Section for Isha Kriya -->
+          <div class="manage-sessions-section">
+            <h3>Manage Recent Sessions (Last 3 Days)</h3>
+            <div class="session-list" id="isha-session-list">
+              <!-- Sessions will be populated by JavaScript -->
+            </div>
+          </div>
+
         </div>
       </div>
     </main>
+  </div>
+
+  <!-- Edit Session Overlay -->
+  <div class="edit-form-overlay" id="edit-form-overlay">
+    <div class="edit-form-container">
+      <h3 id="edit-form-title">Edit Session</h3>
+      <div class="form-group">
+        <label>Date & Time:</label>
+        <input type="datetime-local" id="edit-datetime" />
+      </div>
+      <div class="form-group" id="edit-session-type-group">
+        <label>Session Type:</label>
+        <select id="edit-session-type">
+          <option value="morning">Morning Practice (MS)</option>
+          <option value="evening">Evening Practice (ES)</option>
+        </select>
+      </div>
+      <div class="form-group" id="edit-version-group">
+        <label>Practice Version:</label>
+        <select id="edit-version">
+          <option value="full">Full Practice (40 min with preparatory asanas)</option>
+          <option value="core">Core Practice (21 min without preparatory asanas)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Notes:</label>
+        <textarea id="edit-notes" placeholder="Record any experiences..."></textarea>
+      </div>
+      <div class="practice-buttons">
+        <button class="btn" onclick="saveEditedSession()">Save Changes</button>
+        <button class="btn secondary" onclick="closeEditForm()">Cancel</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -828,6 +1004,10 @@
     // Audio player variables
     let guidedPracticeActive = false;
     let guidedSessionType = null;
+    
+    // Edit session variables
+    let currentEditSession = null;
+    let currentEditType = null;
 
     document.addEventListener('DOMContentLoaded', function() {
       loadData();
@@ -835,6 +1015,7 @@
       buildMandalaGrid();
       updateMandalaVisualization();
       setupAudioPlayer();
+      renderRecentSessions();
 
       document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', function() {
