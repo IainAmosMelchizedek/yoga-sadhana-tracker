@@ -1,3 +1,7 @@
 # yoga-sadhana-tracker
 A sacred practice tracker for Shambhavi Mahamudra Kriya and Isha Kriya with mandala visualization, honoring the ancient spiritual traditions of a certain Guru who went up to Chamundi Hill after falling out of love.
 This Guru parked his motorcycle and sat on an outcrop of rock about two-thirds of the way up the hill - his "contemplation rock." A purple berry tree and a stunted banyan had put down tenacious roots into a deep fissure in the rock's surface. It was there, in that moment, that the Guru watched a panoramic view of the city unfold before him - and everything for him changed.
+
+### Attribution
+If you use or build upon this project, please credit:
+© 2026 Iain Melchizedek – Original Creator of Yoga Sadhana Tracker
